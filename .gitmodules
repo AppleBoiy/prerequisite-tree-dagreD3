@@ -1,9 +1,12 @@
 [submodule "prereq-JSONCreator"]
 	path = prereq-JSONCreator
 	url = ./prereq-JSONCreator
+	branch = main
 [submodule "prereq-Tester"]
 	path = prereq-Tester
 	url = ./prereq-Tester
+	branch = main
 [submodule "prereq-json2tree"]
 	path = prereq-json2tree
 	url = ./prereq-json2tree
+	branch = main
