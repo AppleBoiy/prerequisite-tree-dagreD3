@@ -3,5 +3,6 @@
   <component name="VcsDirectoryMappings">
     <mapping directory="" vcs="Git" />
     <mapping directory="$PROJECT_DIR$/prereq-JSONCreator" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/prereq-Tester" vcs="Git" />
   </component>
 </project>
