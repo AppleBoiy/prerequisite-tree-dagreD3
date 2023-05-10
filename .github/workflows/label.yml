@@ -6,7 +6,12 @@
 # https://github.com/actions/labeler
 
 name: Labeler
-on: [pull_request_target]
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    # The branches below must be a subset of the branches above
+    branches: [ "main" ]
 
 jobs:
   label:
