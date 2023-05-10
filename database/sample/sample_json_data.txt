@@ -1,0 +1,25 @@
+{
+  "credit": {
+    "num": 3,
+    "str": "3(2-2-5)"
+  },
+  "description": {
+    "en": "Computer science in daily life, language translation, binary system, algorithm and designs, fundamental programming concepts, basic type system, fundamental data structure, fundamental data structure and algorithms, and development methods.",
+    "th": "วิทยาการคอมพิวเตอร์ในชีวิตประจำวัน การแปลภาษา ระบบเลขฐานสอง อัลกอริทึมและการออกแบบ แนวคิดการเขียนโปรแกรมพื้นฐาน ระบบชนิดข้อมูลพื้นฐาน โครงสร้างข้อมูลพื้นฐาน โครงสร้างข้อมูลพื้นฐานและอัลกอริทึม และวิธีการพัฒนาโปรแกรม"
+  },
+  "faculty": {
+    "th": "คณะวิทยาศาสตร์",
+    "en": "Faculty of Science"
+  },
+  "formerly": "ภาคการศึกษาที่ 1  ปีการศึกษา 2564",
+  "id": "204111",
+  "major": {
+    "th": "ว.คพ.",
+    "en": "CS"
+  },
+  "name": {
+    "en": "Fundamentals of Programming",
+    "th": "การเขียนโปรแกรมเบื้องต้น"
+  },
+  "prerequisite": []
+}
