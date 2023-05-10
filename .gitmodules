@@ -4,3 +4,6 @@
 [submodule "prereq-Tester"]
 	path = prereq-Tester
 	url = ./prereq-Tester
+[submodule "prereq-json2tree"]
+	path = prereq-json2tree
+	url = ./prereq-json2tree
