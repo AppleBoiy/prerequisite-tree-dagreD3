@@ -560,4 +560,6 @@ xcuserdata/
 /*.gcno
 **/xcshareddata/WorkspaceSettings.xcsettings
 
+temp
+
 # End of https://www.toptal.com/developers/gitignore/api/flask,node,intellij,python,sonarcloud,sonarlint,vscode,code,xcode,macos
