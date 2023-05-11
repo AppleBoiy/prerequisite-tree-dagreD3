@@ -1,12 +1,12 @@
 [submodule "prereq-JSONCreator"]
 	path = prereq-JSONCreator
-	url = ./prereq-JSONCreator
+	url = https://github.com/AppleBoiy/prereq-JSONCreator.git
 	branch = main
 [submodule "prereq-Tester"]
 	path = prereq-Tester
-	url = ./prereq-Tester
+	url = https://github.com/AppleBoiy/prereq-Tester.git
 	branch = main
 [submodule "prereq-json2tree"]
 	path = prereq-json2tree
-	url = ./prereq-json2tree
+	url = https://github.com/AppleBoiy/json2tree.git
 	branch = main
