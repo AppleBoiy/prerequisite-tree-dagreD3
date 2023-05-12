@@ -2,7 +2,6 @@
 <project version="4">
   <component name="VcsDirectoryMappings">
     <mapping directory="" vcs="Git" />
-    <mapping directory="$PROJECT_DIR$/libs/dTree" vcs="Git" />
     <mapping directory="$PROJECT_DIR$/prereq-JSONCreator" vcs="Git" />
     <mapping directory="$PROJECT_DIR$/prereq-Tester" vcs="Git" />
     <mapping directory="$PROJECT_DIR$/prereq-json2tree" vcs="Git" />
