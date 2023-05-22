@@ -1,27 +1,26 @@
 {
   "name": "prerequisite-tree",
+  "description": "prerequsite tree",
   "version": "1.0.0",
-  "description": "",
-  "main": "index.js",
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+  "homepage": "https://github.com/AppleBoiy/prerequisite-tree",
+  "author": "CS65-staff ()",
+  "repository": "AppleBoiy/prerequisite-tree",
+  "bugs": {
+    "url": "https://github.com/AppleBoiy/prerequisite-tree/issues"
   },
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
-  "dependencies": {
-    "@babel/preset-env": "^7.20.2",
-    "@roumi/treemaker": "^1.1.1",
-    "babel-loader": "^9.1.0",
-    "css-loader": "^6.7.2",
-    "gulp": "^4.0.2",
-    "gulp-clean-css": "^4.3.0",
-    "gulp-minify": "^3.1.0",
-    "gulp-rename": "^2.0.0",
-    "jscharting": "^3.4.0",
-    "mini-css-extract-plugin": "^2.6.1",
-    "style-loader": "^3.3.1",
-    "webpack": "^5.75.0",
-    "webpack-cli": "^4.10.0"
-  }
+  "license": "Apache-2.0",
+  "files": [
+    "LICENSE",
+    "README.md"
+  ],
+  "engines": {
+    "node": ">=4"
+  },
+  "scripts": {
+    "test": "mocha"
+  },
+  "keywords": [
+    "prerequisite",
+    "tree"
+  ]
 }
