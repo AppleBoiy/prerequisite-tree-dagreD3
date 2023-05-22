@@ -1,0 +1,12 @@
+{
+    "files.exclude": {
+      "node_modules/": true,
+      "**/__pycache__": true,
+      "Pipfile": true,
+      "**/package*": true
+    },
+    "editor.fontSize": 14,
+    "editor.fontFamily": "JetBrainsMono Nerd Font",
+    "git.autofetch": true,
+    "git.confirmSync": false,
+  }
