@@ -14,7 +14,7 @@ ENTRYPOINT [ "./gunicorn_starter.sh" ]
 FROM builder as dev-envs
 
 RUN apk update
-RUN apk add --update alpine-sdk openssh git zsh bash curl neovim
+RUN apk add --update git zsh bash curl
 
 # Install Oh-My-Zsh
 RUN sh -c "$(curl -fsSL https://raw.github.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
