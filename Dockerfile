@@ -1,5 +1,8 @@
 # syntax=docker/dockerfile:1.4
-FROM --platform=$BUILDPLATFORM python:3.10-alpine3.15 as builder
+FROM ubuntu:latest
+
+# Update package lists and install necessary dependencies
+RUN apt-get update && apt-get install -y python3 python3-pip
 
 WORKDIR /app
 COPY requirements.txt /app
@@ -14,7 +17,7 @@ ENTRYPOINT [ "./gunicorn_starter.sh" ]
 FROM builder as dev-envs
 
 RUN apk update
-RUN apk add git zsh bash curl neovim
+RUN apk add --update alpine-sdk openssh git zsh bash curl neovim
 
 # Install Oh-My-Zsh
 RUN sh -c "$(curl -fsSL https://raw.github.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
@@ -27,3 +30,8 @@ SHELL ["/bin/zsh", "-l"]
 
 # Set Bash as the default shell for interactive sessions
 ENV SHELL=/bin/bash
+
+# Install NvChad
+RUN git clone ssh://git@github.com:NvChad/NvChad.git /root/.config/nvim \
+  && nvim +PlugInstall +qall
+
