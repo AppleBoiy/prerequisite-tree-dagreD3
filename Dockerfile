@@ -20,7 +20,7 @@ RUN apk add --update git zsh bash curl
 RUN sh -c "$(curl -fsSL https://raw.github.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
 
 # Install Powerlevel10k theme
-RUN git clone --depth=1 https://github.com/romkatv/powerlevel10k.git $HOME/.oh-my-zsh/custom/themes/powerlevel10k
+# RUN git clone --depth=1 https://github.com/romkatv/powerlevel10k.git $HOME/.oh-my-zsh/custom/themes/powerlevel10k
 
 # Set Zsh as the default shell
 SHELL ["/bin/zsh", "-l"]
