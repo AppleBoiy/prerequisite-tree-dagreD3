@@ -1,7 +1,7 @@
 #!/bin/bash
 
 file_path="$HOME/.zshrc"
-search_phrase='ZSH_THEME'
+search_phrase='ZSH_THEME='
 replace_line='ZSH_THEME="powerlevel10k/powerlevel10k"'
 
 # Create a temporary file
