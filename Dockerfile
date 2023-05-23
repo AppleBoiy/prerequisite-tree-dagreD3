@@ -1,8 +1,5 @@
 # syntax=docker/dockerfile:1.4
-FROM ubuntu:latest
-
-# Update package lists and install necessary dependencies
-RUN apt-get update && apt-get install -y python3 python3-pip
+FROM --platform=$BUILDPLATFORM python:3.10-alpine3.15 as builder
 
 WORKDIR /app
 COPY requirements.txt /app
@@ -30,8 +27,4 @@ SHELL ["/bin/zsh", "-l"]
 
 # Set Bash as the default shell for interactive sessions
 ENV SHELL=/bin/bash
-
-# Install NvChad
-RUN git clone ssh://git@github.com:NvChad/NvChad.git /root/.config/nvim \
-  && nvim +PlugInstall +qall
 
