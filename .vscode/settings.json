@@ -9,4 +9,8 @@
     "editor.fontFamily": "JetBrainsMono Nerd Font",
     "git.autofetch": true,
     "git.confirmSync": false,
+    "[python]": {
+      "editor.defaultFormatter": "ms-python.autopep8"
+    },
+    "python.formatting.provider": "none",
   }
