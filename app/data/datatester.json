@@ -1,0 +1,84 @@
+[
+    {
+        "code": 204111,
+        "parent list": "None",
+        "child list": "[204114]",
+        "credit": 3,
+        "full Name": "Fundamentals of Programming",
+        "year": 1,
+        "abbr": "CS111",
+        "term": 1
+        
+    },
+    {
+        "code": 204114,
+        "parent list": "[204111]",
+        "child list": "[204203, 204212, 204231, 204232, 204252]",
+        "credit": 3,
+        "full Name": "Introduction to Object-oriented Programming",
+        "year": 1,
+        "abbr": "CS114",
+        "term": 2
+    },
+    {
+        "code": 204203,
+        "parent list": "[204114]",
+        "child list": "None",
+        "credit": 3,
+        "full Name": "Computer Science Technology",
+        "year": 2,
+        "abbr": "CS203",
+        "term": 1
+    },
+    {
+        "code": 204212,
+        "parent list": "[204114]",
+        "child list": "[204315, 204361]",
+        "credit": 3,
+        "full Name": "Modern Application Development",
+        "year": 2,
+        "abbr": "CS212",
+        "term": 2
+    },
+    {
+        "code": 204231,
+        "parent list": "[204114]",
+        "child list": "[204341]",
+        "credit": 3,
+        "full Name": "Computer Organization and Architecture",
+        "year": 2,
+        "abbr": "CS231",
+        "term": 1
+    },
+    {
+        "code": 204232,
+        "parent list": "[204114]",
+        "child list": "[204390]",
+        "credit": 3,
+        "full Name": "Computer Networks and Protocols",
+        "year": 2,
+        "abbr": "CS232",
+        "term": 2
+    },
+    {
+        "code": 204252,
+        "parent list": "[204114]",
+        "child list": "[204271, 204321, 204451]",
+        "credit": 3,
+        "full Name": "Data Structures and Analysis",
+        "year": 2,
+        "abbr": "CS252",
+        "term": 1
+    },
+    {
+        "code": 204271,
+        "parent list": "[204252, 208269]",
+        "child list": "None",
+        "credit": 3,
+        "full Name": "Introduction to Artificial Intelligence",
+        "year": 2,
+        "abbr": "CS271",
+        "term": 2
+    }
+
+]
