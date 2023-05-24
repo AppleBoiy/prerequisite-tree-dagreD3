@@ -1,9 +1,8 @@
-
 const filePath = '/app/data/datatester.json';
-// document.write(filePath);
 
 const root = document.getElementById("root");
 
+// get data from json
 async function getData() {
   try {
     const response = await fetch(filePath);
@@ -12,9 +11,11 @@ async function getData() {
   } catch (error) {console.log(error);}
 }
 
+// 
 async function createList() {
   const data = await getData();
   data.forEach(element => {
+
     const a = document.createElement("p");
     a.className = "test"
     a.innerHTML = `${element.code} ${element["parent list"]} ${element["child list"]} ${element.credit} ${element["full Name"]} ${element.year} ${element.abbr} ${element.term}`
