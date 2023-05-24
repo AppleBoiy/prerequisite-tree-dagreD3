@@ -1,24 +1,25 @@
 
-let filePath = '/app/data/datatester.json';
-let data = [];
+const filePath = '/app/data/datatester.json';
 // document.write(filePath);
 
-// Fetch the JSON file
-fetch(filePath)
-  .then(function(response) {
-    return response.json();
-  })
-  .then(function(jsonData) {
-    // Access the data as an object
-    // console.log(jsonData);
+const root = document.getElementById("root");
 
-    // You can now work with the JSON data as an object
-    // For example, you can access properties like this:
-    // console.log(jsonData.propertyName);
-    data = [...jsonData];
-  })
-  .catch(function(error) {
-    console.log('Error:', error);
+async function getData() {
+  try {
+    const response = await fetch(filePath);
+    const result = await response.json();
+    return result;
+  } catch (error) {console.log(error);}
+}
+
+async function createList() {
+  const data = await getData();
+  data.forEach(element => {
+    const a = document.createElement("p");
+    a.className = "test"
+    a.innerHTML = `${element.code} ${element["parent list"]} ${element["child list"]} ${element.credit} ${element["full Name"]} ${element.year} ${element.abbr} ${element.term}`
+    root.appendChild(a);
   });
+}
 
-console.log(data);
+createList()
