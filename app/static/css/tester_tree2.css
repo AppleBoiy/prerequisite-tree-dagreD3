@@ -1,0 +1,30 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+body {
+    height: 100vh;
+    display: grid;
+    align-items: center;
+    background-color: #333;
+    color: wheat;
+}
+li {
+    background-color: aqua;
+    border: 1px solid rgb(53, 104, 2);
+}
+/* img {
+    width: 200px;
+    height: 200px;
+} */
+.tree {
+    width: 100%;
+    height: auto;
+    text-align: center;
+}
+.tree ul {
+    padding-top: 20px;
+    position: relative;
+    
+}
