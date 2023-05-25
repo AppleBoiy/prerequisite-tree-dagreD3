@@ -105,7 +105,7 @@ createList()
 
 const test = document.getElementById("testt");
 let path = document.createElementNS(test.namespaceURI,"path");
-path.setAttributeNS(null, "d",`M${100},10 L150,10`);
+path.setAttributeNS(null, "d",`M${0},${0} L${300},${300}`);
 path.setAttributeNS(null, "style", "stroke:red; stroke-width: 1.25px; fill: none;marker-end: url(#arrow);");
 test.appendChild(path);
 console.log(path.getBoundingClientRect());

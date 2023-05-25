@@ -72,3 +72,7 @@ body {
     background-color: #b34b4b;
     border: 1px solid black;
 }
+svg {
+    background-color: rgb(255, 221, 159);
+    
+}
