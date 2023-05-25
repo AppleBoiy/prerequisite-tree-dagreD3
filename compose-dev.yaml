@@ -1,11 +1,12 @@
-version: '3'
 services:
   app:
-    build:
-      context: .
-      dockerfile: Dockerfile
+    entrypoint:
+    - sleep
+    - infinity
+    image: docker/dev-environments-default:stable-1
+    init: true
     volumes:
-      - .:/app
-    ports:
-      - "8000:8000"
-    command: python app.py
+    - type: bind
+      source: /var/run/docker.sock
+      target: /var/run/docker.sock
+
