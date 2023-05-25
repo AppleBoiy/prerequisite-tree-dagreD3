@@ -3,4 +3,5 @@ from app import app
 
 @app.route('/')
 def home():
-    return "Flask says 'Hello world!'"
+    return app.send_static_file('popout.html')
+
