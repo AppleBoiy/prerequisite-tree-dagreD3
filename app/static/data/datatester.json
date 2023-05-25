@@ -1,0 +1,186 @@
+[
+    {
+        "code": 204111,
+        "parent list": "None",
+        "child list": "[204114]",
+        "credit": 3,
+        "full Name": "Fundamentals of Programming",
+        "year": 1,
+        "abbr": "CS111",
+        "term": 1
+        
+    },
+    {
+        "code": 204114,
+        "parent list": "[204111]",
+        "child list": "[204203, 204212, 204231, 204232, 204252]",
+        "credit": 3,
+        "full Name": "Introduction to Object-oriented Programming",
+        "year": 1,
+        "abbr": "CS114",
+        "term": 2
+    },
+    {
+        "code": 204203,
+        "parent list": "[204114]",
+        "child list": "None",
+        "credit": 3,
+        "full Name": "Computer Science Technology",
+        "year": 2,
+        "abbr": "CS203",
+        "term": 1
+    },
+    {
+        "code": 204212,
+        "parent list": "[204114]",
+        "child list": "[204315, 204361]",
+        "credit": 3,
+        "full Name": "Modern Application Development",
+        "year": 2,
+        "abbr": "CS212",
+        "term": 2
+    },
+    {
+        "code": 204231,
+        "parent list": "[204114]",
+        "child list": "[204341]",
+        "credit": 3,
+        "full Name": "Computer Organization and Architecture",
+        "year": 2,
+        "abbr": "CS231",
+        "term": 1
+    },
+    {
+        "code": 204232,
+        "parent list": "[204114]",
+        "child list": "[204390]",
+        "credit": 3,
+        "full Name": "Computer Networks and Protocols",
+        "year": 2,
+        "abbr": "CS232",
+        "term": 2
+    },
+    {
+        "code": 204252,
+        "parent list": "[204114]",
+        "child list": "[204271, 204321, 204451]",
+        "credit": 3,
+        "full Name": "Data Structures and Analysis",
+        "year": 2,
+        "abbr": "CS252",
+        "term": 1
+    },
+    {
+        "code": 204271,
+        "parent list": "[204252, 208269]",
+        "child list": "None",
+        "credit": 3,
+        "full Name": "Introduction to Artificial Intelligence",
+        "year": 2,
+        "abbr": "CS271",
+        "term": 2
+    },
+    {
+        "code": 204306,
+        "parent list": "Third year standing",
+        "child list": "None",
+        "credit": 1,
+        "full Name": "Ethics for Computer Professionals",
+        "year": 3,
+        "abbr": "CS306",
+        "term": 2
+    },
+    {
+        "code": 204315,
+        "parent list": "[204212]",
+        "child list": "None",
+        "credit": 3,
+        "full Name": "Organization of Programming Languages",
+        "year": 3,
+        "abbr": "CS315",
+        "term": 2
+    },
+    {
+        "code": 204321,
+        "parent list": "[(204251, 204252)]",
+        "child list": "None",
+        "credit": 3,
+        "full Name": "Database Systems",
+        "year": 3,
+        "abbr": "CS321",
+        "term": 1
+    },
+    {
+        "code": 204341,
+        "parent list": "[204231]",
+        "child list": "[204390]",
+        "credit": 3,
+        "full Name": "Operating Systems",
+        "year": 3,
+        "abbr": "CS341",
+        "term": 1
+    },
+    {
+        "code": 204361,
+        "parent list": "[204212]",
+        "child list": "[204390]",
+        "credit": 3,
+        "full Name": "Software Engineering",
+        "year": 3,
+        "abbr": "CS361",
+        "term": 1
+    },
+    {
+        "code": 204451,
+        "parent list": "[(204251, 204252), (206183, 206281)]",
+        "child list": "None",
+        "credit": 3,
+        "full Name": "Algorithm Design and Analysis",
+        "year": 3,
+        "abbr": "CS451",
+        "term": 1
+    },
+    {
+        "code": 204490,
+        "parent list": "Consent of the department",
+        "child list": "None",
+        "credit": 3,
+        "full Name": "Research in Computer Science",
+        "year": 3,
+        "abbr": "CS490",
+        "term": 2
+    },
+    {
+        "code": 204390,
+        "parent list": "[204232, 204321, 204341, 204361]",
+        "child list": "None",
+        "credit": 1,
+        "full Name": "Computer Job Training",
+        "year": 4,
+        "abbr": "CS390",
+        "term": 1
+    },
+    {
+        "code": 204496,
+        "parent list": "Fourth year standing and Consent of the department",
+        "child list": "None",
+        "credit": 6,
+        "full Name": "Cooperative Education",
+        "year": 4,
+        "abbr": "CS496",
+        "term": 1
+    },
+    {
+        "code": 204497,
+        "parent list": "Consent of the department",
+        "child list": "None",
+        "credit": 1,
+        "full Name": "Seminar in Computer Science",
+        "year": 4,
+        "abbr": "CS497",
+        "term": 2
+    }
+
+
+]
+
