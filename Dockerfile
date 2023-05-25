@@ -1,5 +1,5 @@
 # syntax=docker/dockerfile:1.4
-FROM --platform=$BUILDPLATFORM python:3.10-alpine3.15 as builder
+FROM --platform=$BUILDPLATFORM python:3.10-alpine3.15 AS builder
 
 WORKDIR /app
 COPY requirements.txt /app
@@ -11,7 +11,7 @@ RUN chown -R 1000 /app/
 RUN chmod 755 /app/gunicorn_starter.sh
 ENTRYPOINT [ "./gunicorn_starter.sh" ]
 
-FROM builder as dev-envs
+FROM builder AS dev-envs
 
 RUN apk update
 RUN apk add --update git zsh bash curl
