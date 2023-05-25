@@ -1,5 +1,13 @@
 services:
   app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    volumes:
+      - .:/app
+    ports:
+      - "8000:8000"
+    command: python app.py
     entrypoint:
     - sleep
     - infinity
@@ -9,4 +17,3 @@ services:
     - type: bind
       source: /var/run/docker.sock
       target: /var/run/docker.sock
-
