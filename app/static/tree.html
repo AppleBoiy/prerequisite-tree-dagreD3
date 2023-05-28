@@ -64,6 +64,10 @@
             align-items: center;
 
         }
+        svg {
+            background-color: #333;
+            z-index: 3;
+        }
     </style>
     <style>
         @keyframes fadeIn {
@@ -125,8 +129,13 @@
                 <h1>ปี1</h1>
             </div>
             <div class="subjectContainer">
-                <div class="term1" id="y1t1"></div>
-                <div class="term2" id="y1t2"></div>
+                <svg width="900" height="900" id="bg_line">
+                    <defs><marker id="arrow" markerWidth="13" markerHeight="13" refx="2" refy="6" orient="auto">
+                        <path d="M2,2 L2,11 L10,6 L2,2" style="fill:red;" />
+                    </marker></defs>  
+                    <div class="term2" id="y1t2"></div>
+                    <div class="term1" id="y1t1"></div>
+                </svg>
 
             </div>
         </div>
@@ -270,7 +279,7 @@
         {
             "code": "204321",
             "parent list": "[(204251, 204252)]",
-            "child list": "None",
+            "child list": "[204390]",
             "credit": 3,
             "full Name": "Database Systems",
             "year": 3,
@@ -409,15 +418,22 @@
             }
             
             nodes.push(newNode);
+
         })
     }
 
-    console.log(nodes);
     function createLine() {
 
+        const svg = document.getElementByClass("bg_line");
+        svg.setAttribute(innerWidth)
+        let path = document.createElementNS(svg.namespaceURI,"path");
+        path.setAttributeNS(null, "d",`M${0},${0} L${300},${300}`);
+        path.setAttributeNS(null, "style", "stroke:red; stroke-width: 1.25px; fill: none;marker-end: url(#arrow);");
+        svg.appendChild(path);
+        console.log(path.getBoundingClientRect());
     }
 
-    addNode()
-
+    addNode();
+    createLine();
 </script>
 </html>

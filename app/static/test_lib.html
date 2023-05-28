@@ -5,8 +5,484 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/3.5.17/d3.min.js"></script>
+    <style>
+        #tree_view {
+            width: 100%;
+            height: 100%;
+            margin-top: 30px;
+          } 
+          
+          .node {
+            cursor: pointer;
+            text-anchor: start;
+          }
+          
+          .node rect {
+            stroke: gray;
+            stroke-width: 1.5px;
+          }
+          
+          .node text {
+            font: 12px sans-serif;
+          }
+          
+          .link, .mpLink {
+            fill: none;
+            stroke: #ccc;
+          }
+    </style>
 </head>
 <body>
-    
+    <h1>PrerequisiteTree</h1>
+    <div id="tree_view"></div>
+    <script>
+        // plot properties
+let root;
+let tree;
+let diagonal;
+let svg;
+let duration = 750;
+let treeMargin = { top: 0, right: 10, bottom: 10, left: 10 };
+let treeWidth = window.innerWidth - treeMargin.right - treeMargin.left;
+let treeHeight = window.innerHeight - treeMargin.top - treeMargin.bottom;
+let treeDepth = 10;
+let maxTextLength = 90;
+let nodeWidth = maxTextLength - 30;
+let nodeHeight = 36;
+let scale = 1;
+
+// tree data
+let data = [
+    {
+        "name": "ปี1",
+        "parent": "null",
+        "children": [
+            {
+                "name": "204111",
+                "parent": "Top Level",
+                "children": [
+                    {
+                        "name": "204114",
+                        "parent": "Level 2: A",
+                        "children": [
+                            {
+                                "name": "204203",
+                                "parent": "Level 3: A",
+                            },
+                            {
+                                "name": "204231",
+                                "parent": "Level 3: A",
+                                "children": [
+                                    {
+                                        "name": "204341",
+                                        "parent": "Level 4: A",
+
+                                    },
+                                
+                                ]
+                            },
+                            {
+                                "name": "204251",
+                                "parent": "Level 3: A",
+                            },
+                            {
+                                "name": "204212",
+                                "parent": "Level 3: A",
+                                "children": [
+                                {
+                                    "name": "204315",
+                                    "parent": "Level 4: A",
+                                    
+                                },
+                                {
+                                    "name": "204361",
+                                    "parent": "Level 4: A",
+                                    
+                                },
+                                
+                                ]
+                            },
+                            {
+                                "name": "204232",
+                                "parent": "Level 3: A",
+                                "children": [
+                                    {
+                                        "name": "204390",
+                                        "parent": "Level 4: A",
+
+                                    },
+                                
+                                ]
+                            },
+                            {
+                                "name": "204252",
+                                "parent": "Level 3: A",
+                                "children": [
+                                    {
+                                        "name": "204321",
+                                        "parent": "Level 4: A",
+
+                                    },
+                                    {
+                                        "name": "204271",
+                                        "parent": "Level 4: A",
+                                    },
+                                    {
+                                        "name": "204451",
+                                        "parent": "Level 4: A",
+
+                                    },
+                                    
+                                ]
+                            },
+                            {
+                                "name": "208269",
+                                "parent": "Level 3: A",
+                            },
+                            {
+                                "name": "ปี3",
+                                "parent": "Level 3: A",
+                                "children": [
+                                    {
+                                        "name": "204306",
+                                        "parent": "Level 4: A",
+
+                                    },
+                                    {
+                                        "name": "ปี4",
+                                        "parent": "Level 4: A",
+                                        "children": [
+                                            {
+                                                "name": "204496",
+                                                "parent": "Level 5: A",
+                                            },
+
+                                        ]
+                                    },
+                                    {
+                                        "name": "Consent",
+                                        "parent": "Level 4: A",
+                                        "children": [
+                                            {
+                                                "name": "204490",
+                                                "parent": "Level 5: A",
+                                            },
+                                            {
+                                                "name": "204497",
+                                                "parent": "Level 5: A",
+                                            },
+                                        ]
+                                    },
+
+                                ]
+                            },
+                            
+                        ]
+                    }
+                ]
+            },
+            {
+                "name": "206183",
+                "parent": "Top Level"
+            }
+        ]
+    }
+];
+
+// additional links data array
+let additionalLinks = []
+
+
+/**
+ * Initialize tree properties
+ * @param {Object} treeData 
+ */
+function initTree(treeData) {
+    // init
+    tree = d3.layout.tree()
+        .size([treeWidth, treeHeight]);
+    diagonal = d3.svg.diagonal()
+        .projection(function (d) { return [d.x + nodeWidth / 2, d.y + nodeHeight / 2]; });
+    svg = d3.select("div#tree_view")
+        .append("svg")
+        .attr("width", treeWidth + treeMargin.right + treeMargin.left)
+        .attr("height", treeHeight + treeMargin.top + treeMargin.bottom)
+        .attr("transform", `translate(${treeMargin.left},${treeMargin.top})scale(${scale},${scale})`);
+    root = treeData[0];
+    root.x0 = treeHeight / 2;
+    root.y0 = 0;
+
+    // fill additionalLinks array
+    let pairNode1 = tree.nodes(root).filter(function(d) {
+        return d['name'] === '208269';
+    })[0];
+    let pairNode2 = tree.nodes(root).filter(function(d) {
+        return d['name'] === '204271';
+    })[0];
+    let pairNode11 = tree.nodes(root).filter(function(d) {
+        return d['name'] === '204341';
+    })[0];
+    let pairNode21 = tree.nodes(root).filter(function(d) {
+        return d['name'] === '204390';
+    })[0];
+    let pairNode12 = tree.nodes(root).filter(function(d) {
+        return d['name'] === '204361';
+    })[0];
+    let pairNode22 = tree.nodes(root).filter(function(d) {
+        return d['name'] === '204390';
+    })[0];
+    let pairNode13 = tree.nodes(root).filter(function(d) {
+        return d['name'] === '204321';
+    })[0];
+    let pairNode23 = tree.nodes(root).filter(function(d) {
+        return d['name'] === '204390';
+    })[0];
+    let pairNode14 = tree.nodes(root).filter(function(d) {
+        return d['name'] === '206183';
+    })[0];
+    let pairNode24 = tree.nodes(root).filter(function(d) {
+        return d['name'] === '204451';
+    })[0];
+    let pairNode15 = tree.nodes(root).filter(function(d) {
+        return d['name'] === 'Consent';
+    })[0];
+    let pairNode25 = tree.nodes(root).filter(function(d) {
+        return d['name'] === '204496';
+    })[0];
+
+    let link = new Object();
+    link.source = pairNode1;
+    link.target = pairNode2;
+    link._source = pairNode1; // backup source
+    link._target = pairNode2; // backup target
+    additionalLinks.push(link)
+    let link1 = new Object();
+    link1.source = pairNode11;
+    link1.target = pairNode21;
+    link1._source = pairNode11; // backup source
+    link1._target = pairNode21; // backup target
+    additionalLinks.push(link1)
+    let link2 = new Object();
+    link2.source = pairNode12;
+    link2.target = pairNode22;
+    link2._source = pairNode12; // backup source
+    link2._target = pairNode22; // backup target
+    additionalLinks.push(link2)
+    let link3 = new Object();
+    link3.source = pairNode13;
+    link3.target = pairNode23;
+    link3._source = pairNode13; // backup source
+    link3._target = pairNode23; // backup target
+    additionalLinks.push(link3)
+    let link4 = new Object();
+    link4.source = pairNode14;
+    link4.target = pairNode24;
+    link4._source = pairNode14; // backup source
+    link4._target = pairNode24; // backup target
+    additionalLinks.push(link4)
+    let link5 = new Object();
+    link5.source = pairNode15;
+    link5.target = pairNode25;
+    link5._source = pairNode15; // backup source
+    link5._target = pairNode25; // backup target
+    additionalLinks.push(link5)
+
+    // update
+    updateTree(root);
+    d3.select(self.frameElement).style("height", "500px");
+
+    // add resize listener
+    window.addEventListener("resize", function (event) {
+        resizeTreePlot();
+    });
+}
+
+
+/**
+ * Perform tree update. Update nodes and links
+ * @param {Object} source
+ */
+function updateTree(source) {
+    let i = 0;
+    let nodes = tree.nodes(root).reverse();
+    let links = tree.links(nodes);
+
+    nodes.forEach(function (d) { d.y = d.depth * 80; });
+
+    // ======== add nodes and text elements ========
+    let node = svg.selectAll("g.node")
+        .data(nodes, function (d) { return d.id || (d.id = ++i); });
+
+    let nodeEnter = node.enter().append("g")
+        .attr("class", "node")
+        .attr("transform", function (d) { return `translate(${source.x0},${source.y0})`; })
+        .on("click", click);
+
+    nodeEnter.append("rect")
+        .attr("width", nodeWidth)
+        .attr("height", nodeHeight)
+        .attr("rx", 2)
+        .style("fill", function(d) { return d._children ? "#ace3b5": "#f4f4f9"; });
+
+    nodeEnter.append("text")
+        .attr("y", nodeHeight / 2)
+        .attr("x", 13)
+        .attr("dy", ".35em")
+        .text(function (d) { return d.name; })
+        .style("fill-opacity", 1e-6);
+
+    let nodeUpdate = node.transition()
+        .duration(duration)
+        .attr("transform", function (d) { return `translate(${d.x},${d.y})`; });
+
+    nodeUpdate.select("rect")
+        .attr("width", nodeWidth)
+        .style("fill", function(d) { return d._children ? "#ace3b5": "#f4f4f9"; });
+
+    nodeUpdate.select("text").style("fill-opacity", 1);
+
+    let nodeExit = node.exit().transition()
+        .duration(duration)
+        .attr("transform", function (d) { return `translate(${source.x},${source.y})`; })
+        .remove();
+
+    nodeExit.select("rect")
+        .attr("width", nodeWidth)
+        .attr("rx", 2)
+        .attr("height", nodeHeight);
+
+    nodeExit.select("text")
+        .style("fill-opacity", 1e-6);
+
+    // ======== add links ========
+    let link = svg.selectAll("path.link")
+        .data(links, function (d) { return d.target.id; });
+
+    link.enter().insert("path", "g")
+        .attr("class", "link")
+        .attr("x", nodeWidth / 2)
+        .attr("y", nodeHeight / 2)
+        .attr("d", function (d) {
+            var o = { x: source.x0, y: source.y0 };
+            return diagonal({ source: o, target: o });
+        });
+
+    link.transition()
+        .duration(duration)
+        .attr("d", diagonal)
+
+    link.exit().transition()
+        .duration(duration)
+        .attr("d", function (d) {
+            let o = { x: source.x, y: source.y };
+            return diagonal({ source: o, target: o });
+        })
+        .remove();
+
+    // ======== add additional links (mpLinks) ========
+    let mpLink = svg.selectAll("path.mpLink")
+        .data(additionalLinks);
+
+    mpLink.enter().insert("path", "g")
+        .attr("class", "mpLink")
+        .attr("x", nodeWidth / 2)
+        .attr("y", nodeHeight / 2)
+        .attr("d", function (d) {
+            var o = { x: source.x0, y: source.y0 };
+            return diagonal({ source: o, target: o });
+        });
+
+    mpLink.transition()
+        .duration(duration)
+        .attr("d", diagonal)
+        .attr("stroke-width", 1.5)
+
+    mpLink.exit().transition()
+        .duration(duration)
+        .attr("d", function (d) {
+            let o = { x: source.x, y: source.y };
+            return diagonal({ source: o, target: o });
+        })
+        .remove();
+
+    nodes.forEach(function (d) {
+        d.x0 = d.x;
+        d.y0 = d.y;
+    });
+}
+
+/**
+ * Handle on tree node clicked actions
+ * @param {Object} d node
+ */
+function click(d) {
+    // update regular links
+    if (d.children) {
+        d._children = d.children;
+        d.children = null;
+    } else {
+        d.children = d._children;
+        d._children = null;
+    }
+
+    // update additional links
+    additionalLinks.forEach(function(link){
+        let sourceVisible = false;
+        let targetVisible = false;
+        tree.nodes(root).filter(function(n) {
+            if(n["name"] == link._source.name){
+                sourceVisible = true;
+            }
+            if(n["name"] == link._target.name){
+                targetVisible = true;
+            }
+        });
+
+        if(sourceVisible && targetVisible){
+            link.source = link._source;
+            link.target = link._target;
+        }
+        else if(!sourceVisible && targetVisible 
+                    || !sourceVisible && !targetVisible){
+            link.source = d;
+            link.target = link.source;
+        }
+        else if(sourceVisible && !targetVisible){
+            link.source = link._source;
+            link.target = link.source;
+        }
+    });
+
+    // define more links behavior here...
+
+    updateTree(d);
+}
+
+/**
+ * Update tree dimension
+ */
+ function updateTreeDimension() {
+    tree.size([treeWidth, treeHeight]);
+    svg.attr("width", treeWidth + treeMargin.right + treeMargin.left)
+        .attr("height", treeHeight + treeMargin.top + treeMargin.bottom)
+        .attr("transform", `translate(${treeMargin.left},${treeMargin.top})scale(${scale},${scale})`);
+}
+
+/**
+ * Resize the tree using current window dimension
+ */
+function resizeTreePlot() {
+    treeWidth = 0.9 * window.innerWidth - treeMargin.right - treeMargin.left;
+    treeHeight = (treeDepth + 2) * nodeHeight * 2;
+    updateTreeDimension();
+    updateTree(root);
+}
+
+
+// plot tree
+initTree(data);
+updateTree(root);
+    </script>
 </body>
 </html>
