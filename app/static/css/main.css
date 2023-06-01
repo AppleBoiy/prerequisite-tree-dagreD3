@@ -1,0 +1,31 @@
+body {
+    background-color: #e7ecf0;
+}
+
+nav {
+    background-color: #ffffff;
+    border-bottom: 1px solid #adb1b4;
+    margin-bottom: 10px;
+}
+
+img.tw-user-small {
+    height: 40px;
+}
+
+
+img.tw-user-medium {
+    height: 50px;
+}
+
+
+#nav-search {
+    border-radius: 20px;
+    background-color: #e7ecf0
+}
+
+
+#nav-tweet-btn {
+    border-radius: 20px;
+    background-color: #67b1f9;
+    color: #ffffff;
+}
