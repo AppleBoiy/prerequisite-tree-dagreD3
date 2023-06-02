@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<meta charset="utf-8">
+<style>
+    * {
+        margin: 0 auto;
+        padding: 0;
+        text-align: center;
+        color: black;
+        font-family: tahoma;
+      }
+      
+      .items ul {
+        padding-top: 20px;
+        position: relative;
+      }
+      
+      /* Make all children "inline" */
+      .items li {
+        /*float: left;*/
+        display: inline-block;
+        text-align: center;
+        list-style-type: none;
+        position: relative;
+        padding: 20px 5px 0 5px;
+      }
+      
+      /* Add horizontal connector. Note: they are 2 pseudo-elements */
+      .items li::before, .items li::after {
+        content: '';
+        position: absolute;
+        top: 0;
+        right: 50%;
+        width: 55%;
+        height: 42px;
+        z-index: -1;
+        border-top: 1px solid #CCC;
+      }
+      
+      .items li::after {
+        border-left: 1px solid #CCC;
+        left: 50%;
+        right: auto;
+      }
+      
+      /* Remove left and right connector from a single child */
+      .items li:only-child::after, .items li:only-child::before {
+        display: none;
+      }
+      
+      .items li:only-child {
+        padding-top: 0;
+      }
+      
+      /* Remove "outer" connector */
+      .items li:first-child::before, .items li:last-child::after {
+        border: 0 none;
+      }
+      /* Add back the down connector for last node */
+      .items li:last-child::before {
+        border-right: 1px solid #CCC;
+        border-radius: 0 5px 0 0;
+      }
+      
+      /* Add curve line to the first child's connector */
+      .items li:first-child::after {
+        border-radius: 5px 0 0 0;
+      }
+      
+      
+      /* Add down connector from parent */
+      .items ul ul::before {
+        content: '';
+        border-left: 1px solid #CCC;
+        z-index: -1;
+        height: 20px;
+        position: absolute;
+        top: 0px;
+        left: 50%;
+        width: 0;
+      }
+      
+      /* Add cosmetic for each item */
+      .items li a {
+        font-size: 12px;
+        background-color: white;
+        border: 1px solid #CCC;
+        padding: 5px 10px;
+        height: 14px;
+        text-decoration: none;
+        display: inline-block;
+        border-radius: 4px;
+      }
+      
+      /* Change bg-color while hovering each item */
+      .items li a:hover {
+        background-color: #EEF;
+      }
+      
+      /* EXPERIMENTAL for multiple parents */
+      /* Add margin for the parents */
+      .items li a:not(:only-of-type) {
+        position: relative;
+        margin-bottom: 16px;
+      }
+      
+      /* Add "down" connector (vertical line) from each multi-parent, EXCEPT the last one */
+      .items li > a:not(:last-of-type)::after{
+        content: '';
+        position: absolute;
+        border-left: 1px solid #CCC;
+        border-bottom: 1px solid #CCC;
+        top: 20px;
+        width: 75%;
+        height: 20px;
+        left: 50%;
+        z-index: -1;
+      }
+      
+      /* Special case for the last multiple-parent, using border-right */
+      .items li > a:not(:only-of-type):last-of-type::after {
+        content: '';
+        position: absolute;
+        border-right: 1px solid #CCC;
+        border-bottom: 1px solid #CCC;
+        top: 20px;
+        width: 50%;
+        height: 20px;
+        right: 50%;
+        z-index: -1; 
+        border-bottom-right-radius: 5px;
+      }
+      
+      /* Give the curve line to the first multiple parent .... */
+      .items li > a:not(:only-of-type):first-child::after {
+        border-bottom-left-radius: 5px;
+      }
+      
+      /* The middle element of multi-parents*/
+      .items li > a:not(:first-child):not(:last-of-type)::before {
+        content: '';
+        position: absolute;
+        border-bottom: 1px solid #CCC;
+        top: 40px;
+        width: 50%;
+        right: 50%;
+        z-index: -1;
+      }
+      
+      .items ul:last-of-type li {
+        padding-left: 0;
+        padding-right: 0;
+      }
+      
+</style>
+
+<body>
+    <!-- <div class="items">
+        <ul>
+          <li>
+            <a href="#">Dagon</a>
+            <a href="#">Veil of Discord</a>
+            <a href="#">Other Parent Item</a>
+            <ul>
+              <li>
+                <a href="#">Null Talisman</a>
+                <ul>
+                  <li><a href="#">Circlet</a></li>
+                  <li><a href="#">Mantle of Intelligence</a></li>
+                  <li><a href="#">Recipe: Null Talisman</a></li>
+                </ul>
+              </li>
+            </ul>
+          </li>
+        </ul>
+    </div> -->
+    <div class="item">
+        <ul>
+            <li><a href="#">Start</a>
+                <ul>
+                    <li><a href="#">1</a></li>
+                    <li><a href="#">2</a></li>
+
+                </ul>
+            </li>
+        </ul>
+    </div>
+    
+</body>
+</html>
