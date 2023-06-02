@@ -24,11 +24,26 @@
       fill: #fff;
       stroke-width: 2px;
     }
+    .node.y1 rect {
+      fill: #ffa2a2;
+    }
+    .node.y2 rect {
+      fill: #ffdaa2;
+    }
+    .node.y3 rect {
+      fill: #d8ffa2;
+    }
+    .node.y4 rect {
+      fill: #a2c6ff;
+    }
     /*
     .graph .node.root rect {
       stroke: none;
     }
     */
+    .node.disabledy2 {
+      fill: #ffdaa2;
+    }
     .graph .node.disabled rect {
       stroke-dasharray: 5,5;
     }
@@ -261,26 +276,26 @@
     // Default to assigning a new object as a label for each new edge.
     g.setDefaultEdgeLabel(function() { return {}; });
 
-    g.setNode("204111", {label: "CS111", width: 50, height: 30, id: "204111" });
-    g.setNode("204114", {label: "CS114", width: 50, height: 30, id: "204114"});
-    g.setNode("204203", {label: "CS203", width: 50, height: 30, id: "204203"});
-    g.setNode("204212", {label: "CS212", width: 50, height: 30, id: "204212"});
-    g.setNode("204231", {label: "CS231", width: 50, height: 30, id: "204231"});
-    g.setNode("204232", {label: "CS232", width: 50, height: 30, id: "204232"});
-    g.setNode("204252", {label: "CS252", width: 50, height: 30, id: "204252"});
-    g.setNode("208269", {label: "Stat269", width: 50, height: 30, id: "208269", class: "disabled"});
-    g.setNode("206183", {label: "Math183", width: 50, height: 30, id: "206183", class: "disabled"});
-    g.setNode("204271", {label: "CS271", width: 50, height: 30, id: "204271"});
-    g.setNode("204321", {label: "CS321", width: 50, height: 30, id: "204321"});
-    g.setNode("204341", {label: "CS341", width: 50, height: 30, id: "204341"});
-    g.setNode("204361", {label: "CS361", width: 50, height: 30, id: "204361"});
-    g.setNode("204451", {label: "CS451", width: 50, height: 30, id: "204451"});
-    g.setNode("204306", {label: "CS306", width: 50, height: 30, id: "204306"});
-    g.setNode("204315", {label: "CS315", width: 50, height: 30, id: "204315"});
-    g.setNode("204490", {label: "CS490", width: 50, height: 30, id: "204490"});
-    g.setNode("204390", {label: "CS390", width: 50, height: 30, id: "204390"});
-    g.setNode("204496", {label: "CS496", width: 50, height: 30, id: "204496"});
-    g.setNode("204497", {label: "CS497", width: 50, height: 30, id: "204497"});
+    g.setNode("204111", {label: "CS111", width: 50, height: 30, id: "CS111", class: "y1"});
+    g.setNode("204114", {label: "CS114", width: 50, height: 30, id: "CS114", class: "y1"});
+    g.setNode("204203", {label: "CS203", width: 50, height: 30, id: "CS203", class: "y2"});
+    g.setNode("204212", {label: "CS212", width: 50, height: 30, id: "CS212", class: "y2"});
+    g.setNode("204231", {label: "CS231", width: 50, height: 30, id: "CS231", class: "y2"});
+    g.setNode("204232", {label: "CS232", width: 50, height: 30, id: "CS232", class: "y2"});
+    g.setNode("204252", {label: "CS252", width: 50, height: 30, id: "CS252", class: "y2"});
+    g.setNode("208269", {label: "Stat269", width: 50, height: 30, id: "Stat269", class: "y2"});
+    g.setNode("206183", {label: "Math183", width: 50, height: 30, id: "Math183", class: "y1"});
+    g.setNode("204271", {label: "CS271", width: 50, height: 30, id: "CS271", class: "y2"});
+    g.setNode("204321", {label: "CS321", width: 50, height: 30, id: "CS321", class: "y3"});
+    g.setNode("204341", {label: "CS341", width: 50, height: 30, id: "CS341", class: "y3"});
+    g.setNode("204361", {label: "CS361", width: 50, height: 30, id: "CS361", class: "y3"});
+    g.setNode("204451", {label: "CS451", width: 50, height: 30, id: "CS451", class: "y3"});
+    g.setNode("204306", {label: "CS306", width: 50, height: 30, id: "CS306", class: "y3"});
+    g.setNode("204315", {label: "CS315", width: 50, height: 30, id: "CS315", class: "y3"});
+    g.setNode("204490", {label: "CS490", width: 50, height: 30, id: "CS490", class: "y4"});
+    g.setNode("204390", {label: "CS390", width: 50, height: 30, id: "CS390", class: "y4"});
+    g.setNode("204496", {label: "CS496", width: 50, height: 30, id: "CS496", class: "y4"});
+    g.setNode("204497", {label: "CS497", width: 50, height: 30, id: "CS497", class: "y4"});
     /*
     g.setNode("init", { labelType: 'html', label: 'Init rule', width: 120, height: 10, class: 'root' });
     g.setNode("thanks", { labelType: "html", label: getNumber(4, "black") + "Tom Hanks", width: 120, height: 50, class: 'root' });
