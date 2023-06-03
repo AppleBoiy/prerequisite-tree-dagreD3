@@ -3,13 +3,24 @@
 <head>
   <meta charset="UTF-8">
   <title>CodePen - dagre</title>
-  <link rel="stylesheet" href="./style.css">
   <style>
+    :root {
+      --bg_darkmode: #ffe389;
+      --year1: #ffc5c5;
+      --year2: #ffdaa2;
+      --year3: #d8ffa2;
+      --year4: #a2c6ff;
+    }
     .tree {
       display: flex;
       justify-content: center;
     }
+
+    .darkmode {
+      background-color: #333;
+    }
     .graph {
+      background-color: var(--bg_darkmode);
       border: none;
     }
     .graph text, .graph .node.root div {
@@ -25,16 +36,17 @@
       stroke-width: 2px;
     }
     .node.y1 rect {
-      fill: #ffa2a2;
+      stroke: red;
+      fill: var(--year1);
     }
     .node.y2 rect {
-      fill: #ffdaa2;
+      fill: var(--year2);
     }
     .node.y3 rect {
-      fill: #d8ffa2;
+      fill: var(--year3);
     }
     .node.y4 rect {
-      fill: #a2c6ff;
+      fill: var(--year4);
     }
     /*
     .graph .node.root rect {
@@ -51,9 +63,13 @@
       fill: #333;
     }
     .graph .edgePath path {
-      stroke: #aaa;
+      stroke: #ff2c2c;
       fill: #aaa;
       stroke-width: 2px;
+    }
+    .graph .edgePath.CS111 path {
+      stroke: #333;
+      fill: #333;
     }
     /* Arrowhead */
     .graph .edgePath marker path {
@@ -292,10 +308,12 @@
     g.setNode("204451", {label: "CS451", width: 50, height: 30, id: "CS451", class: "y3"});
     g.setNode("204306", {label: "CS306", width: 50, height: 30, id: "CS306", class: "y3"});
     g.setNode("204315", {label: "CS315", width: 50, height: 30, id: "CS315", class: "y3"});
-    g.setNode("204490", {label: "CS490", width: 50, height: 30, id: "CS490", class: "y4"});
+    g.setNode("204490", {label: "CS490", width: 50, height: 30, id: "CS490", class: "y3"});
     g.setNode("204390", {label: "CS390", width: 50, height: 30, id: "CS390", class: "y4"});
     g.setNode("204496", {label: "CS496", width: 50, height: 30, id: "CS496", class: "y4"});
     g.setNode("204497", {label: "CS497", width: 50, height: 30, id: "CS497", class: "y4"});
+    g.setNode("204491", {label: "CS491", width: 50, height: 30, id: "CS491", class: "y4"});
+    g.setNode("204499", {label: "CS499", width: 50, height: 30, id: "CS499", class: "y4"});
     /*
     g.setNode("init", { labelType: 'html', label: 'Init rule', width: 120, height: 10, class: 'root' });
     g.setNode("thanks", { labelType: "html", label: getNumber(4, "black") + "Tom Hanks", width: 120, height: 50, class: 'root' });
@@ -315,7 +333,8 @@
       node.rx = node.ry = 10;
     });
 
-    g.setEdge("204111", "204114");
+    
+    g.setEdge("204111", "204114", {class: "CS111"});
     g.setEdge("206183", "204451");
     g.setEdge("208269", "204271");
     g.setEdge("204252", "204271");
@@ -333,7 +352,8 @@
     g.setEdge("204321", "204390");
     g.setEdge("204341", "204390");
     g.setEdge("204361", "204390");
-    g.setEdge("204496", "204497")
+    g.setEdge("204496", "204497", {label: "สหกิจ"});
+    g.setEdge("204491", "204499", {label: "ก้าวหน้า/ปกติ"});
 
     /*
     // Add edges to the graph.
@@ -344,13 +364,12 @@
     g.setEdge("pre", "wsmith");
     g.setEdge("mdamon", "swilliams");
     */
-    
 
     // Render
 
     // Set up an SVG group so that we can translate the final graph.
-    var svg = d3.select('svg'),
-        svgGroup = svg.append('g');
+    var svg = d3.select('svg');
+    var svgGroup = svg.append('g');
 
     // Run the renderer. This is what draws the final graph.
     render(d3.select('svg g'), g);
@@ -369,6 +388,9 @@
     function getNumber(n, color) {
       return '<span style="width: 20px; height: 20px; margin-right: 6px; background: ' + color + '; display: inline-block; text-align: center; border-radius: 10px; color: #fff; line-height: 21px;">' + n + '</span>'
     }
+  </script>
+  <script>
+    
   </script>
 </body>
 </html>
