@@ -161,7 +161,7 @@ g.nodes().forEach(function (v) {
     node.rx = node.ry = 10;
 });
 
-g.setEdge("204111", "204114", { class: "cs111-to-cs114"});
+g.setEdge("204111", "20411cleat4", { class: "cs111-to-cs114"});
 g.setEdge("206183", "204451");
 g.setEdge("208269", "204271");
 g.setEdge("204252", "204271");
