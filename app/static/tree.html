@@ -1,0 +1,439 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pre-requsite Tree</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            align-items: center;
+            display: flex;
+            flex-direction: column;
+            width: 100%;
+            height: 100%;
+
+        }
+        .container {
+            width: 90%;
+            height: 80vh;
+
+        }
+        .yearZone {
+            width: 100%;
+            height: 25%;
+            display: flex;
+            justify-content: left;
+            border-style: dashed;
+            border-width: 0px 0px 0.5px 0px;
+        }
+        .text {
+            width: 10%;
+            height: 100%;
+
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        .subjectContainer {
+            width: 100%;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            
+
+        }
+        .term1 {
+            width: 100%;
+            height: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+
+        }
+        .term2 {
+            width: 100%;
+            height: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+
+        }
+        svg {
+            background-color: #333;
+            z-index: 3;
+        }
+    </style>
+    <style>
+        @keyframes fadeIn {
+            0% {
+                opacity: 0;
+                transform: translateY(-10px);
+            }
+            100% {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .textbox {
+            margin: 0px 10px 10px;
+            padding: 10px;
+            display: inline-block;
+            position: relative;
+            cursor: pointer;
+            font-size: 80%;
+            color: #333;
+            background-color: #ffd7a9;
+            border-radius: 50px;
+            border: 1px solid #ffffff;
+        }
+        .textbox:hover {
+            background-color: #ffa53d;
+            border: 1px solid #333;
+        }
+        .textbox:hover .dialog-box {
+            display: inline;
+            z-index: 2;
+        }
+        
+        .dialog-box {
+            display: none;
+            position: absolute;
+            top: 110%;
+            left: 0;
+            width: auto;
+            padding: 10px;
+            background-color: #ffc480;
+            color: #333;
+            border-radius: 5px;
+            font-size: 16px;
+            animation: fadeIn 0.3s ease-in-out;
+            
+        }
+
+
+    </style>
+
+</head>
+<body>
+    <br>
+    <div class="container">
+        <div class="yearZone">
+            <div class="text">
+                <h1>ปี1</h1>
+            </div>
+            <div class="subjectContainer">
+                <svg width="900" height="900" id="bg_line">
+                    <defs><marker id="arrow" markerWidth="13" markerHeight="13" refx="2" refy="6" orient="auto">
+                        <path d="M2,2 L2,11 L10,6 L2,2" style="fill:red;" />
+                    </marker></defs>  
+                    <div class="term2" id="y1t2"></div>
+                    <div class="term1" id="y1t1"></div>
+                </svg>
+
+            </div>
+        </div>
+        <div class="yearZone">
+            <div class="text">
+                <h1>ปี2</h1>
+            </div>
+            <div class="subjectContainer">
+                <div class="term1" id="y2t1"></div>
+                <div class="term2" id="y2t2"></div>
+
+            </div>
+        </div>
+        <div class="yearZone">
+            <div class="text">
+                <h1>ปี3</h1>
+            </div>
+            <div class="subjectContainer">
+                <div class="term1" id="y3t1"></div>
+                <div class="term2" id="y3t2"></div>
+
+            </div>
+        </div>
+        <div class="yearZone">
+            <div class="text">
+                <h1>ปี4</h1>
+            </div>
+            <div class="subjectContainer">
+                <div class="term1" id="y4t1"></div>
+                <div class="term2" id="y4t2"></div>
+
+            </div>
+        </div>
+    </div>
+    <script src="js/tester_tree1.js"></script>
+</body>
+<script >
+    const raw_data = [
+        {
+            "code": "204111",
+            "parent list": "None",
+            "child list": "[204114]",
+            "credit": 3,
+            "full Name": "Fundamentals of Programming",
+            "year": 1,
+            "abbr": "CS111",
+            "term": 1
+
+        },
+        {
+            "code": "204114",
+            "parent list": "[204111]",
+            "child list": "[204203, 204212, 204231, 204232, 204252]",
+            "credit": 3,
+            "full Name": "Introduction to Object-oriented Programming",
+            "year": 1,
+            "abbr": "CS114",
+            "term": 2
+        },
+        {
+            "code": "204203",
+            "parent list": "[204114]",
+            "child list": "None",
+            "credit": 3,
+            "full Name": "Computer Science Technology",
+            "year": 2,
+            "abbr": "CS203",
+            "term": 1
+        },
+        {
+            "code": "204212",
+            "parent list": "[204114]",
+            "child list": "[204315, 204361]",
+            "credit": 3,
+            "full Name": "Modern Application Development",
+            "year": 2,
+            "abbr": "CS212",
+            "term": 2
+        },
+        {
+            "code": "204231",
+            "parent list": "[204114]",
+            "child list": "[204341]",
+            "credit": 3,
+            "full Name": "Computer Organization and Architecture",
+            "year": 2,
+            "abbr": "CS231",
+            "term": 1
+        },
+        {
+            "code": "204232",
+            "parent list": "[204114]",
+            "child list": "[204390]",
+            "credit": 3,
+            "full Name": "Computer Networks and Protocols",
+            "year": 2,
+            "abbr": "CS232",
+            "term": 2
+        },
+        {
+            "code": "204252",
+            "parent list": "[204114]",
+            "child list": "[204271, 204321, 204451]",
+            "credit": 3,
+            "full Name": "Data Structures and Analysis",
+            "year": 2,
+            "abbr": "CS252",
+            "term": 1
+        },
+        {   
+            // special characters
+            "code": "204271",
+            "parent list": "[204252, 208269]",
+            "child list": "None",
+            "credit": 3,
+            "full Name": "Introduction to Artificial Intelligence",
+            "year": 2,
+            "abbr": "CS271",
+            "term": 2
+        },
+        {
+            "code": "204306",
+            "parent list": "Third year standing",
+            "child list": "None",
+            "credit": 1,
+            "full Name": "Ethics for Computer Professionals",
+            "year": 3,
+            "abbr": "CS306",
+            "term": 2
+        },
+        {
+            "code": "204315",
+            "parent list": "[204212]",
+            "child list": "None",
+            "credit": 3,
+            "full Name": "Organization of Programming Languages",
+            "year": 3,
+            "abbr": "CS315",
+            "term": 2
+        },
+        {
+            "code": "204321",
+            "parent list": "[(204251, 204252)]",
+            "child list": "[204390]",
+            "credit": 3,
+            "full Name": "Database Systems",
+            "year": 3,
+            "abbr": "CS321",
+            "term": 1
+        },
+        {
+            "code": "204341",
+            "parent list": "[204231]",
+            "child list": "[204390]",
+            "credit": 3,
+            "full Name": "Operating Systems",
+            "year": 3,
+            "abbr": "CS341",
+            "term": 1
+        },
+        {
+            "code": "204361",
+            "parent list": "[204212]",
+            "child list": "[204390]",
+            "credit": 3,
+            "full Name": "Software Engineering",
+            "year": 3,
+            "abbr": "CS361",
+            "term": 1
+        },
+        {
+            // special characters
+            "code": "204451",
+            "parent list": "[(204251, 204252), (206183, 206281)]",
+            "child list": "None",
+            "credit": 3,
+            "full Name": "Algorithm Design and Analysis",
+            "year": 3,
+            "abbr": "CS451",
+            "term": 1
+        },
+        {
+            "code": "204490",
+            "parent list": "Consent of the department",
+            "child list": "None",
+            "credit": 3,
+            "full Name": "Research in Computer Science",
+            "year": 3,
+            "abbr": "CS490",
+            "term": 2
+        },
+        {
+            "code": "204390",
+            "parent list": "[204232, 204321, 204341, 204361]",
+            "child list": "None",
+            "credit": 1,
+            "full Name": "Computer Job Training",
+            "year": 4,
+            "abbr": "CS390",
+            "term": 1
+        },
+        {
+            "code": "204496",
+            "parent list": "Fourth year standing and Consent of the department",
+            "child list": "None",
+            "credit": 6,
+            "full Name": "Cooperative Education",
+            "year": 4,
+            "abbr": "CS496",
+            "term": 1
+        },
+        {
+            "code": "204497",
+            "parent list": "Consent of the department",
+            "child list": "None",
+            "credit": 1,
+            "full Name": "Seminar in Computer Science",
+            "year": 4,
+            "abbr": "CS497",
+            "term": 2
+        }
+
+    ]
+
+    const y1t1 = document.getElementById("y1t1");
+    const y1t2 = document.getElementById("y1t2");
+    const y2t1 = document.getElementById("y2t1");
+    const y2t2 = document.getElementById("y2t2");
+    const y3t1 = document.getElementById("y3t1");
+    const y3t2 = document.getElementById("y3t2");
+    const y4t1 = document.getElementById("y4t1");
+    const y4t2 = document.getElementById("y4t2");
+
+    const nodes = [];
+
+    // create Node
+    function createNode(data) {
+        const name = data.abbr;
+
+        const node = document.createElement("div");
+        const detail = document.createElement("div")
+        const info = document.createElement("p")
+        const text = document.createTextNode(name);
+
+        // add id
+        node.setAttribute("id", data.code);
+        
+        // add class
+        detail.classList.add('dialog-box') // info block
+        node.classList.add("textbox") // subject block
+
+        // convert JSON to string
+        info.innerText = JSON.stringify(data);
+        
+        detail.appendChild(info)
+        node.appendChild(text);
+        node.appendChild(detail)
+
+        return node
+    }
+    // add Node
+    function addNode() {
+        // create Node
+        raw_data.forEach(element => {
+
+            const newNode = createNode(element)
+            switch (element.year) {
+                case 1:
+                    (element.term === 1) ? y1t1.appendChild(newNode) : y1t2.appendChild(newNode);
+                    break;
+                case 2:
+                    (element.term === 1) ? y2t1.appendChild(newNode) : y2t2.appendChild(newNode);
+                    break;
+                case 3:
+                    (element.term === 1) ? y3t1.appendChild(newNode) : y3t2.appendChild(newNode);
+                    break;
+                case 4:
+                    (element.term === 1) ? y4t1.appendChild(newNode) : y4t2.appendChild(newNode);
+                    break;
+            }
+            
+            nodes.push(newNode);
+
+        })
+    }
+
+    function createLine() {
+
+        const svg = document.getElementByClass("bg_line");
+        svg.setAttribute(innerWidth)
+        let path = document.createElementNS(svg.namespaceURI,"path");
+        path.setAttributeNS(null, "d",`M${0},${0} L${300},${300}`);
+        path.setAttributeNS(null, "style", "stroke:red; stroke-width: 1.25px; fill: none;marker-end: url(#arrow);");
+        svg.appendChild(path);
+        console.log(path.getBoundingClientRect());
+    }
+
+    addNode();
+    createLine();
+</script>
+</html>
