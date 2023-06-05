@@ -1,15 +1,25 @@
+:root {
+    --bg_darkmode: #ffe389;
+    --year1: #ffc5c5;
+    --year2: #ffdaa2;
+    --year3: #d8ffa2;
+    --year4: #a2c6ff;
+    --bgHoverNode: #ff9752;
+    --borderHoverNode: #333;
+}
+
 .tree {
     display: flex;
     justify-content: center;
 }
 .graph {
+    background-color: var(--bg_darkmode);
     border: none;
 }
-.graph text,
-.graph .node.root div {
+.graph text, .graph .node.root div {
     fill: #333;
-    font-weight: 300;
     font-family: "Avenir Next", "Helvetica Neue", Helvetica, Arial, sans-serif;
+    font-weight: 400;
     font-size: 14px;
 }
 .graph .node rect {
@@ -18,37 +28,36 @@
     stroke-width: 2px;
 }
 .node.y1 rect {
-    fill: #ffa2a2;
+    stroke: red;
+    fill: var(--year1);
 }
 .node.y2 rect {
-    fill: #ffdaa2;
+    fill: var(--year2);
 }
 .node.y3 rect {
-    fill: #d8ffa2;
+    fill: var(--year3);
 }
 .node.y4 rect {
-    fill: #a2c6ff;
+    fill: var(--year4);
 }
-/*
-    .graph .node.root rect {
-      stroke: none;
-    }
-    */
-.node.disabledy2 {
-    fill: #ffdaa2;
-}
+
 .graph .node.disabled rect {
-    stroke-dasharray: 5, 5;
+    stroke-dasharray: 5,5;
 }
 .graph .node.disabled text {
     fill: #333;
 }
 .graph .edgePath path {
-    stroke: #aaa;
+    stroke: #ff2c2c;
     fill: #aaa;
     stroke-width: 2px;
+}
+.graph .edgePath.CS111 path {
+    stroke: #333;
+    fill: #333;
 }
 /* Arrowhead */
 .graph .edgePath marker path {
     stroke: none;
 }
+    
