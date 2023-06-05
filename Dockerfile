@@ -6,12 +6,25 @@ COPY requirements.txt /app
 RUN --mount=type=cache,target=/root/.cache/pip \
   pip3 install -r requirements.txt
 
-COPY . /app
+COPY ./app ./app/app
+COPY ./script ./app/script
+COPY ./gunicorn.config.py ./app/
+COPY ./gunicorn_starter.sh ./app/
+COPY ./package.json ./app/
+COPY ./requirements.txt ./app/
+COPY ./.python-version ./
+COPY ./compose-dev.yaml ./
+
 RUN chown -R 1000 /app/
 RUN chmod 755 /app/gunicorn_starter.sh
-ENTRYPOINT [ "./gunicorn_starter.sh" ]
 
 FROM builder AS dev-envs
+RUN addgroup -S nonroot \
+    && adduser -S nonroot -G nonroot
+
+USER nonroot
+
+ENTRYPOINT [ "./gunicorn_starter.sh" ]
 
 RUN apk update
 RUN apk add --update git zsh bash curl
