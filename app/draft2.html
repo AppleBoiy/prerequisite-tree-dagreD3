@@ -92,11 +92,12 @@
   <script src='https://cdnjs.cloudflare.com/ajax/libs/d3/3.5.16/d3.min.js'></script>
   <script src='https://cdnjs.cloudflare.com/ajax/libs/dagre-d3/0.4.17/dagre-d3.min.js'></script>
   <script>
-    /*const raw_data = [
+    /*
+    const raw_data = [
         {
             "code": "204111",
-            "parent list": "None",
-            "child list": ["204114"],
+            "parent": "None",
+            "children": ["204114"],
             "credit": 3,
             "full Name": "Fundamentals of Programming",
             "year": 1,
@@ -105,9 +106,19 @@
 
         },
         {
+            "code": "206183",
+            "parent": "None",
+            "children": ["204451"],
+            "credit": 3,
+            "full Name": "Discrete Structure",
+            "year": 1,
+            "abbr": "Math183",
+            "term": 1
+        },
+        {
             "code": "204114",
-            "parent list": "[204111]",
-            "child list": "[204203, 204212, 204231, 204232, 204252]",
+            "parent": "[204111]",
+            "children": ["204203", "204212", "204231", "204232", "204252"],
             "credit": 3,
             "full Name": "Introduction to Object-oriented Programming",
             "year": 1,
@@ -116,8 +127,8 @@
         },
         {
             "code": "204203",
-            "parent list": "[204114]",
-            "child list": "None",
+            "parent": "[204114]",
+            "children": "None",
             "credit": 3,
             "full Name": "Computer Science Technology",
             "year": 2,
@@ -126,8 +137,8 @@
         },
         {
             "code": "204212",
-            "parent list": "[204114]",
-            "child list": "[204315, 204361]",
+            "parent": "[204114]",
+            "children": "[204315, 204361]",
             "credit": 3,
             "full Name": "Modern Application Development",
             "year": 2,
@@ -136,8 +147,8 @@
         },
         {
             "code": "204231",
-            "parent list": "[204114]",
-            "child list": "[204341]",
+            "parent": "[204114]",
+            "children": "[204341]",
             "credit": 3,
             "full Name": "Computer Organization and Architecture",
             "year": 2,
@@ -146,8 +157,8 @@
         },
         {
             "code": "204232",
-            "parent list": "[204114]",
-            "child list": "[204390]",
+            "parent": "[204114]",
+            "children": "[204390]",
             "credit": 3,
             "full Name": "Computer Networks and Protocols",
             "year": 2,
@@ -156,10 +167,20 @@
         },
         {
             "code": "204252",
-            "parent list": "[204114]",
-            "child list": "[204271, 204321, 204451]",
+            "parent": "[204114]",
+            "children": "[204271, 204321, 204451]",
             "credit": 3,
             "full Name": "Data Structures and Analysis",
+            "year": 2,
+            "abbr": "CS252",
+            "term": 1
+        },
+        {
+            "code": "208269",
+            "parent": "None",
+            "children": ["204271"],
+            "credit": 3,
+            "full Name": "Statistics for Computer Science",
             "year": 2,
             "abbr": "CS252",
             "term": 1
@@ -167,8 +188,8 @@
         {   
             // special characters
             "code": "204271",
-            "parent list": "[204252, 208269]",
-            "child list": "None",
+            "parent": "[204252, 208269]",
+            "children": "None",
             "credit": 3,
             "full Name": "Introduction to Artificial Intelligence",
             "year": 2,
@@ -177,8 +198,8 @@
         },
         {
             "code": "204306",
-            "parent list": "Third year standing",
-            "child list": "None",
+            "parent": "Third year standing",
+            "children": "None",
             "credit": 1,
             "full Name": "Ethics for Computer Professionals",
             "year": 3,
@@ -187,8 +208,8 @@
         },
         {
             "code": "204315",
-            "parent list": "[204212]",
-            "child list": "None",
+            "parent": "[204212]",
+            "children": "None",
             "credit": 3,
             "full Name": "Organization of Programming Languages",
             "year": 3,
@@ -197,8 +218,8 @@
         },
         {
             "code": "204321",
-            "parent list": "[(204251, 204252)]",
-            "child list": "None",
+            "parent": "[(204251, 204252)]",
+            "children": "None",
             "credit": 3,
             "full Name": "Database Systems",
             "year": 3,
@@ -207,8 +228,8 @@
         },
         {
             "code": "204341",
-            "parent list": "[204231]",
-            "child list": "[204390]",
+            "parent": "[204231]",
+            "children": "[204390]",
             "credit": 3,
             "full Name": "Operating Systems",
             "year": 3,
@@ -217,8 +238,8 @@
         },
         {
             "code": "204361",
-            "parent list": "[204212]",
-            "child list": "[204390]",
+            "parent": ["204212"],
+            "children": ["204390"],
             "credit": 3,
             "full Name": "Software Engineering",
             "year": 3,
@@ -228,8 +249,8 @@
         {
             // special characters
             "code": "204451",
-            "parent list": "[(204251, 204252), (206183, 206281)]",
-            "child list": "None",
+            "parent": "[(204251, 204252), (206183, 206281)]",
+            "children": "None",
             "credit": 3,
             "full Name": "Algorithm Design and Analysis",
             "year": 3,
@@ -238,8 +259,8 @@
         },
         {
             "code": "204490",
-            "parent list": "Consent of the department",
-            "child list": "None",
+            "parent": "Consent of the department",
+            "children": "None",
             "credit": 3,
             "full Name": "Research in Computer Science",
             "year": 3,
@@ -248,8 +269,8 @@
         },
         {
             "code": "204390",
-            "parent list": "[204232, 204321, 204341, 204361]",
-            "child list": "None",
+            "parent": "[204232, 204321, 204341, 204361]",
+            "children": "None",
             "credit": 1,
             "full Name": "Computer Job Training",
             "year": 4,
@@ -258,8 +279,8 @@
         },
         {
             "code": "204496",
-            "parent list": "Fourth year standing and Consent of the department",
-            "child list": "None",
+            "parent": "Fourth year standing and Consent of the department",
+            "children": "None",
             "credit": 6,
             "full Name": "Cooperative Education",
             "year": 4,
@@ -268,8 +289,8 @@
         },
         {
             "code": "204497",
-            "parent list": "Consent of the department",
-            "child list": "None",
+            "parent": "Consent of the department",
+            "children": "None",
             "credit": 1,
             "full Name": "Seminar in Computer Science",
             "year": 4,
@@ -392,25 +413,321 @@
       return '<span style="width: 20px; height: 20px; margin-right: 6px; background: ' + color + '; display: inline-block; text-align: center; border-radius: 10px; color: #fff; line-height: 21px;">' + n + '</span>'
     }
   </script>
-  <script>
 
+  <script>
+    const raw_data = [
+        {
+            "code": "204111",
+            "parent": "None",
+            "children": ["204114"],
+            "credit": 3,
+            "full Name": "Fundamentals of Programming",
+            "year": 1,
+            "abbr": "CS111",
+            "term": 1
+        },
+        {
+            "code": "206183",
+            "parent": "None",
+            "children": ["204451"],
+            "credit": 3,
+            "full Name": "Discrete Structure",
+            "year": 1,
+            "abbr": "Math183",
+            "term": 1
+        },
+        {
+            "code": "204114",
+            "parent": "[204111]",
+            "children": ["204203", "204212", "204231", "204232", "204252"],
+            "credit": 3,
+            "full Name": "Introduction to Object-oriented Programming",
+            "year": 1,
+            "abbr": "CS114",
+            "term": 2
+        },
+        {
+            "code": "204203",
+            "parent": ["204114"],
+            "children": "None",
+            "credit": 3,
+            "full Name": "Computer Science Technology",
+            "year": 2,
+            "abbr": "CS203",
+            "term": 1
+        },
+        {
+            "code": "204212",
+            "parent": ["204114"],
+            "children": ["204315", "204361"],
+            "credit": 3,
+            "full Name": "Modern Application Development",
+            "year": 2,
+            "abbr": "CS212",
+            "term": 2
+        },
+        {
+            "code": "204231",
+            "parent": ["204114"],
+            "children": ["204341"],
+            "credit": 3,
+            "full Name": "Computer Organization and Architecture",
+            "year": 2,
+            "abbr": "CS231",
+            "term": 1
+        },
+        {
+            "code": "204232",
+            "parent": ["204114"],
+            "children": ["204390"],
+            "credit": 3,
+            "full Name": "Computer Networks and Protocols",
+            "year": 2,
+            "abbr": "CS232",
+            "term": 2
+        },
+        {
+            "code": "204252",
+            "parent": ["204114"],
+            "children": ["204271", "204321", "204451"],
+            "credit": 3,
+            "full Name": "Data Structures and Analysis",
+            "year": 2,
+            "abbr": "CS252",
+            "term": 1
+        },
+        {
+            "code": "208269",
+            "parent": "None",
+            "children": ["204271"],
+            "credit": 3,
+            "full Name": "Statistics for Computer Science",
+            "year": 2,
+            "abbr": "CS252",
+            "term": 1
+        },
+        {   
+            // special characters
+            "code": "204271",
+            "parent": ["204252", "208269"],
+            "children": "None",
+            "credit": 3,
+            "full Name": "Introduction to Artificial Intelligence",
+            "year": 2,
+            "abbr": "CS271",
+            "term": 2
+        },
+        {
+            "code": "204306",
+            "parent": "Third year standing",
+            "children": "None",
+            "credit": 1,
+            "full Name": "Ethics for Computer Professionals",
+            "year": 3,
+            "abbr": "CS306",
+            "term": 2
+        },
+        {
+            "code": "204315",
+            "parent": ["204212"],
+            "children": "None",
+            "credit": 3,
+            "full Name": "Organization of Programming Languages",
+            "year": 3,
+            "abbr": "CS315",
+            "term": 2
+        },
+        {
+            "code": "204321",
+            "parent": ["204251"],
+            "children": "None",
+            "credit": 3,
+            "full Name": "Database Systems",
+            "year": 3,
+            "abbr": "CS321",
+            "term": 1
+        },
+        {
+            "code": "204341",
+            "parent": ["204231"],
+            "children": ["204390"],
+            "credit": 3,
+            "full Name": "Operating Systems",
+            "year": 3,
+            "abbr": "CS341",
+            "term": 1
+        },
+        {
+            "code": "204361",
+            "parent": ["204212"],
+            "children": ["204390"],
+            "credit": 3,
+            "full Name": "Software Engineering",
+            "year": 3,
+            "abbr": "CS361",
+            "term": 1
+        },
+        {
+            // special characters
+            "code": "204451",
+            "parent": ["204251", ("206183", "206281")],
+            "children": "None",
+            "credit": 3,
+            "full Name": "Algorithm Design and Analysis",
+            "year": 3,
+            "abbr": "CS451",
+            "term": 1
+        },
+        {
+            "code": "204490",
+            "parent": "Consent of the department",
+            "children": "None",
+            "credit": 3,
+            "full Name": "Research in Computer Science",
+            "year": 3,
+            "abbr": "CS490",
+            "term": 2
+        },
+        {
+            "code": "204390",
+            "parent": ["204232", "204321", "204341", "204361"],
+            "children": "None",
+            "credit": 1,
+            "full Name": "Computer Job Training",
+            "year": 4,
+            "abbr": "CS390",
+            "term": 1
+        },
+        {
+            "code": "204496",
+            "parent": "Fourth year standing and Consent of the department",
+            "children": "None",
+            "credit": 6,
+            "full Name": "Cooperative Education",
+            "year": 4,
+            "abbr": "CS496",
+            "term": 1
+        },
+        {
+            "code": "204497",
+            "parent": "Consent of the department",
+            "children": "None",
+            "credit": 1,
+            "full Name": "Seminar in Computer Science",
+            "year": 4,
+            "abbr": "CS497",
+            "term": 2
+        }
+
+    ]
+    console.log(raw_data[0])
+    var courses = {};
+
+    const enroll = () => {
+        // g tag class node
+        const nodes = document.getElementsByClassName("node");
+
+        /*
+        <g class="node y1" id="CS111" transform="translate(320,25)" style="opacity: 1;">
+            <rect rx="10" ry="10" x="-35" y="-25" width="70" height="50"></rect>
+            <g class="label" transform="translate(0,0)">
+                <g transform="translate(-20.36458396911621,-7.6666669845581055)">
+                    <text>
+                        <tspan xml:space="preserve" dy="1em" x="1">CS111</tspan>
+                    </text>
+                </g>
+            </g>
+        </g>
+        */
+        
+        // Hover style
+        const hoverBg = "#ff9752";
+        const hoverBorder = "#333";
+        
+        for (var node of nodes) {
+            
+            // type: string CS111 Ω
+            const abbr = node.id;
+            
+            // child tag in node tag
+            const children = node.childNodes;
+            
+            //NodeList(2) [ rect, g.label ]
+            //console.log(children)
+            for (const child of children) {
+                /*
+                rect: <rect rx="10" ry="10" x="-35" y="-25" width="70" height="50"></rect>
+                g.Label:
+                <g transform="translate(-20.36458396911621,-7.6666669845581055)">
+                    <text>
+                        <tspan xml:space="preserve" dy="1em" x="1">CS111</tspan>
+                    </text>
+                </g>
+                */
+                
+                // IF CHILD IS RECT PRINT: ELSE DO 
+                // <g></g> got "SVGGElement"
+                // <rect></rect> got "SVGRectElement" 
+                if ( child.constructor.name === "SVGRectElement") {
+                    // console.log(child)
+                    // <rect bla bla... ></rect>
+                    
+                    // const oldStyleBG = child.style.fill;
+                    // const oldStyleBorder = child.style.stroke;
+                    
+                    
+                    
+                } else {
+                    // var text = child.childNodes[0].childNodes[0];
+                    // console.log(text)
+                    
+                    
+                }
+            }
+        }
+    }
+
+    enroll();
+  </script>
+
+  <script>
+    const nodes = document.getElementsByClassName("node");
     const rectTag = document.getElementsByTagName("rect");
-    for (const rect of rectTag) {
-      const oddStyleBg = rect.style.fill;
-      const oddStyleBorder = rect.style.stroke;
+    const texts = document.getElementsByTagName("text");
+    console.log(rectTag)
+    for (let i=0; i<rectTag.length; i++) {
+      //console.log(nodes[i])
+      const oddStyleBg = rectTag[i].style.fill;
+      const oddStyleBorder = rectTag[i].style.stroke;
       const hoverBg = "#ff9752";
       const hoverBorder = "#333";
-      rect.addEventListener("mouseenter",
+      rectTag[i].addEventListener("mouseenter",
        function(){
-        rect.style.fill = hoverBg;
-        rect.style.stroke = hoverBorder;
+        // hover myNodeSelf
+        rectTag[i].style.fill = hoverBg;
+        rectTag[i].style.stroke = hoverBorder;
+        // hover childNode
+
+
        })
-      rect.addEventListener("mouseleave",
+       rectTag[i].addEventListener("mouseleave",
        function(){
-        rect.style.fill = oddStyleBg;
-        rect.style.stroke = oddStyleBorder;
+        rectTag[i].style.fill = oddStyleBg;
+        rectTag[i].style.stroke = oddStyleBorder;
+       })
+      texts[i+20].addEventListener("mouseenter",
+       function(){
+        rectTag[i].style.fill = hoverBg;
+        rectTag[i].style.stroke = hoverBorder;
+       })
+       texts[i+20].addEventListener("mouseleave",
+       function(){
+        rectTag[i].style.fill = oddStyleBg;
+        rectTag[i].style.stroke = oddStyleBorder;
        })
     }
+
   </script>
+
 </body>
 </html>
