@@ -1,0 +1,54 @@
+.tree {
+    display: flex;
+    justify-content: center;
+}
+.graph {
+    border: none;
+}
+.graph text,
+.graph .node.root div {
+    fill: #333;
+    font-weight: 300;
+    font-family: "Avenir Next", "Helvetica Neue", Helvetica, Arial, sans-serif;
+    font-size: 14px;
+}
+.graph .node rect {
+    stroke: #ccc;
+    fill: #fff;
+    stroke-width: 2px;
+}
+.node.y1 rect {
+    fill: #ffa2a2;
+}
+.node.y2 rect {
+    fill: #ffdaa2;
+}
+.node.y3 rect {
+    fill: #d8ffa2;
+}
+.node.y4 rect {
+    fill: #a2c6ff;
+}
+/*
+    .graph .node.root rect {
+      stroke: none;
+    }
+    */
+.node.disabledy2 {
+    fill: #ffdaa2;
+}
+.graph .node.disabled rect {
+    stroke-dasharray: 5, 5;
+}
+.graph .node.disabled text {
+    fill: #333;
+}
+.graph .edgePath path {
+    stroke: #aaa;
+    fill: #aaa;
+    stroke-width: 2px;
+}
+/* Arrowhead */
+.graph .edgePath marker path {
+    stroke: none;
+}

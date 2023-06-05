@@ -15,7 +15,7 @@
 
     <!-- style -->
     <link rel="stylesheet" href="static/css/main.css">
-
+    <link rel="stylesheet" href="static/css/tree.css">
 
     <!-- Bootstrap CSS -->
     <link crossorigin="anonymous"
@@ -23,6 +23,13 @@
           integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm"
           rel="stylesheet">
 
+
+    <style>
+        .graph .edgePath.redline path{
+            stroke: #67b1f9;
+            fill: red;
+        }
+    </style>
 </head>
 <body>
 
@@ -34,12 +41,12 @@
         <div class="navbar-nav">
             <a class="nav-item nav-link"
                href="https://www.cs.science.cmu.ac.th/">
-            <span class="oi oi-home"></span>Home
+            Home
             </a>
 
             <a class="nav-item nav-link"
                href="https://www2.cs.science.cmu.ac.th/staff/sutasinee/testprogram/doku.php?id=start">
-            <span class="oi oi-book"></span>Curriculum
+            Curriculum
             </a>
         </div>
 
@@ -52,18 +59,13 @@
 
 <!-- body -->
 <div class="container">
-    <div class="row">
-        <div id="left_3" class="col-md-3">
-            Test 1
-        </div>
-        <div id="center_6" class="col-md-6">
-            Test 2
-        </div>
-        <div id="right_3" class="col-md-3">
-            Test 3
-        </div>
-    </div>
+    <!-- partial:index.partial.html -->
+    <svg class="graph"></svg>
 </div>
 
+<!-- partial -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/d3/3.5.16/d3.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/dagre-d3/0.4.17/dagre-d3.min.js"></script>
+<script src="static/js/tree.js"></script>
 </body>
 </html>
