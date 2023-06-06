@@ -1,3 +1,5 @@
+
+
 const raw_data = [
     {
         "abbr": "CS111",
@@ -261,3 +263,6 @@ for (const abbr in course) {
     }`
     console.log(text)
 }
+
+const path = document.getElementsByClassName("edgePath")
+console.log(path)
