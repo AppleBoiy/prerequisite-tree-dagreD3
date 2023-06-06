@@ -152,9 +152,8 @@ const raw_data = [
         "term": 1
     },
     {
-        // special characters
         "code": "204451",
-        "parent": ["204251", ["206183", "206281"]],
+        "parent": ["204252",["206183", "206281"]],
         "children": [],
         "credit": 3,
         "full Name": "Algorithm Design and Analysis",
@@ -206,11 +205,17 @@ const raw_data = [
         "conditions": "Consent of the department"
     }
 ]
+const abbrDict = {
+    "204":"CS",
+    "206":"Math",
+    "208":"Stat"
+}
 
 const rectTag = document.getElementsByTagName("rect");
 const textTagArray = document.getElementsByTagName("text");
 
 let course = {};
+let rectDict = {};
 
 // create dictionary that abbr is key
 raw_data.forEach(
@@ -227,37 +232,44 @@ for (const textTag of textTagArray) {
     }
 }
 
-// get node rect
 for (const rect of rectTag) {
-
-    // temp var to rest old style
-    const oldBG = rect.style.fill;
-    const oldBorder = rect.style.stroke;
-
-    //on hover style
-    const hoverBg = "#ff9752";
-    const hoverBorder = "#333";
-
-    rect.addEventListener("mouseenter", () => {
-        rect.style.fill = hoverBg;
-        rect.style.stroke = hoverBorder;
-
-    })
-
-    rect.addEventListener("mouseleave", () => {
-        rect.style.fill = oldBG;
-        rect.style.stroke = oldBorder;
-    })
-
     const abbr = rect.parentNode.id;
     course[abbr]["rectTag"] = rect;
-
-
+    rectDict[abbr] = rect;
 }
 
 for (const abbr in course) {
-    const text = `${course[abbr].abbr} : ${
-        course[abbr].parent.length > 0? course[abbr].parent: course[abbr].conditions
-    }`
-    console.log(text)
+    let childNode = [];
+    let parentNode = [];
+
+    // get subject parent list
+    const parent = course[abbr].parent;
+    // get subject child list
+    const child = course[abbr].children;
+
+    if ( parent.length > 0) {
+        parent.forEach(
+            (e) => {
+                if (!Array.isArray(e)) {
+                    console.log(` ${abbr} :  ${abbrDict[e.slice(0, 3)]}${e.slice(3)}`)
+                }
+            }
+        )
+    }
+
+    if (child.length > 0) {
+        child.forEach(
+            (e) => {
+                if (!Array.isArray(e)) {
+                    console.log(` ${abbr} : ${abbrDict[e.slice(0, 3)]}${e.slice(3)}`)
+                }
+            }
+        )
+    }
 }
+
+for (let path of document.getElementsByClassName("edgePath")) {
+    const parent = path.classList[1].split("-");
+}
+
+
