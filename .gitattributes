@@ -1,2 +1,15 @@
-# Auto detect text files and perform LF normalization
-* text=auto
+# Set the line ending normalization for specific files
+*.txt        text
+*.csv        text
+*.sh         text eol=lf
+
+# Define a custom merge driver for specific file types
+*.docx       diff=word
+
+# Exclude specific files from Git's auto-detection of binary/text files
+*.png        -diff
+*.jpg        -diff
+
+# Set the Git diff driver for specific file types
+*.xml        diff=xml
+*.json       diff=json

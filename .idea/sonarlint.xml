@@ -3,6 +3,6 @@
   <component name="SonarLintProjectSettings">
     <option name="bindingEnabled" value="true" />
     <option name="projectKey" value="AppleBoiy_prerequisite-tree" />
-    <option name="serverId" value="AppleBoiySonarlint" />
+    <option name="serverId" value="AppleBoiy" />
   </component>
 </project>

@@ -1,12 +1,26 @@
 {
   "name": "prerequisite-tree",
+  "description": "prerequsite tree",
   "version": "1.0.0",
-  "description": "",
-  "main": "index.js",
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+  "homepage": "https://github.com/AppleBoiy/prerequisite-tree",
+  "author": "CS65-staff ()",
+  "repository": "AppleBoiy/prerequisite-tree",
+  "bugs": {
+    "url": "https://github.com/AppleBoiy/prerequisite-tree/issues"
   },
-  "keywords": [],
-  "author": "",
-  "license": "ISC"
+  "license": "Apache-2.0",
+  "files": [
+    "LICENSE",
+    "README.md"
+  ],
+  "engines": {
+    "node": ">=4"
+  },
+  "scripts": {
+    "test": "mocha"
+  },
+  "keywords": [
+    "prerequisite",
+    "tree"
+  ]
 }
