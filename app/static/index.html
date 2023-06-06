@@ -8,9 +8,10 @@
     <title>Prerequisite tree</title>
 
     <!-- script -->
-    <script src="https://code.jquery.com/jquery-3.5.0.js">
+    <script src="https://code.jquery.com/jquery-3.5.0.js"
+            integrity="sha384-AQhQSZGQWTMJhb/TdS7NWpCmOM/8lIEsaevSU5oZtt8pQKoa+uJL4A2WnQ0O5Zj2"
+            crossorigin="anonymous">
     </script>
-
 
     <!-- style -->
     <link rel="stylesheet" href="css/main.css">
@@ -52,13 +53,32 @@
 <!-- body -->
 <!-- partial:index.partial.html -->
 <div class="container">
-    <svg class="graph"></svg>
+    <div class="tree" >
+        <div class="svg-container">
+            <svg class="graph" id="zoom-svg"></svg>
+        </div>
+    </div>
+    <div class="sub-tree">
+        <h1>
+            subtree
+        </h1>
+
+    </div>
 </div>
 
 <!-- partial -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/d3/3.5.16/d3.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/dagre-d3/0.4.17/dagre-d3.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/d3/3.5.16/d3.min.js"
+        integrity="sha384-niXt6LHz3/5ICmM9SeKzwJ/Q+a+7097SlA8uRtZSe0ISV5OpJZEVngjobdrYk8UZ"
+        crossorigin="anonymous">
+</script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/dagre-d3/0.4.17/dagre-d3.min.js"
+        integrity="sha384-1IF16SxZnMLVoOlXk2bwHreuLrcWHN0sa3vIMtknoB+No4t8/nJ+CWVl+mZvJlBu"
+        crossorigin="anonymous">
+</script>
+
 <script src="js/tree.js"></script>
+<script src="js/main.js"></script>
+<script src="js/child.js"></script>
 
 </body>
 </html>
