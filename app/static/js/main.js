@@ -86,7 +86,7 @@ const raw_data = [
         "credit": 3,
         "full Name": "Statistics for Computer Science",
         "year": 2,
-        "abbr": "CS252",
+        "abbr": "Stat269",
         "term": 1
     },
     {
@@ -102,18 +102,19 @@ const raw_data = [
     },
     {
         "code": "204306",
-        "parent": "Third year standing",
-        "children": "None",
+        "parent": [],
+        "children": [],
         "credit": 1,
         "full Name": "Ethics for Computer Professionals",
         "year": 3,
         "abbr": "CS306",
-        "term": 2
+        "term": 2,
+        "conditions": "Third year standing"
     },
     {
         "code": "204315",
         "parent": ["204212"],
-        "children": "None",
+        "children": [],
         "credit": 3,
         "full Name": "Organization of Programming Languages",
         "year": 3,
@@ -123,7 +124,7 @@ const raw_data = [
     {
         "code": "204321",
         "parent": ["204251"],
-        "children": "None",
+        "children": [],
         "credit": 3,
         "full Name": "Database Systems",
         "year": 3,
@@ -154,7 +155,7 @@ const raw_data = [
         // special characters
         "code": "204451",
         "parent": ["204251", ["206183", "206281"]],
-        "children": "None",
+        "children": [],
         "credit": 3,
         "full Name": "Algorithm Design and Analysis",
         "year": 3,
@@ -164,18 +165,18 @@ const raw_data = [
     {
         "code": "204490",
         "parent": [],
-        "children": "None",
+        "children": [],
         "credit": 3,
         "full Name": "Research in Computer Science",
         "year": 3,
         "abbr": "CS490",
         "term": 2,
-        "condition": "Consent of the department"
+        "conditions": "Consent of the department"
     },
     {
         "code": "204390",
         "parent": ["204232", "204321", "204341", "204361"],
-        "children": "None",
+        "children": [],
         "credit": 1,
         "full Name": "Computer Job Training",
         "year": 4,
@@ -184,47 +185,49 @@ const raw_data = [
     },
     {
         "code": "204496",
-        "parent": "Fourth year standing and Consent of the department",
-        "children": "None",
+        "parent": [],
+        "children": [],
         "credit": 6,
         "full Name": "Cooperative Education",
         "year": 4,
         "abbr": "CS496",
-        "term": 1
+        "term": 1,
+        "conditions": "Fourth year standing and Consent of the department"
     },
     {
         "code": "204497",
-        "parent": "Consent of the department",
-        "children": "None",
+        "parent": [],
+        "children": [],
         "credit": 1,
         "full Name": "Seminar in Computer Science",
         "year": 4,
         "abbr": "CS497",
-        "term": 2
-    },
+        "term": 2,
+        "conditions": "Consent of the department"
+    }
 ]
 
 const rectTag = document.getElementsByTagName("rect");
 const textTagArray = document.getElementsByTagName("text");
 
 let course = {};
-let texts = [];
 
+// create dictionary that abbr is key
 raw_data.forEach(
     (e) => {
         course[e.abbr] = e;
     }
 )
 
+// filter to get only text tag that contains label tag and store to course dictionary
 for (const textTag of textTagArray) {
     if (textTag.parentNode.classList[0] !== "label") {
-        texts.push(textTag);
-
         let abbr = textTag.childNodes[0]?.innerHTML;
-        console.log(`Abbr ${abbr} : ${course[abbr]}`)
+        course[abbr]["innerText"] = textTag;
     }
 }
 
+// get node rect
 for (const rect of rectTag) {
 
     // temp var to rest old style
@@ -245,7 +248,16 @@ for (const rect of rectTag) {
         rect.style.fill = oldBG;
         rect.style.stroke = oldBorder;
     })
+
+    const abbr = rect.parentNode.id;
+    course[abbr]["rectTag"] = rect;
+
+
 }
 
-
-
+for (const abbr in course) {
+    const text = `${course[abbr].abbr} : ${
+        course[abbr].parent.length > 0? course[abbr].parent: course[abbr].conditions
+    }`
+    console.log(text)
+}
