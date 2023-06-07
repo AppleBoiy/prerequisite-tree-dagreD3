@@ -2,7 +2,7 @@ async function convertSpreadsheetToJson() {
     return new Promise(async (resolve, reject) => {
         try {
             // get link input
-            const spreadsheetLinkInput = "https://docs.google.com/spreadsheets/d/1t8dvUUdvOxdiKQv5nagGaHyiw3P-C2o0Qg6C_1Tlq58/edit#gid=0&range=A1:H19";
+            const spreadsheetLinkInput = "https://cmu.to/UP5em";
 
             // build list of array rows from spreadsheet to jsonData
             const response = await fetch(spreadsheetLinkInput);
