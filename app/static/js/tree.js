@@ -231,7 +231,7 @@ let svgGroup = svg.append("g");
 let offset = PADDING / 2;
 
 
-function enroll() {
+async function enroll() {
   // create dictionary that abbr is key
   raw_data.forEach(
       (e) => {
@@ -289,8 +289,8 @@ function enroll() {
 
 }
 
-function drawGraph() {
-  enroll();
+async function drawGraph() {
+  await enroll();
 
   // Set an object for the graph label
   g.setGraph({"ranksep": 100,});
@@ -303,8 +303,8 @@ function drawGraph() {
   );
 }
 
-function setNodes() {
-  drawGraph();
+async function setNodes() {
+  await drawGraph();
 
   for (const subject of raw_data) {
     g.setNode(
@@ -329,8 +329,8 @@ function setNodes() {
 
 }
 
-function setEdge() {
-  setNodes();
+async function setEdge() {
+  await setNodes();
 
   g.setEdge("204111", "204114", {class: "CS111-CS114"});
   g.setEdge("206183", "204451", {class: "Math183-CS451"});
@@ -352,8 +352,8 @@ function setEdge() {
   g.setEdge("204361", "204390", {class: "CS361-CS390"});
 }
 
-function renderGraph() {// Run the renderer. This is what draws the final graph.
-  setEdge();
+async function renderGraph() {// Run the renderer. This is what draws the final graph.
+  await setEdge();
 
   render(d3.select("svg g"), g);
 
@@ -365,4 +365,6 @@ function renderGraph() {// Run the renderer. This is what draws the final graph.
 
 }
 
-renderGraph();
+renderGraph().then(
+    () => console.log("Tree view generated")
+)
