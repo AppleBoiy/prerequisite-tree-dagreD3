@@ -262,28 +262,29 @@ function enroll() {
     // get subject child list
     const child = course[abbr].children;
 
-    // if (parent.length > 0) {
-    //   parent.forEach(
-    //       (e) => {
-    //         if (!Array.isArray(e)) {
-    //           console.log(` ${abbr} :  ${abbrDict[e.slice(0, 3)]}${e.slice(3)}`)
-    //         }
-    //       }
-    //   )
-    // }
-    // if (child.length > 0) {
-    //   child.forEach(
-    //       (e) => {
-    //         if (!Array.isArray(e)) {
-    //           console.log(` ${abbr} : ${abbrDict[e.slice(0, 3)]}${e.slice(3)}`)
-    //         }
-    //       }
-    //   )
-    // }
+    if (parent.length > 0) {
+      parent.forEach(
+          (e) => {
+            if (!Array.isArray(e)) {
+              console.log(` ${abbr} :  ${abbrDict[e.slice(0, 3)]}${e.slice(3)}`)
+            }
+          }
+      )
+    }
+    if (child.length > 0) {
+      child.forEach(
+          (e) => {
+            if (!Array.isArray(e)) {
+              console.log(` ${abbr} : ${abbrDict[e.slice(0, 3)]}${e.slice(3)}`)
+            }
+          }
+      )
+    }
   }
 
   for (let path of document.getElementsByClassName("edgePath")) {
     const parent = path.classList[1].split("-");
+    console.log(parent)
   }
 
 }
