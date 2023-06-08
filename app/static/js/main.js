@@ -3,9 +3,9 @@ function convertSpreadsheetToJson() {
         try {
             // const XLSX = require("xlsx");
 
-            // get link input >> https://docs.google.com/spreadsheets/d/1t8dvUUdvOxdiKQv5nagGaHyiw3P-C2o0Qg6C_1Tlq58/edit?#gid=0&range=A1:H19
+            // get link input >> https://docs.google.com/spreadsheets/d/1t8dvUUdvOxdiKQv5nagGaHyiw3P-C2o0Qg6C_1Tlq58/edit#gid=0
             // short link >> https://cmu.to/UP5em
-            const spreadsheetLinkInput = "https://docs.google.com/spreadsheets/d/1t8dvUUdvOxdiKQv5nagGaHyiw3P-C2o0Qg6C_1Tlq58/edit?#gid=0&range=A1:H19";
+            const spreadsheetLinkInput = "https://docs.google.com/spreadsheets/d/1t8dvUUdvOxdiKQv5nagGaHyiw3P-C2o0Qg6C_1Tlq58/edit#gid=0";
 
             // build list of array rows from spreadsheet to jsonData
             const response = await fetch(spreadsheetLinkInput);
@@ -16,9 +16,9 @@ function convertSpreadsheetToJson() {
             // Define the range of rows and columns
             const range = XLSX.utils.decode_range(worksheet['!ref']);
             range.s.r = 1; // Start from the first row
-            range.e.r = 19; // End at the 20th row
+            range.e.r = 21; // End at the 20th row
             range.s.c = 1; // Start from the first column
-            range.e.c = 8; // End at the 8th column
+            range.e.c = 9; // End at the 8th column
             // import data in list from to jsonData
             const jsonData = XLSX.utils.sheet_to_json(worksheet, { header: 1, range });
             //console.log(jsonData);
