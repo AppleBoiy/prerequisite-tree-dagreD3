@@ -204,7 +204,9 @@ async function setNodes() {
 
 async function setEdge() {
   await setNodes();
-
+  rawData.then((data => {
+    
+  }))
   g.setEdge("204111", "204114", {class: "CS111-CS114"});
   g.setEdge("206183", "204451", {class: "Math183-CS451"});
   g.setEdge("208269", "204271", {class: "Stat269-CS271"});
