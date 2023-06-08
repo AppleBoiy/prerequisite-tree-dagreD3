@@ -22,8 +22,5 @@
   "keywords": [
     "prerequisite",
     "tree"
-  ],
-  "dependencies": {
-    "xlsx": "^0.18.5"
-  }
+  ]
 }

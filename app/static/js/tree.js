@@ -42,8 +42,10 @@ const main = async () => {
 	const resposeSpreadSheet = await readSpreadSheet(spreadSheetUrl);
 	const rawData = await convertSpreadsheetToJson(resposeSpreadSheet)
 
-	// build rawdata to correct format
+
+	//build rawdata to correct format
 	for (const element of rawData) {
+
 		element.code = (element.code).toString();
 		element.parent = (element.parent).toString();
 		element.children = (element.children).toString();
@@ -82,8 +84,6 @@ const main = async () => {
 	for (const subject of rawData) {
 		course[subject.abbr] = subject;
 	}
-
-	console.log(course)
 
 	// filter to get only text tag that contains label tag and store to course dictionary
 	for (const textTag of textTagArray) {
@@ -135,6 +135,7 @@ const main = async () => {
 
 			e.children.forEach(
 				child => {
+					console.log(child)
 					mainTree.setEdge(`${e.code}`, `${child}`, {class: `${e.code}` + "-" + `${child}`});
 				}
 			)
