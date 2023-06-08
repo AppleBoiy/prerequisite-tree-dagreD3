@@ -59,12 +59,6 @@ const main = async () =>{
 		}
 	}
 
-	const abbrDict = {
-		"204": "CS",
-		"206": "Math",
-		"208": "Stat",
-	};
-
 	const rectTag = document.getElementsByTagName("rect");
 	const textTagArray = document.getElementsByTagName("text");
 
