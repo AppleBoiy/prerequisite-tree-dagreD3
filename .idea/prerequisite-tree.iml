@@ -16,15 +16,16 @@
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
-    <orderEntry type="library" name="jquery-3.5.0" level="application" />
-    <orderEntry type="library" name="bootstrap" level="application" />
     <orderEntry type="library" name="xlsx" level="application" />
-    <orderEntry type="library" name="d3" level="application" />
-    <orderEntry type="library" name="dagre-d3" level="application" />
     <orderEntry type="library" name="jquery-3.5.0" level="application" />
-    <orderEntry type="library" name="bootstrap" level="application" />
-    <orderEntry type="library" name="xlsx" level="application" />
-    <orderEntry type="library" name="d3" level="application" />
     <orderEntry type="library" name="dagre-d3" level="application" />
+    <orderEntry type="library" name="tree" level="application" />
+    <orderEntry type="library" name="bootstrap" level="application" />
+    <orderEntry type="library" name="d3" level="application" />
+    <orderEntry type="library" name="xlsx" level="application" />
+    <orderEntry type="library" name="bootstrap" level="application" />
+    <orderEntry type="library" name="jquery-3.5.0" level="application" />
+    <orderEntry type="library" name="dagre-d3" level="application" />
+    <orderEntry type="library" name="d3" level="application" />
   </component>
 </module>
