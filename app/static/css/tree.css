@@ -69,6 +69,11 @@
     display: flex;
 }
 
-.sub-tree {
+.subtree {
+    width: 30%;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+
 
 }

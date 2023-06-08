@@ -177,6 +177,7 @@ async function drawGraph() {
 async function setNodes() {
   await drawGraph();
   rawData.then((data) => {
+
     for (const subject of data) {
       g.setNode(
         subject.code, {
