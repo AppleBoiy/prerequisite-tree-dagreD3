@@ -1,10 +1,11 @@
-async function convertSpreadsheetToJson() {
-    return new Promise( async (resolve, reject) => {
+function convertSpreadsheetToJson() {
+    return new Promise(async (resolve, reject) => {
         try {
-            const XLSX = require("xlsx");
+            // const XLSX = require("xlsx");
 
-            // get link input
-            const spreadsheetLinkInput = "https://cmu.to/UP5em";
+            // get link input >> https://docs.google.com/spreadsheets/d/1t8dvUUdvOxdiKQv5nagGaHyiw3P-C2o0Qg6C_1Tlq58/edit?#gid=0&range=A1:H19
+            // short link >> https://cmu.to/UP5em
+            const spreadsheetLinkInput = "https://docs.google.com/spreadsheets/d/1t8dvUUdvOxdiKQv5nagGaHyiw3P-C2o0Qg6C_1Tlq58/edit?#gid=0&range=A1:H19";
 
             // build list of array rows from spreadsheet to jsonData
             const response = await fetch(spreadsheetLinkInput);
@@ -33,7 +34,7 @@ async function convertSpreadsheetToJson() {
                 }
                 result.push(obj);
             }
-
+            // console.log(result);
             resolve(result);
         } catch (error) {
           reject(error);
@@ -44,10 +45,23 @@ async function convertSpreadsheetToJson() {
 async function handleHover() {
     // new data from spreadsheet
     const rawData = await convertSpreadsheetToJson();
-    console.log(rawData)
-
+    // build rawdata to correct format
+    rawData.forEach(async element => {
+        element.code = (element.code).toString();
+        element.parent = (element.parent).toString();
+        element.children = (element.children).toString();
+        if (element.parent === "None") {
+            element.parent = [];
+        } else {
+            element.parent = element.parent.split(", ");
+        }
+        if (element.children === "None") {
+            element.children = [];
+        } else {
+            element.children = element.children.split(", ");
+        }
+    });
+    //console.log(rawData)
+    return rawData;
 }
 
-handleHover().then(
-    () => console.log("Get data success")
-);
