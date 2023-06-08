@@ -1,6 +1,7 @@
-async function convertSpreadsheetToJson() {
-    return new Promise( async (resolve, reject) => {
+function convertSpreadsheetToJson() {
+    return new Promise(async (resolve, reject) => {
         try {
+
             // get link input
             const spreadsheetLinkInput = "https://cmu.to/UP5em";
 
@@ -13,9 +14,9 @@ async function convertSpreadsheetToJson() {
             // Define the range of rows and columns
             const range = XLSX.utils.decode_range(worksheet['!ref']);
             range.s.r = 1; // Start from the first row
-            range.e.r = 19; // End at the 20th row
+            range.e.r = 21; // End at the 20th row
             range.s.c = 1; // Start from the first column
-            range.e.c = 8; // End at the 8th column
+            range.e.c = 9; // End at the 8th column
             // import data in list from to jsonData
             const jsonData = XLSX.utils.sheet_to_json(worksheet, { header: 1, range });
             //console.log(jsonData);
@@ -31,7 +32,7 @@ async function convertSpreadsheetToJson() {
                 }
                 result.push(obj);
             }
-
+            // console.log(result);
             resolve(result);
         } catch (error) {
           reject(error);
@@ -42,10 +43,23 @@ async function convertSpreadsheetToJson() {
 async function handleHover() {
     // new data from spreadsheet
     const rawData = await convertSpreadsheetToJson();
-    console.log(rawData)
-
+    // build rawdata to correct format
+    rawData.forEach(async element => {
+        element.code = (element.code).toString();
+        element.parent = (element.parent).toString();
+        element.children = (element.children).toString();
+        if (element.parent === "None") {
+            element.parent = [];
+        } else {
+            element.parent = element.parent.split(", ");
+        }
+        if (element.children === "None") {
+            element.children = [];
+        } else {
+            element.children = element.children.split(", ");
+        }
+    });
+    //console.log(rawData)
+    return rawData;
 }
 
-handleHover().then(
-    () => console.log("Get data success")
-);
