@@ -1,4 +1,4 @@
-const main = async () =>{
+const main = async () => {
 	async function readSpreadSheet(spreadSheetUrl) {
 		return await fetch(spreadSheetUrl)
 	}
@@ -42,7 +42,7 @@ const main = async () =>{
 	const resposeSpreadSheet = await readSpreadSheet(spreadSheetUrl);
 	const rawData = await convertSpreadsheetToJson(resposeSpreadSheet)
 
-// build rawdata to correct format
+	// build rawdata to correct format
 	for (const element of rawData) {
 		element.code = (element.code).toString();
 		element.parent = (element.parent).toString();
@@ -71,21 +71,21 @@ const main = async () =>{
 
 	const mainTree = new graphlib.Graph();
 
-// Set up an SVG group so that we can translate the final graph.
+	// Set up an SVG group so that we can translate the final graph.
 	const svg = d3.select("svg");
 	const svgGroup = svg.append("g");
 
-// Center the graph
+	// Center the graph
 	const offset = PADDING / 2;
 
-  // create dictionary that abbr is key
-  for (const subject of rawData) {
-    course[subject.abbr] = subject;
-  }
+	// create dictionary that abbr is key
+	for (const subject of rawData) {
+		course[subject.abbr] = subject;
+	}
 
 	console.log(course)
 
-// filter to get only text tag that contains label tag and store to course dictionary
+	// filter to get only text tag that contains label tag and store to course dictionary
 	for (const textTag of textTagArray) {
 		if (textTag.parentNode.classList[0] !== "label") {
 			const abbr = textTag.childNodes[0]?.innerHTML;
@@ -99,10 +99,10 @@ const main = async () =>{
 		rectDict[abbr] = rect;
 	}
 
-// Set an object for the graph label
+	// Set an object for the graph label
 	mainTree.setGraph({"ranksep": 100});
 
-// Default to assigning a new object as a label for each new edge.
+	// Default to assigning a new object as a label for each new edge.
 	mainTree.setDefaultEdgeLabel(
 		() => {
 			return {};
@@ -110,56 +110,56 @@ const main = async () =>{
 	);
 
 
-  // get course detail from Promise data
-  for (const subject of rawData) {
-    mainTree.setNode(
-      subject.code,
-      {
-        label: subject.abbr,
-        width: 50,
-        height: 30,
-        id: subject.abbr,
-        class: `y${subject.year}`,
-      },
-    );
+	function spawnNodes() {
+		for (const subject of rawData) {
+			mainTree.setNode(
+				subject.code,
+				{
+					label: subject.abbr,
+					width: 50,
+					height: 30,
+					id: subject.abbr,
+					class: `y${subject.year}`,
+				},
+			);
 
-		// Round the corners of the nodes
-		mainTree.nodes().forEach(
-			(v) => {
-				const node = mainTree.node(v);
-				node.rx = node.ry = 10;
-			},
-		);
+		}
 	}
+	spawnNodes();
 
-	mainTree.setEdge("204111", "204114", {class: "CS111-CS114"});
-	mainTree.setEdge("206183", "204451", {class: "Math183-CS451"});
-	mainTree.setEdge("208269", "204271", {class: "Stat269-CS271"});
-	mainTree.setEdge("204252", "204271", {class: "CS252-CS271"});
-	mainTree.setEdge("204252", "204451", {class: "CS252-CS451"});
-	mainTree.setEdge("204252", "204321", {class: "CS252-CS321"});
-	mainTree.setEdge("204114", "204203", {class: "CS114-CS203"});
-	mainTree.setEdge("204114", "204212", {class: "CS114-CS212"});
-	mainTree.setEdge("204114", "204231", {class: "CS114-CS231"});
-	mainTree.setEdge("204114", "204232", {class: "CS114-CS232"});
-	mainTree.setEdge("204114", "204252", {class: "CS114-CS252"});
-	mainTree.setEdge("204212", "204315", {class: "CS212-CS315"});
-	mainTree.setEdge("204212", "204361", {class: "CS212-CS361"});
-	mainTree.setEdge("204231", "204341", {class: "CS231-CS341"});
-	mainTree.setEdge("204232", "204390", {class: "CS232-CS390"});
-	mainTree.setEdge("204321", "204390", {class: "CS321-CS390"});
-	mainTree.setEdge("204341", "204390", {class: "CS341-CS390"});
-	mainTree.setEdge("204361", "204390", {class: "CS361-CS390"});
 
-  render(d3.select("svg g"), mainTree);
+	function connectNodes() {
 
-  // Size the container to the graph
-  svg.attr("width", mainTree.graph().width + PADDING);
-  svg.attr("height", mainTree.graph().height + PADDING);
+		for (const e of rawData) {
+			if (e.children.length === 0) continue;
 
-  svgGroup.attr("transform", "translate(" + offset + ", " + offset + ")");
+			e.children.forEach(
+				child => {
+					mainTree.setEdge(`${e.code}`, `${child}`, {class: `${e.code}` + "-" + `${child}`});
+				}
+			)
+		}
+	}
+	connectNodes();
 
+
+	// Round the corners of the nodes
+	mainTree.nodes().forEach(
+		(v) => {
+			const node = mainTree.node(v);
+			node.rx = node.ry = 10;
+		},
+	);
+
+	render(d3.select("svg g"), mainTree);
+
+	// Size the container to the graph
+	svg.attr("width", mainTree.graph().width + PADDING);
+	svg.attr("height", mainTree.graph().height + PADDING);
+
+	svgGroup.attr("transform", "translate(" + offset + ", " + offset + ")");
 }
+
 
 main().then(
   () => console.log("Tree generated")
