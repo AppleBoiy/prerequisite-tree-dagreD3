@@ -24,7 +24,11 @@
           rel="stylesheet">
     
     <!-- Sheet Libary -->
-    <script src="https://unpkg.com/xlsx/dist/xlsx.full.min.js"></script>
+    <script src="https://unpkg.com/xlsx/dist/xlsx.full.min.js"
+            integrity="sha384-vtjasyidUo0kW94K5MXDXntzOJpQgBKXmE7e2Ga4LG0skTTLeBi97eFAXsqewJjw"
+            crossorigin="anonymous">
+    </script>
+
 </head>
 <body>
 
@@ -54,17 +58,16 @@
 
 <!-- body -->
 <!-- partial:index.partial.html -->
-<div class="container">
+<div class="treeContainer">
     <div class="tree" >
         <div class="svg-container">
             <svg class="graph" id="zoom-svg"></svg>
         </div>
     </div>
-    <div class="sub-tree">
-        <h1>
-            subtree
-        </h1>
-
+    <div class="subtree">
+        <div class="svg-container">
+            <svg class="graph" id="zoom-svg"></svg>
+        </div>
     </div>
 </div>
 
