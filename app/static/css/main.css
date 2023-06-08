@@ -5,7 +5,7 @@ body {
 nav {
     background-color: #ffffff;
     border-bottom: 1px solid #adb1b4;
-    margin-bottom: 10px;
+    margin-bottom: 0px;
 }
 
 img.tw-user-small {
@@ -28,4 +28,8 @@ img.tw-user-medium {
     border-radius: 20px;
     background-color: #67b1f9;
     color: #ffffff;
+}
+
+.container {
+    display: flex;
 }

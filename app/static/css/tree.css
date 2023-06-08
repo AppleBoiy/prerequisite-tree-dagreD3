@@ -9,6 +9,8 @@
 }
 
 .tree {
+    width: 70%;
+    height: 100vh;
     display: flex;
     justify-content: center;
     background-color: var(--bg_darkmode);
@@ -21,7 +23,7 @@
 .graph text, .graph .node.root div {
     fill: #333;
     font-family: "Avenir Next", "Helvetica Neue", Helvetica, Arial, sans-serif;
-    font-weight: 400;
+    font-weight: 400px;
     font-size: 14px;
 }
 .graph .node rect {
@@ -63,7 +65,10 @@
     stroke: none;
 }
 
-.container {
+.treeContainer{
     display: flex;
 }
-    
+
+.sub-tree {
+
+}
