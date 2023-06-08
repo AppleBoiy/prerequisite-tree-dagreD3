@@ -1,11 +1,9 @@
 function convertSpreadsheetToJson() {
     return new Promise(async (resolve, reject) => {
         try {
-            // const XLSX = require("xlsx");
 
-            // get link input >> https://docs.google.com/spreadsheets/d/1t8dvUUdvOxdiKQv5nagGaHyiw3P-C2o0Qg6C_1Tlq58/edit#gid=0
-            // short link >> https://cmu.to/UP5em
-            const spreadsheetLinkInput = "https://docs.google.com/spreadsheets/d/1t8dvUUdvOxdiKQv5nagGaHyiw3P-C2o0Qg6C_1Tlq58/edit#gid=0";
+            // get link input
+            const spreadsheetLinkInput = "https://cmu.to/UP5em";
 
             // build list of array rows from spreadsheet to jsonData
             const response = await fetch(spreadsheetLinkInput);

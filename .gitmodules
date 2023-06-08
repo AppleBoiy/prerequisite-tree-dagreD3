@@ -1,6 +1,0 @@
-[submodule "prerequisite-JSONCreator"]
-    path = prerequisite-JSONCreator
-    url = https://github.com/AppleBoiy/prereq-JSONCreator.git
-    branch = main
-    ignore = dirty
-    update = checkout
