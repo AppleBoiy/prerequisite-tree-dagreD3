@@ -1,8 +1,6 @@
 async function convertSpreadsheetToJson() {
     return new Promise( async (resolve, reject) => {
         try {
-            const XLSX = require("xlsx");
-
             // get link input
             const spreadsheetLinkInput = "https://cmu.to/UP5em";
 
