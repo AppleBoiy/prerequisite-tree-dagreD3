@@ -205,26 +205,35 @@ async function setNodes() {
 async function setEdge() {
   await setNodes();
   rawData.then((data => {
-    
+    data.forEach(
+      (e) => {
+        if (e.children.length != 0){
+          e.children.forEach(
+            child => {
+              g.setEdge(`${e.code}`, `${child}`, {class: `${e.code}`+"-"+`${child}`});
+          })
+        }
+      }
+    )
   }))
-  g.setEdge("204111", "204114", {class: "CS111-CS114"});
-  g.setEdge("206183", "204451", {class: "Math183-CS451"});
-  g.setEdge("208269", "204271", {class: "Stat269-CS271"});
-  g.setEdge("204252", "204271", {class: "CS252-CS271"});
-  g.setEdge("204252", "204451", {class: "CS252-CS451"});
-  g.setEdge("204252", "204321", {class: "CS252-CS321"});
-  g.setEdge("204114", "204203", {class: "CS114-CS203"});
-  g.setEdge("204114", "204212", {class: "CS114-CS212"});
-  g.setEdge("204114", "204231", {class: "CS114-CS231"});
-  g.setEdge("204114", "204232", {class: "CS114-CS232"});
-  g.setEdge("204114", "204252", {class: "CS114-CS252"});
-  g.setEdge("204212", "204315", {class: "CS212-CS315"});
-  g.setEdge("204212", "204361", {class: "CS212-CS361"});
-  g.setEdge("204231", "204341", {class: "CS231-CS341"});
-  g.setEdge("204232", "204390", {class: "CS232-CS390"});
-  g.setEdge("204321", "204390", {class: "CS321-CS390"});
-  g.setEdge("204341", "204390", {class: "CS341-CS390"});
-  g.setEdge("204361", "204390", {class: "CS361-CS390"});
+  // g.setEdge("204111", "204114", {class: "CS111-CS114"});
+  // g.setEdge("206183", "204451", {class: "Math183-CS451"});
+  // g.setEdge("208269", "204271", {class: "Stat269-CS271"});
+  // g.setEdge("204252", "204271", {class: "CS252-CS271"});
+  // g.setEdge("204252", "204451", {class: "CS252-CS451"});
+  // g.setEdge("204252", "204321", {class: "CS252-CS321"});
+  // g.setEdge("204114", "204203", {class: "CS114-CS203"});
+  // g.setEdge("204114", "204212", {class: "CS114-CS212"});
+  // g.setEdge("204114", "204231", {class: "CS114-CS231"});
+  // g.setEdge("204114", "204232", {class: "CS114-CS232"});
+  // g.setEdge("204114", "204252", {class: "CS114-CS252"});
+  // g.setEdge("204212", "204315", {class: "CS212-CS315"});
+  // g.setEdge("204212", "204361", {class: "CS212-CS361"});
+  // g.setEdge("204231", "204341", {class: "CS231-CS341"});
+  // g.setEdge("204232", "204390", {class: "CS232-CS390"});
+  // g.setEdge("204321", "204390", {class: "CS321-CS390"});
+  // g.setEdge("204341", "204390", {class: "CS341-CS390"});
+  // g.setEdge("204361", "204390", {class: "CS361-CS390"});
 }
 
 async function renderGraph() {// Run the renderer. This is what draws the final graph.
