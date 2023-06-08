@@ -1,7 +1,6 @@
 function convertSpreadsheetToJson() {
   return new Promise(async (resolve, reject) => {
       try {
-          // const XLSX = require("xlsx");
 
           // get link input >> https://docs.google.com/spreadsheets/d/1t8dvUUdvOxdiKQv5nagGaHyiw3P-C2o0Qg6C_1Tlq58/edit#gid=0
           // short link >> https://cmu.to/UP5em
@@ -46,7 +45,7 @@ async function handleHover() {
   // new data from spreadsheet
   const rawData = await convertSpreadsheetToJson();
   // build rawdata to correct format
-  rawData.forEach(async element => {
+  for (const element of rawData) {
       element.code = (element.code).toString();
       element.parent = (element.parent).toString();
       element.children = (element.children).toString();
@@ -60,8 +59,8 @@ async function handleHover() {
       } else {
           element.children = element.children.split(", ");
       }
-  });
-  //console.log(rawData)
+  }
+    //console.log(rawData)
   return rawData;
 }
 
@@ -104,12 +103,7 @@ async function enroll() {
     )
   });
 
-  // raw_data.forEach(
-  //     (e) => {
-  //       course[e.abbr] = e;
-  //     }
-  // )
-  // console.log(course);
+
   // filter to get only text tag that contains label tag and store to course dictionary
   for (const textTag of textTagArray) {
     if (textTag.parentNode.classList[0] !== "label") {
