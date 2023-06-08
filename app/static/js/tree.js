@@ -123,6 +123,26 @@ const main = async () =>{
       },
     );
 
+  });
+
+}
+
+async function setEdge() {
+  await setNodes();
+  rawData.then((data => {
+    data.forEach(
+      (e) => {
+        if (e.children.length != 0){
+          e.children.forEach(
+            child => {
+              mainTree.setEdge(`${e.code}`, `${child}`, {class: `${e.code}`+"-"+`${child}`});
+          })
+        }
+      }
+    )
+  }))
+}
+
 		// Round the corners of the nodes
 		mainTree.nodes().forEach(
 			(v) => {
@@ -158,6 +178,7 @@ const main = async () =>{
   svg.attr("height", mainTree.graph().height + PADDING);
 
   svgGroup.attr("transform", "translate(" + offset + ", " + offset + ")");
+
 
 }
 
