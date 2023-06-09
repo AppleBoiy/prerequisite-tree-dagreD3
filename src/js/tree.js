@@ -139,7 +139,7 @@ const main = async () => {
 	// add child and parent rect to dictionary
 	for (const subject of rawData) {
 		const parent = subject.parent
-		if (typeof parent !== "undefined" || parent.length !== 0) {
+		if (typeof parent !== "undefined" || parent?.length !== 0) {
 			// collect parent node
 			rectDict[subject.abbr]["parentRect"] = parent.map(
 				(e) => {
@@ -150,7 +150,7 @@ const main = async () => {
 		}
 
 		const child = subject.children
-		if (typeof child !== "undefined" || child.length !== 0) {
+		if (typeof child !== "undefined" || child?.length !== 0) {
 			rectDict[subject.abbr]["childRect"] = child.map(
 				(e) => {
 					const abbr = `${abbrDict[e.slice(0, 3)]}${e.slice(3)}`
