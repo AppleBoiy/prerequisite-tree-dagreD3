@@ -205,11 +205,10 @@ const main = async () => {
 
 			e => {
 
-				console.log(rectDict[e]);
-
 				// when mouse enter to node
 				rectDict[e].addEventListener("mouseenter", () => {
-					console.log(e);
+
+					console.log(course[e].parentRect)
 				});
 
 				// when mouse exit
