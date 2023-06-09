@@ -148,23 +148,22 @@ const main = async () => {
 		// create dictionary that abbr is key
 		for (const subject of rawData) {
 			course[subject.abbr] = subject;
+			rectDict[subject.abbr] = {};
 		}
 
 		// filter to get only text tag that contains label tag and store to course dictionary
 		for (const textTag of textTagArray) {
+			if (textTag.parentNode.classList[0] === "label")  continue;
 
-			if (textTag.parentNode.classList[0] !== "label") {
-				const abbr = textTag.childNodes[0]?.innerHTML;
-				course[abbr]["innerText"] = textTag;
-			}
+			const abbr = textTag.childNodes[0]?.innerHTML;
+			rectDict[abbr]["textDiv"] = textTag;
 		}
 
 		for (const rect of rectTag) {
-
-
 			const abbr = rect.parentNode.id;
-			course[abbr]["rectTag"] = rect;
-			rectDict[abbr] = rect;
+			rectDict[abbr]["rectDiv"] = rect;
+			rectDict[abbr]["oldFill"] = rect.style.fill;
+			rectDict[abbr]["oldStroke"] = rect.style.stroke;
 		}
 
 		// add child and parent rect to dictionary
@@ -172,7 +171,7 @@ const main = async () => {
 			const parent = subject.parent
 			if (typeof parent !== "undefined" || parent.length !== 0) {
 				// collect parent node
-				course[subject.abbr]["parentRect"] = parent.map(
+				rectDict[subject.abbr]["parentRect"] = parent.map(
 					(e) => {
 						const abbr = `${abbrDict[e.slice(0, 3)]}${e.slice(3)}`;
 						return rectDict[abbr]
@@ -182,7 +181,7 @@ const main = async () => {
 
 			const child = subject.children
 			if (typeof child !== "undefined" || child.length !== 0) {
-				course[subject.abbr]["childRect"] = child.map(
+				rectDict[subject.abbr]["childRect"] = child.map(
 					(e) => {
 						const abbr = `${abbrDict[e.slice(0, 3)]}${e.slice(3)}`
 						return rectDict[abbr]
@@ -196,24 +195,25 @@ const main = async () => {
 	collectHTMLObject();
 
 
+
 	function addAttrToNodes() {
-
-		console.log(course)
-
 		// loop through keys of abbr in couese
-		Object.keys(course).forEach(
+		Object.keys(rectDict).forEach(
 
 			e => {
+				const rectDiv = rectDict[e]["rectDiv"];
 
 				// when mouse enter to node
-				rectDict[e].addEventListener("mouseenter", () => {
-
-					console.log(course[e].parentRect)
+				rectDiv.addEventListener("mouseenter", () => {
+					console.log(rectDiv)
+					rectDiv.style.fill = "ffee00";
+					rectDiv.style.stroke = "ffee00";
 				});
 
 				// when mouse exit
-				rectDict[e].addEventListener("mouseleave", () => {
-					console.log(e)
+				rectDiv.addEventListener("mouseleave", () => {
+					rectDiv.style.fill = rectDict[e]["oldFill"];
+					rectDiv.style.fill = rectDict[e]["oldStroke"];
 				});
 			}
 		)
