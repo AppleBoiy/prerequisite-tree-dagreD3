@@ -119,7 +119,7 @@ const main = async () => {
 
 			e.children.forEach(
 				child => {
-					mainTree.setEdge(`${e.code}`, `${child}`, {class: `${e.code}` + "-" + `${child}`});
+					mainTree.setEdge(`${e.code}`, `${child}`, {class: `${child}`});
 				}
 			)
 		}
@@ -207,8 +207,10 @@ const main = async () => {
 
 				// when mouse enter to node
 				rectDict[e].addEventListener("mouseenter", () => {
-
-					console.log(course[e].parentRect)
+					
+					console.log(rectDict[e])
+					rectDict[e].style.fill = "#333";
+					course[e]
 				});
 
 				// when mouse exit
