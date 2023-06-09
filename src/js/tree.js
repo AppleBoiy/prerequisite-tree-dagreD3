@@ -43,19 +43,16 @@ const main = async () => {
 	const rawData = await convertSpreadsheetToJson(resposeSpreadSheet)
 
 
-	function validateData() {
-		//build rawdata to correct format
-		for (const element of rawData) {
-			element.code = (element.code).toString();
+	//build rawdata to correct format
+	for (const element of rawData) {
+		element.code = (element.code).toString();
 
-			element.parent = (element.parent).toString() === "None"?
-				[]: element.parent.toString().split(", ");
+		element.parent = (element.parent).toString() === "None"?
+			[]: element.parent.toString().split(", ");
 
-			element.children = (element.children).toString() === "None"?
-				[]:  element.children.toString().split(", ");
-		}
+		element.children = (element.children).toString() === "None"?
+			[]:  element.children.toString().split(", ");
 	}
-	validateData();
 
 	const rectTag = document.getElementsByTagName("rect");
 	const textTagArray = document.getElementsByTagName("text");
@@ -82,58 +79,37 @@ const main = async () => {
 	// Center the graph
 	const offset = PADDING / 2;
 
-	function setMainTree() {
-		// Set an object for the graph label
-		mainTree.setGraph({"ranksep": 100});
+	// Set an object for the graph label
+	mainTree.setGraph({"ranksep": 100});
 
-		// Default to assigning a new object as a label for each new edge.
-		mainTree.setDefaultEdgeLabel(
-			() => {
-				return {};
-			},
-		);
-	}
-	setMainTree()
+	// Default to assigning a new object as a label for each new edge.
+	mainTree.setDefaultEdgeLabel(() => {
+			return {};
+		});
 
-	function spawnNodes() {
-		for (const subject of rawData) {
-			mainTree.setNode(
-				subject.code,
-				{
-					label: subject.abbr,
-					width: 50,
-					height: 30,
-					id: subject.abbr,
-					class: `y${subject.year}`,
-				},
+	for (const subject of rawData) {
+		// create node
+		mainTree.setNode( subject.code, {
+				label: subject.abbr,
+				width: 50,
+				height: 30,
+				id: subject.abbr,
+				class: `y${subject.year}`,
+			})
+		// create line
+		subject.children.forEach( child => {
+			mainTree.setEdge(
+				subject.code, child, {class: `${subject.code}-${child}`}
 			);
-
-		}
+		})
 	}
-	spawnNodes();
-
-
-	function connectNodes() {
-		for (const e of rawData) {
-			if (e.children.length === 0) continue;
-
-			e.children.forEach(
-				child => {
-					mainTree.setEdge(`${e.code}`, `${child}`, {class: `${e.code}` + "-" + `${child}`});
-				}
-			)
-		}
-	}
-	connectNodes();
 
 
 	// Round the corners of the nodes
-	mainTree.nodes().forEach(
-		(v) => {
+	mainTree.nodes().forEach( (v) => {
 			const node = mainTree.node(v);
 			node.rx = node.ry = 10;
-		},
-	);
+		} );
 
 	render(d3.select("svg g"), mainTree);
 
@@ -143,87 +119,71 @@ const main = async () => {
 
 	svgGroup.attr("transform", "translate(" + offset + ", " + offset + ")");
 
-	function collectHTMLObject() {
 
-		// create dictionary that abbr is key
-		for (const subject of rawData) {
-			course[subject.abbr] = subject;
-			rectDict[subject.abbr] = {};
-		}
-
-		// filter to get only text tag that contains label tag and store to course dictionary
-		for (const textTag of textTagArray) {
-			if (textTag.parentNode.classList[0] === "label")  continue;
-
-			const abbr = textTag.childNodes[0]?.innerHTML;
-			rectDict[abbr]["textDiv"] = textTag;
-		}
-
-		for (const rect of rectTag) {
-			const abbr = rect.parentNode.id;
-			rectDict[abbr]["rectDiv"] = rect;
-			rectDict[abbr]["oldFill"] = rect.style.fill;
-			rectDict[abbr]["oldStroke"] = rect.style.stroke;
-		}
-
-		// add child and parent rect to dictionary
-		for (const subject of rawData) {
-			const parent = subject.parent
-			if (typeof parent !== "undefined" || parent.length !== 0) {
-				// collect parent node
-				rectDict[subject.abbr]["parentRect"] = parent.map(
-					(e) => {
-						const abbr = `${abbrDict[e.slice(0, 3)]}${e.slice(3)}`;
-						return rectDict[abbr]
-					}
-				)
-			}
-
-			const child = subject.children
-			if (typeof child !== "undefined" || child.length !== 0) {
-				rectDict[subject.abbr]["childRect"] = child.map(
-					(e) => {
-						const abbr = `${abbrDict[e.slice(0, 3)]}${e.slice(3)}`
-						return rectDict[abbr]
-					}
-				)
-			}
-		}
-
-
+	// create dictionary that abbr is key
+	for (const subject of rawData) {
+		course[subject.abbr] = subject;
+		rectDict[subject.abbr] = {};
 	}
-	collectHTMLObject();
 
+	// filter to get only text tag that contains label tag and store to course dictionary
+	for (const textTag of textTagArray) {
+		if (textTag.parentNode.classList[0] === "label")  continue;
 
-
-	function addAttrToNodes() {
-		// loop through keys of abbr in couese
-		Object.keys(rectDict).forEach(
-
-			e => {
-				const rectDiv = rectDict[e]["rectDiv"];
-
-				// when mouse enter to node
-				rectDiv.addEventListener("mouseenter", () => {
-					console.log(rectDiv)
-					rectDiv.style.fill = "ffee00";
-					rectDiv.style.stroke = "ffee00";
-				});
-
-				// when mouse exit
-				rectDiv.addEventListener("mouseleave", () => {
-					rectDiv.style.fill = rectDict[e]["oldFill"];
-					rectDiv.style.fill = rectDict[e]["oldStroke"];
-				});
-			}
-		)
+		const abbr = textTag.childNodes[0]?.innerHTML;
+		rectDict[abbr]["textDiv"] = textTag;
 	}
-	addAttrToNodes();
+
+	for (const rect of rectTag) {
+		const abbr = rect.parentNode.id;
+		rectDict[abbr]["rectDiv"] = rect;
+		rectDict[abbr]["oldFill"] = rect.style.fill;
+		rectDict[abbr]["oldStroke"] = rect.style.stroke;
+	}
+
+	// add child and parent rect to dictionary
+	for (const subject of rawData) {
+		const parent = subject.parent
+		if (typeof parent !== "undefined" || parent.length !== 0) {
+			// collect parent node
+			rectDict[subject.abbr]["parentRect"] = parent.map(
+				(e) => {
+					const abbr = `${abbrDict[e.slice(0, 3)]}${e.slice(3)}`;
+					return rectDict[abbr]
+				}
+			)
+		}
+
+		const child = subject.children
+		if (typeof child !== "undefined" || child.length !== 0) {
+			rectDict[subject.abbr]["childRect"] = child.map(
+				(e) => {
+					const abbr = `${abbrDict[e.slice(0, 3)]}${e.slice(3)}`
+					return rectDict[abbr]
+				}
+			)
+		}
+	}
+
+	function findRectDiv() {
+		const temp = document.getElementsByTagName("rect");
+		for (const rectDiv of temp) {
+			const oldFill = rectDiv.style.fill;
+			const oldStroke = rectDiv.style.stroke;
+
+			// when mouse enter to node
+			rectDiv.addEventListener("mouseenter", () => {
+				rectDiv.style.fill = "#ffee00";
+				rectDiv.style.stroke = "#ffee00";
+			});
+
+			// when mouse exit
+			rectDiv.addEventListener("mouseleave", () => {
+				rectDiv.style.fill = oldFill;
+				rectDiv.style.stroke = oldStroke;
+			});
+		}
+	}
+	findRectDiv()
+
 }
-
-
-main().then(
-  () => console.log("Tree generated")
-).catch(
-  e => console.log(e)
-)
