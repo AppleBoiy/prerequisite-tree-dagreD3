@@ -182,10 +182,7 @@ const main = async () => {
 	findRectDiv()
 
 }
-
-main()
-
-function sample() {
-	console.log("Hello")
-}
+main().then(
+	() => console.log("Tree generated!")
+).catch( r => console.log(r))
 
