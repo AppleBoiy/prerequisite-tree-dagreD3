@@ -1,0 +1,16 @@
+ruleset: security-ruleset.yaml
+
+analysis:
+  paths:
+    - src/
+
+  exclude:
+    - .git/
+
+  options:
+    max-depth: 5
+    ignore-warnings: true
+
+output:
+  format: html
+  path: analysis-report/
