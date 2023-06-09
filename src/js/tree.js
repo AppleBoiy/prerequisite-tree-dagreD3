@@ -1,8 +1,4 @@
 const main = async () => {
-	async function readSpreadSheet(spreadSheetUrl) {
-		return await fetch(spreadSheetUrl)
-	}
-
 	async function convertSpreadsheetToJson(response) {
 
 		// build list of array rows from spreadsheet to jsonData
@@ -39,8 +35,7 @@ const main = async () => {
 	}
 
 	const spreadSheetUrl = "https://docs.google.com/spreadsheets/d/1t8dvUUdvOxdiKQv5nagGaHyiw3P-C2o0Qg6C_1Tlq58/edit#gid=0";
-	const resposeSpreadSheet = await readSpreadSheet(spreadSheetUrl);
-	const rawData = await convertSpreadsheetToJson(resposeSpreadSheet)
+	const rawData = await convertSpreadsheetToJson(await fetch(spreadSheetUrl))
 
 
 	//build rawdata to correct format
@@ -187,3 +182,10 @@ const main = async () => {
 	findRectDiv()
 
 }
+
+main()
+
+function sample() {
+	console.log("Hello")
+}
+
