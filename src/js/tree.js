@@ -43,26 +43,28 @@ const main = async () => {
 	const rawData = await convertSpreadsheetToJson(resposeSpreadSheet)
 
 
-	//build rawdata to correct format
-	for (const element of rawData) {
+	function validateData() {
+		//build rawdata to correct format
+		for (const element of rawData) {
+			element.code = (element.code).toString();
 
-		element.code = (element.code).toString();
-		element.parent = (element.parent).toString();
-		element.children = (element.children).toString();
-		if (element.parent === "None") {
-			element.parent = [];
-		} else {
-			element.parent = element.parent.split(", ");
-		}
-		if (element.children === "None") {
-			element.children = [];
-		} else {
-			element.children = element.children.split(", ");
+			element.parent = (element.parent).toString() === "None"?
+				[]: element.parent.toString().split(", ");
+
+			element.children = (element.children).toString() === "None"?
+				[]:  element.children.toString().split(", ");
 		}
 	}
+	validateData();
 
 	const rectTag = document.getElementsByTagName("rect");
 	const textTagArray = document.getElementsByTagName("text");
+
+	const abbrDict = {
+		"204":"CS",
+		"206":"Math",
+		"208":"Stat"
+	}
 
 	const course = {};
 	const rectDict = {};
@@ -80,35 +82,18 @@ const main = async () => {
 	// Center the graph
 	const offset = PADDING / 2;
 
-	// create dictionary that abbr is key
-	for (const subject of rawData) {
-		course[subject.abbr] = subject;
+	function setMainTree() {
+		// Set an object for the graph label
+		mainTree.setGraph({"ranksep": 100});
+
+		// Default to assigning a new object as a label for each new edge.
+		mainTree.setDefaultEdgeLabel(
+			() => {
+				return {};
+			},
+		);
 	}
-
-	// filter to get only text tag that contains label tag and store to course dictionary
-	for (const textTag of textTagArray) {
-		if (textTag.parentNode.classList[0] !== "label") {
-			const abbr = textTag.childNodes[0]?.innerHTML;
-			course[abbr]["innerText"] = textTag;
-		}
-	}
-
-	for (const rect of rectTag) {
-		const abbr = rect.parentNode.id;
-		course[abbr]["rectTag"] = rect;
-		rectDict[abbr] = rect;
-	}
-
-	// Set an object for the graph label
-	mainTree.setGraph({"ranksep": 100});
-
-	// Default to assigning a new object as a label for each new edge.
-	mainTree.setDefaultEdgeLabel(
-		() => {
-			return {};
-		},
-	);
-
+	setMainTree()
 
 	function spawnNodes() {
 		for (const subject of rawData) {
@@ -129,13 +114,11 @@ const main = async () => {
 
 
 	function connectNodes() {
-
 		for (const e of rawData) {
 			if (e.children.length === 0) continue;
 
 			e.children.forEach(
 				child => {
-					console.log(child)
 					mainTree.setEdge(`${e.code}`, `${child}`, {class: `${e.code}` + "-" + `${child}`});
 				}
 			)
@@ -159,6 +142,61 @@ const main = async () => {
 	svg.attr("height", mainTree.graph().height + PADDING);
 
 	svgGroup.attr("transform", "translate(" + offset + ", " + offset + ")");
+
+	function collectHTMLObject() {
+
+		// create dictionary that abbr is key
+		for (const subject of rawData) {
+			course[subject.abbr] = subject;
+		}
+
+		// filter to get only text tag that contains label tag and store to course dictionary
+		for (const textTag of textTagArray) {
+
+			if (textTag.parentNode.classList[0] !== "label") {
+				const abbr = textTag.childNodes[0]?.innerHTML;
+				course[abbr]["innerText"] = textTag;
+			}
+		}
+
+		for (const rect of rectTag) {
+
+
+			const abbr = rect.parentNode.id;
+			course[abbr]["rectTag"] = rect;
+			rectDict[abbr] = rect;
+		}
+
+		// add child and parent rect to dictionary
+		for (const subject of rawData) {
+			const parent = subject.parent
+			if (typeof parent !== "undefined" || parent.length !== 0) {
+				// collect parent node
+				course[subject.abbr]["parentRect"] = parent.map(
+					(e) => {
+						const abbr = `${abbrDict[e.slice(0, 3)]}${e.slice(3)}`;
+						return rectDict[abbr]
+					}
+				)
+			}
+
+			const child = subject.children
+			if (typeof child !== "undefined" || child.length !== 0) {
+				course[subject.abbr]["childRect"] = child.map(
+					(e) => {
+						const abbr = `${abbrDict[e.slice(0, 3)]}${e.slice(3)}`
+						return rectDict[abbr]
+					}
+				)
+			}
+
+			console.log(course[subject.abbr])
+		}
+
+
+	}
+	collectHTMLObject()
+
 }
 
 
