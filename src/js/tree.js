@@ -189,14 +189,37 @@ const main = async () => {
 					}
 				)
 			}
-
-			console.log(course[subject.abbr])
 		}
 
 
 	}
-	collectHTMLObject()
+	collectHTMLObject();
 
+
+	function addAttrToNodes() {
+
+		console.log(course)
+
+		// loop through keys of abbr in couese
+		Object.keys(course).forEach(
+
+			e => {
+
+				console.log(rectDict[e]);
+
+				// when mouse enter to node
+				rectDict[e].addEventListener("mouseenter", () => {
+					console.log(e);
+				});
+
+				// when mouse exit
+				rectDict[e].addEventListener("mouseleave", () => {
+					console.log(e)
+				});
+			}
+		)
+	}
+	addAttrToNodes();
 }
 
 
