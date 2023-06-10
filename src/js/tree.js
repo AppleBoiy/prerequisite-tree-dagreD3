@@ -1,21 +1,14 @@
-const constant = {
-	spreadSheetUrl: "https://docs.google.com/spreadsheets/d/1t8dvUUdvOxdiKQv5nagGaHyiw3P-C2o0Qg6C_1Tlq58/edit#gid=0",
-	PADDING: 120,
-	offset: 60
-};
-/**
- * Converts a spreadsheet at the given URL to JSON format.
- * @param {string} url - Link to the spreadsheet.
- * @returns {Promise<Object>} - JSON data representing the spreadsheet.
- */
-async function spreadsheetToJson(url) {
-	// Fetch the spreadsheet data
-	const response = await fetch(url);
-	const data = await response.arrayBuffer();
+const main = async () => {
+	async function readSpreadSheet(spreadSheetUrl) {
+		return await fetch(spreadSheetUrl)
+	}
 
-	// Read the workbook and worksheet from the data
-	const workbook = XLSX.read(data, { type: "array" });
-	const worksheet = workbook.Sheets[workbook.SheetNames[0]];
+	async function convertSpreadsheetToJson(response) {
+
+		// build list of array rows from spreadsheet to jsonData
+		const data = await response.arrayBuffer();
+		const workbook = XLSX.read(data, {type: "array"});
+		const worksheet = workbook.Sheets[workbook.SheetNames[0]];
 
 	// Define the range of rows and columns
 	const range = XLSX.utils.decode_range(worksheet["!ref"]);
@@ -95,101 +88,7 @@ async function generateTree(rawData) {
 	svg.attr("width", mainTree.graph().width + constant.PADDING);
 	svg.attr("height", mainTree.graph().height + constant.PADDING);
 
-	svgGroup.attr("transform", "translate(" + constant.offset + ", " + constant.offset + ")");
-}
-
-/**
- * Collects SVG elements from the HTML document.
- * @returns { Promise<{
- *    rectDivs: HTMLCollectionOf<SVGElementTagNameMap[string]>,
- *    textDivs: HTMLCollectionOf<SVGElementTagNameMap[string]>
- * }> } - An object containing collections of rectDivs and textDivs.
- */
-async function collectHTMLElement() {
-	return {
-		rectDivs: document.getElementsByTagName("rect"),
-		textDivs: document.getElementsByTagName("text")
-	};
-}
-
-function idToAbbr(id) {
-	const abbrDict = {
-		"204": "CS",
-		"206": "Math",
-		"208": "Stat"
-	};
-	return `${abbrDict[id.slice(0, 3)]}${id.slice(3)}`
-}
-
-function onhoverHandler(rect, text, childrenRect, parentRect, rectDict, course) {
-
-	const on = (ancestor) => {
-		ancestor.forEach( e => {
-			const abbr = idToAbbr(e);
-		})
-	}
-	const off = (ancestor) => {
-	}
-
-	const highlight = () => {
-
-		// highlight it's self
-		rect.style.fill = "#ff0000";
-		rect.style.stroke = "#ff0000";
-
-		childrenRect.forEach( (child) => {
-			const childRect = child["rectDiv"];
-			childRect.style.fill = "#ff0000";
-			childRect.style.stroke = "#ff0000";
-		})
-		parentRect.forEach( (mother) => {
-			const motherRect = mother["rectDiv"];
-			const abbr = mother["rectDiv"]?.parentNode.id;
-			const ancestor = course[abbr].parent;
-
-			if (ancestor.length !== 0) on(ancestor);
-
-			motherRect.style.fill = "#ff0000";
-			motherRect.style.stroke = "#ff0000";
-		})
-
-	}
-	const unhighlight = () => {
-		let abbr = rect.parentNode?.id;
-		// unhighlight nodes
-		rect.style.fill = rectDict[abbr]?.oldFill;
-		rect.style.stroke = rectDict[abbr]?.oldStroke;
-
-		childrenRect.forEach( (child) => {
-			const abbr = child["rectDiv"]?.parentNode.id;
-			const childRect = child["rectDiv"];
-			childRect.style.fill = rectDict[abbr]?.oldFill;
-			childRect.style.stroke = rectDict[abbr]?.oldStroke;
-		})
-		parentRect.forEach( (mother) => {
-			const abbr = mother["rectDiv"]?.parentNode.id;
-			const motherRect = mother["rectDiv"];
-			const ancestor = course[abbr].parent;
-
-			if (ancestor.length !== 0) off(ancestor);
-
-			motherRect.style.fill = rectDict[abbr]?.oldFill;
-			motherRect.style.stroke = rectDict[abbr]?.oldStroke;
-		})
-	}
-
-
-	rect.addEventListener("mouseenter", highlight )
-	rect.addEventListener("mouseleave", unhighlight )
-	text.addEventListener("mouseenter", highlight )
-	text.addEventListener("mouseleave", unhighlight )
-
-}
-
-const main = async () => {
-	const rawData = await spreadsheetToJson(constant.spreadSheetUrl);
-	const course = {};
-	const rectDict = {};
+	svgGroup.attr("transform", "translate(" + offset + ", " + offset + ")");
 
 	generateTree(rawData)
 		.then(() => console.log("Main tree generated!"))
@@ -202,54 +101,73 @@ const main = async () => {
 		rectDict[abbr] = {};
 	}
 
-	const HTMLElement = await collectHTMLElement();
-	const collectionOfRect = HTMLElement.rectDivs;
-	const collectionOfText = HTMLElement.textDivs;
+		// filter to get only text tag that contains label tag and store to course dictionary
+		for (const textTag of textTagArray) {
+			if (textTag.parentNode.classList[0] === "label")  continue;
 
-	// Filter and store rectDivs and textDivs in the dictionary
-	for (const textTag of collectionOfText) {
-		if (textTag.parentNode.classList[0] === "label") continue;
-		const abbr = textTag.childNodes[0]?.innerHTML;
-		if (!abbr) continue;
-		rectDict[abbr]["textDiv"] = textTag;
-	}
-	for (const rect of collectionOfRect) {
-		const abbr = rect.parentNode.id;
-		if (!abbr) continue;
-		rectDict[abbr]["rectDiv"] = rect;
-		rectDict[abbr]["oldFill"] = rect.style.fill;
-		rectDict[abbr]["oldStroke"] = rect.style.stroke;
-	}
-
-	// Add parent and child rects to the dictionary
-	for (const subject of rawData) {
-		const parent = subject["parent"];
-		const child = subject["children"];
-		const abbr = subject["abbr"];
-		rectDict[abbr]["parentRect"] = parent.map(e => {
-			const abbr = idToAbbr(e);
-			return rectDict[abbr];
-		});
-		rectDict[abbr]["childRect"] = child.map(e => {
-			const abbr = idToAbbr(e);
-			return rectDict[abbr];
-		});
-
-		{
-			// add eventListener to node
-			onhoverHandler(
-				rectDict[abbr]["rectDiv"],
-				rectDict[abbr]["textDiv"],
-				rectDict[abbr]["childRect"],
-				rectDict[abbr]["parentRect"],
-				rectDict,
-				course
-			)
+			const abbr = textTag.childNodes[0]?.innerHTML;
+			rectDict[abbr]["textDiv"] = textTag;
 		}
 
-	}
-};
+		for (const rect of rectTag) {
+			const abbr = rect.parentNode.id;
+			rectDict[abbr]["rectDiv"] = rect;
+			rectDict[abbr]["oldFill"] = rect.style.fill;
+			rectDict[abbr]["oldStroke"] = rect.style.stroke;
+		}
 
-main()
-	.then(() => console.log("Run main..."))
-	.catch(r => console.log(r));
+		// add child and parent rect to dictionary
+		for (const subject of rawData) {
+			const parent = subject.parent
+			if (typeof parent !== "undefined" || parent.length !== 0) {
+				// collect parent node
+				rectDict[subject.abbr]["parentRect"] = parent.map(
+					(e) => {
+						const abbr = `${abbrDict[e.slice(0, 3)]}${e.slice(3)}`;
+						return rectDict[abbr]
+					}
+				)
+			}
+
+			const child = subject.children
+			if (typeof child !== "undefined" || child.length !== 0) {
+				rectDict[subject.abbr]["childRect"] = child.map(
+					(e) => {
+						const abbr = `${abbrDict[e.slice(0, 3)]}${e.slice(3)}`
+						return rectDict[abbr]
+					}
+				)
+			}
+		}
+
+
+	}
+	collectHTMLObject();
+
+
+
+	function addAttrToNodes() {
+		// loop through keys of abbr in couese
+		Object.keys(rectDict).forEach(
+
+			e => {
+				const rectDiv = rectDict[e]["rectDiv"];
+
+				// when mouse enter to node
+				rectDiv.addEventListener("mouseenter", () => {
+					console.log(rectDiv)
+					rectDiv.style.fill = "ffee00";
+					rectDiv.style.stroke = "ffee00";
+				});
+
+				// when mouse exit
+				rectDiv.addEventListener("mouseleave", () => {
+					rectDiv.style.fill = rectDict[e]["oldFill"];
+					rectDiv.style.fill = rectDict[e]["oldStroke"];
+				});
+			}
+		)
+	}
+	addAttrToNodes();
+}
+
