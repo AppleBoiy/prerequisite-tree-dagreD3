@@ -1,9 +1,9 @@
 // Constants
-const constants = {
-	spreadSheetUrl: "https://docs.google.com/spreadsheets/d/1t8dvUUdvOxdiKQv5nagGaHyiw3P-C2o0Qg6C_1Tlq58/edit#gid=0",
-	PADDING: 120,
-	offset: 60
-};
+const spreadSheetUrl = "https://docs.google.com/spreadsheets/d/1t8dvUUdvOxdiKQv5nagGaHyiw3P-C2o0Qg6C_1Tlq58/edit#gid=0"
+
+// Create a dictionary to store the rectangle and course data
+const rectDict = {};
+const courseDict = {};
 
 /**
  * Converts a spreadsheet at the given URL to JSON format.
@@ -45,7 +45,6 @@ async function spreadsheetToJson(url) {
 	return result;
 }
 
-
 /**
  * Generates a tree view of prerequisite tree from a JSON-like object.
  * @param {Object} rawData - Dictionary of course details.
@@ -86,62 +85,68 @@ async function generateTreeView(rawData) {
 	render(d3.select("svg g"), mainTree);
 
 	// Size the container to the graph
-	svg.attr("width", mainTree.graph().width + constants.PADDING);
-	svg.attr("height", mainTree.graph().height + constants.PADDING);
+	svg.attr("width", mainTree.graph().width + 120);
+	svg.attr("height", mainTree.graph().height + 120);
 
-	svgGroup.attr("transform", `translate(${constants.offset}, ${constants.offset})`);
+	svgGroup.attr("transform", `translate(${60}, ${60})`);
 }
 
+async function main(url) {
+	// Convert the spreadsheet to JSON
+	const rawData = await spreadsheetToJson(url);
 
-/**
- * Collects SVG elements from the HTML document.
- * @returns {Promise<{
- *    rectDivs: HTMLCollectionOf<SVGElementTagNameMap[string]>,
- *    textDivs: HTMLCollectionOf<SVGElementTagNameMap[string]>
- * }> } - An object containing collections of rectDivs and textDivs.
- */
-async function collectHTMLElements() {
-	return {
-		rectDivs: document.getElementsByTagName("rect"),
-		textDivs: document.getElementsByTagName("text"),
-		nodeDivs: document.getElementsByClassName("node")
-	};
+	// Generate the prerequisite tree view
+	await generateTreeView(rawData);
+
+	// Populate the dictionary with rectangle and course data
+	for (const subject of rawData) {
+		const abbr = subject.abbr;
+		rectDict[abbr] = {};
+		courseDict[abbr] = subject;
+	}
+
+	const nodeDivs = document.getElementsByClassName("node");
+	Array.from(nodeDivs).forEach(div => {
+		const [ rect , text ] = div.childNodes;
+		const { fill, stroke } = rect.style;
+		const rectData = rectDict[div.id];
+
+		rectData.rectDiv = rect;
+		rectData.textDiv = text;
+		rectData.nodeDiv = div;
+		rectData.oldFill = fill;
+		rectData.oldStroke = stroke;
+		rectData.newFill = "#ff0000";
+		rectData.newStroke = "#ff0000";
+	});
+
+	// Attach event handlers to the rectangles
+	Object.entries(rectDict).forEach(([abbr, rectData]) => {
+		const { nodeDiv } = rectData;
+		attachEventHandlers(abbr, nodeDiv);
+	});
+
+
 }
 
-/**
- * Adds event handlers for hovering and clicking on the rectangles.
- * @param {Element} rectDiv - Rectangle div element.
- * @param {Element} textDiv - Text div element.
- * @param {string[]} childRectCodes - Array of child rectangle codes.
- * @param {string[]} parentRectCodes - Array of parent rectangle codes.
- * @param {Object} rectDict - Dictionary containing rectangle data.
- * @param {Object} courseDict - Dictionary containing course data.
- */
-function attachEventHandlers(rectDiv, textDiv, childRectCodes, parentRectCodes, rectDict, courseDict) {
-	const abbr = rectDiv.parentNode.id;
+function attachEventHandlers(abbr, nodeDiv) {
+	const subjectData = courseDict[abbr];
+	const childCodes = subjectData.children.map( e => idToAbbr(e));
+	const parentCodes = subjectData.parent.map( e => idToAbbr(e));
 
 	const handleMouseEnter = () => {
-		rectDiv.style.fill = "#FFB31C";
-		rectDiv.style.stroke = "#FFB31C";
-		childRectCodes.forEach(code => {
-			const childRect = rectDict[idToAbbr(code)]?.rectDiv;
-			if (childRect) {
-				childRect.style.fill = "#FFB31C";
-				childRect.style.stroke = "#FFB31C";
-			}
+		highlight(abbr);
+		childCodes.forEach(code => highlight(code) );
+		parentCodes.forEach(code => {
+			highlight(code);
+
 		});
 	};
 
 	const handleMouseLeave = () => {
-		rectDiv.style.fill = rectDict[abbr]?.oldFill;
-		rectDiv.style.stroke = rectDict[abbr]?.oldStroke;
-		childRectCodes.forEach(code => {
-			const childRect = rectDict[idToAbbr(code)]?.rectDiv;
-			if (childRect) {
-				childRect.style.fill = rectDict[code]?.oldFill;
-				childRect.style.stroke = rectDict[code]?.oldStroke ;
-			}
-		});
+		highlight(abbr, false);
+		childCodes.forEach(code => highlight(code, false));
+		parentCodes.forEach(code => highlight(code, false));
 	};
 
 	const handleClick = () => {
@@ -152,9 +157,23 @@ function attachEventHandlers(rectDiv, textDiv, childRectCodes, parentRectCodes, 
 		}
 	};
 
-	rectDiv.addEventListener("mouseenter", handleMouseEnter);
-	rectDiv.addEventListener("mouseleave", handleMouseLeave);
-	rectDiv.addEventListener("click", handleClick);
+	nodeDiv.addEventListener("mouseenter", handleMouseEnter);
+	nodeDiv.addEventListener("mouseleave", handleMouseLeave);
+	nodeDiv.addEventListener("click", handleClick);
+}
+
+function highlight(abbr, isEnter = true) {
+	const rectData = rectDict[abbr]
+	const { newFill, newStroke, oldFill, oldStroke } = rectData;
+	const rect = rectData.rectDiv;
+
+	if (isEnter) {
+		rect.style.fill = newFill;
+		rect.style.stroke = newStroke;
+	} else {
+		rect.style.fill = oldFill;
+		rect.style.stroke = oldStroke;
+	}
 }
 
 function idToAbbr(id) {
@@ -166,56 +185,6 @@ function idToAbbr(id) {
 	return `${abbrDict[id.slice(0, 3)]}${id.slice(3)}`
 }
 
-async function main() {
-	// Convert the spreadsheet to JSON
-	const rawData = await spreadsheetToJson(constants.spreadSheetUrl);
-
-	// Generate the prerequisite tree view
-	await generateTreeView(rawData);
-
-	// Create a dictionary to store the rectangle and course data
-	const rectDict = {};
-	const courseDict = {};
-
-	// Populate the dictionary with rectangle and course data
-	for (const subject of rawData) {
-		const abbr = subject.abbr;
-		rectDict[abbr] = {};
-		courseDict[abbr] = subject;
-	}
-
-	// Collect rectDivs and textDivs in the dictionary
-	const { rectDivs, textDivs, nodeDivs } = await collectHTMLElements();
-
-	Array.from(textDivs).forEach(textTag => {
-		if (textTag.parentNode.classList[0] === "label") return;
-		const abbr = textTag.childNodes[0]?.innerHTML;
-		if (!abbr) return;
-		const rectData = rectDict[abbr];
-		rectData.textDiv = textTag;
-	});
-
-	Array.from(rectDivs).forEach(rect => {
-		const abbr = rect.parentNode.id;
-		if (!abbr) return;
-		const rectData = rectDict[abbr];
-		rectData.rectDiv = rect;
-		const { fill, stroke } = rect.style;
-		rectData.oldFill = fill;
-		rectData.oldStroke = stroke;
-	});
-
-	// Attach event handlers to the rectangles
-	Object.entries(rectDict).forEach(([abbr, rectData]) => {
-		const { rectDiv, textDiv } = rectData;
-		const childRectCodes = courseDict[abbr]?.children || [];
-		const parentRectCodes = courseDict[abbr]?.parent || [];
-		attachEventHandlers(rectDiv, textDiv, childRectCodes, parentRectCodes, rectDict, courseDict);
-	});
-
-
-}
-
-main()
+main(spreadSheetUrl)
 	.then(() => console.log("Run main..."))
 	.catch(error => console.log(error));
