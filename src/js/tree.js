@@ -3,7 +3,6 @@ const constant = {
 	PADDING: 120,
 	offset: 60
 };
-
 /**
  * Converts a spreadsheet at the given URL to JSON format.
  * @param {string} url - Link to the spreadsheet.
@@ -113,15 +112,82 @@ async function collectHTMLElement() {
 	};
 }
 
-const main = async () => {
-	const rawData = await spreadsheetToJson(constant.spreadSheetUrl);
-
+function idToAbbr(id) {
 	const abbrDict = {
 		"204": "CS",
 		"206": "Math",
 		"208": "Stat"
 	};
+	return `${abbrDict[id.slice(0, 3)]}${id.slice(3)}`
+}
 
+function onhoverHandler(rect, text, childrenRect, parentRect, rectDict, course) {
+
+	const on = (ancestor) => {
+		ancestor.forEach( e => {
+			const abbr = idToAbbr(e);
+		})
+	}
+	const off = (ancestor) => {
+	}
+
+	const highlight = () => {
+
+		// highlight it's self
+		rect.style.fill = "#ff0000";
+		rect.style.stroke = "#ff0000";
+
+		childrenRect.forEach( (child) => {
+			const childRect = child["rectDiv"];
+			childRect.style.fill = "#ff0000";
+			childRect.style.stroke = "#ff0000";
+		})
+		parentRect.forEach( (mother) => {
+			const motherRect = mother["rectDiv"];
+			const abbr = mother["rectDiv"]?.parentNode.id;
+			const ancestor = course[abbr].parent;
+
+			if (ancestor.length !== 0) on(ancestor);
+
+			motherRect.style.fill = "#ff0000";
+			motherRect.style.stroke = "#ff0000";
+		})
+
+	}
+	const unhighlight = () => {
+		let abbr = rect.parentNode?.id;
+		// unhighlight nodes
+		rect.style.fill = rectDict[abbr]?.oldFill;
+		rect.style.stroke = rectDict[abbr]?.oldStroke;
+
+		childrenRect.forEach( (child) => {
+			const abbr = child["rectDiv"]?.parentNode.id;
+			const childRect = child["rectDiv"];
+			childRect.style.fill = rectDict[abbr]?.oldFill;
+			childRect.style.stroke = rectDict[abbr]?.oldStroke;
+		})
+		parentRect.forEach( (mother) => {
+			const abbr = mother["rectDiv"]?.parentNode.id;
+			const motherRect = mother["rectDiv"];
+			const ancestor = course[abbr].parent;
+
+			if (ancestor.length !== 0) off(ancestor);
+
+			motherRect.style.fill = rectDict[abbr]?.oldFill;
+			motherRect.style.stroke = rectDict[abbr]?.oldStroke;
+		})
+	}
+
+
+	rect.addEventListener("mouseenter", highlight )
+	rect.addEventListener("mouseleave", unhighlight )
+	text.addEventListener("mouseenter", highlight )
+	text.addEventListener("mouseleave", unhighlight )
+
+}
+
+const main = async () => {
+	const rawData = await spreadsheetToJson(constant.spreadSheetUrl);
 	const course = {};
 	const rectDict = {};
 
@@ -137,18 +203,17 @@ const main = async () => {
 	}
 
 	const HTMLElement = await collectHTMLElement();
-	const rectTag = HTMLElement.rectDivs;
-	const textTagArray = HTMLElement.textDivs;
+	const collectionOfRect = HTMLElement.rectDivs;
+	const collectionOfText = HTMLElement.textDivs;
 
 	// Filter and store rectDivs and textDivs in the dictionary
-	for (const textTag of textTagArray) {
+	for (const textTag of collectionOfText) {
 		if (textTag.parentNode.classList[0] === "label") continue;
 		const abbr = textTag.childNodes[0]?.innerHTML;
 		if (!abbr) continue;
 		rectDict[abbr]["textDiv"] = textTag;
 	}
-
-	for (const rect of rectTag) {
+	for (const rect of collectionOfRect) {
 		const abbr = rect.parentNode.id;
 		if (!abbr) continue;
 		rectDict[abbr]["rectDiv"] = rect;
@@ -160,42 +225,29 @@ const main = async () => {
 	for (const subject of rawData) {
 		const parent = subject["parent"];
 		const child = subject["children"];
-
 		const abbr = subject["abbr"];
+		rectDict[abbr]["parentRect"] = parent.map(e => {
+			const abbr = idToAbbr(e);
+			return rectDict[abbr];
+		});
+		rectDict[abbr]["childRect"] = child.map(e => {
+			const abbr = idToAbbr(e);
+			return rectDict[abbr];
+		});
 
-		if (parent?.length !== 0) {
-			rectDict[abbr]["parentRect"] = parent.map(e => {
-				const abbr = `${abbrDict[e.slice(0, 3)]}${e.slice(3)}`;
-				return rectDict[abbr];
-			});
+		{
+			// add eventListener to node
+			onhoverHandler(
+				rectDict[abbr]["rectDiv"],
+				rectDict[abbr]["textDiv"],
+				rectDict[abbr]["childRect"],
+				rectDict[abbr]["parentRect"],
+				rectDict,
+				course
+			)
 		}
-		if (child?.length !== 0) {
-			rectDict[abbr]["childRect"] = child.map(e => {
-				const abbr = `${abbrDict[e.slice(0, 3)]}${e.slice(3)}`;
-				return rectDict[abbr];
-			});
-		}
+
 	}
-
-	function findRectDiv() {
-		const temp = document.getElementsByTagName("rect");
-		for (const rectDiv of temp) {
-			const oldFill = rectDiv.style.fill;
-			const oldStroke = rectDiv.style.stroke;
-
-			rectDiv.addEventListener("mouseenter", () => {
-				rectDiv.style.fill = "#ffee00";
-				rectDiv.style.stroke = "#ffee00";
-			});
-
-			rectDiv.addEventListener("mouseleave", () => {
-				rectDiv.style.fill = oldFill;
-				rectDiv.style.stroke = oldStroke;
-			});
-		}
-	}
-
-	findRectDiv();
 };
 
 main()
