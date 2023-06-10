@@ -23,7 +23,7 @@
 .graph text, .graph .node.root div {
     fill: #333;
     font-family: "Avenir Next", "Helvetica Neue", Helvetica, Arial, sans-serif;
-    font-weight: 400px;
+    font-weight: 400;
     font-size: 14px;
 }
 .graph .node rect {
