@@ -178,48 +178,63 @@ const main = async () => {
 	}
 
 	function findRectDiv() {
-		const temp = document.getElementsByTagName("rect");
-		for (const rectDiv of temp) {
-			const oldFill = rectDiv.style.fill;
-			const oldStroke = rectDiv.style.stroke;
+		const temp = document.getElementsByClassName("node");
 
-			// add tooltip
-			// creat tag popup content
-			console.log(rawData)
-			let countLoop = 0;
-			const containerDetail = document.createElement("div");
-			const detail = document.createElement("span");
-			const text = document.createTextNode("add detail here!!!");
-			// add class to tag
-			containerDetail.classList.add("tooltip");
-			detail.classList.add("tooltiptext");
-			// add tool tag to rect tag
-			detail.appendChild(text); // add text content
-			containerDetail.appendChild(detail); // add tooltip text in container detail
-			rectDiv.appendChild(containerDetail); // add tooltip in rect tag
-			// hover variable
-			const showContents = document.getElementsByClassName(".tooltip.tooltiptext")
-			console.log(showContents);
+		for (const node of temp) {
+			const oldFill = node.style.fill;
+			const oldStroke = node.style.stroke;
 
 			// add hover highlight
-			rectDiv.addEventListener("mouseenter", () => {
-				rectDiv.style.fill = "#ffee00";
-				rectDiv.style.stroke = "#ffee00";
-				showContents.style.visibility = "visible";
-				showContents.style.opacity = "1";
-
+			node.addEventListener("mouseenter", () => {
+				node.childNodes[0].style.fill = "#ffee00";
+				node.childNodes[0].style.stroke = "#ffee00";
+				// console.log(node.childNodes[0]);
+				// showContents.style.visibility = "visible";
+				// showContents.style.opacity = "1";
 			});
 
-			rectDiv.addEventListener("mouseleave", () => {
-				rectDiv.style.fill = oldFill;
-				rectDiv.style.stroke = oldStroke;
-				showContents.style.visibility = "hidden";
-				showContents.style.opacity = "0";
+			node.addEventListener("mouseleave", () => {
+				node.childNodes[0].style.fill = oldFill;
+				node.childNodes[0].style.stroke = oldStroke;
+				// showContents.style.visibility = "hidden";
+				// showContents.style.opacity = "0";
 			});
+
 		}
 	}
+	// findRectDiv();
 
-	findRectDiv();
+	function addPopup() {
+		const popup = document.getElementById("popup");
+		const close = document.getElementById("close");
+		close.addEventListener("click", (e) => {
+			e.preventDefault();
+			if (popup.style.display !== "none") {
+				popup.style.display = "none";
+			}
+		})
+		// console.log(rawData);
+		console.log(course);
+		// console.log(rectDict);
+		const temp = document.getElementsByClassName("node");
+		// const title = document.getElementsByClassName("courseName");
+		// const content = document.getElementsByClassName("courseContent");
+		Array.from(temp).forEach((node, index) => {
+			// console.log(node)
+			node.addEventListener("click", (e) => {
+				e.preventDefault();
+				popup.style.display = "flex";
+				popup.children[0].children[0].innerHTML = course[`${node.id}`]["full name (ENG)"]
+				// console.log(popup.children[0].children)
+				popup.children[0].children[1].innerHTML = `Prerequisite: ${course[`${node.id}`]["parent"].join(", ") || "-"}<br>
+														Credit: ${course[`${node.id}`]["credit"]}<br>
+														Details: ....`
+
+			})
+		})
+	}
+	addPopup();
+
 
 	function addTooltip() {
 		

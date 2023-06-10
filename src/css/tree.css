@@ -30,19 +30,39 @@
     stroke: #ccc;
     fill: #fff;
     stroke-width: 2px;
+
+}
+.node {
+    cursor: pointer;
 }
 .node.y1 rect {
-    stroke: red;
+    stroke: black;
     fill: var(--year1);
+}
+.node.y1:hover rect {
+    stroke: blue;
+    fill: brown;
 }
 .node.y2 rect {
     fill: var(--year2);
 }
+.node.y2:hover rect {
+    stroke: blue;
+    fill: brown;
+}
 .node.y3 rect {
     fill: var(--year3);
 }
+.node.y3:hover rect {
+    stroke: blue;
+    fill: brown;
+}
 .node.y4 rect {
     fill: var(--year4);
+}
+.node.y4:hover rect {
+    stroke: blue;
+    fill: brown;
 }
 
 .graph .node.disabled rect {
@@ -79,31 +99,46 @@
 }
 
 /* popup style */
-.tooltip {
+.popup-bg {
+    width: 100%;
+    height: 100vh;
+    display: none;
+    justify-content: center;
+    align-items: center;
+    position: fixed;
+    z-index: 100;
+    top: 0px;
+    background-color: #0000005e;
+}
+.window-popup {
     position: relative;
-    display: inline-block;
-    border-bottom: 1px dotted black;
-  }
-  
-  .tooltip .tooltiptext {
-    visibility: hidden;
-    width: 120px;
-    color: black;
-    text-align: center;
-    border-radius: 6px;
-    padding: 5px 0;
-    position: absolute;
-    z-index: 1;
-    border:3px solid black;
-    bottom: 100%;
-    left: 50%;
-    margin-left: -60px;
-    background-color:white;
-    opacity: 0;
-    transition: opacity 1s;
-  }
-  
-  .tooltip:hover .tooltiptext {
-    visibility: visible;
-    opacity: 1;
-  }
+    display: flex;
+    flex-direction: column;
+    padding: 30px;
+    width: fit-content;
+    border: 3px solid #252525;
+    background-color: #937777;
+    border-radius: 10px;
+}
+.closeBox {
+    display: flex;
+    justify-content: center;
+}
+#close {
+    background-color: #de5f5f;
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+    transition: all 0.1s ease-in-out;
+    box-sizing: content-box;
+    padding: 3px 10px 5px;
+}
+#close:hover {
+    background-color: #da4848;
+    border: 1px solid #333;
+    border-radius: 10px;
+    scale: 1.03;
+}
+.courseName {
+    border-bottom: #252525;
+}
