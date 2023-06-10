@@ -13,14 +13,8 @@
             crossorigin="anonymous">
     </script>
 
-    <!-- style -->
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/AppleBoiy/prerequisite-tree@main/src/css/main.css"
-          integrity="sha384-hthTVmO8zUFK6KC+sYihviuSRyCV+PwmTx/voRiUjQTGku4aGM/PUn2VUC//6MJL"
-          crossorigin="anonymous">
-
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/AppleBoiy/prerequisite-tree@main/src/css/tree.css"
-          integrity="sha384-nxEQJjkrLmIzfFADbcdlLGqXv98hcT6zFgtg8i0nRoVeOB/Pc938DZbBa/giyI4W"
-          crossorigin="anonymous">
+    <link rel="stylesheet" href="css/main.css">
+    <link rel="stylesheet" href="css/tree.css">
 
     <!-- Bootstrap CSS -->
     <link crossorigin="anonymous"
@@ -79,6 +73,19 @@
     </div>
 </div>
 
+<div class="popup-bg", id="popup">
+    <span class="window-popup">
+        <h1 class="courseName">Course Name</h1>
+        <p class="courseContents">
+            prerequisite: ... <br>
+            credit: ... <br>
+            details: ... <br>
+        </p>
+        <div class="closeBox">
+            <button id="close">close</button>
+        </div>
+    </span>
+</div>
 
 <!-- partial -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/3.5.16/d3.min.js"
@@ -90,7 +97,6 @@
         crossorigin="anonymous">
 </script>
 
-<script src="js/tree.js"></script>
-
+<script src="js/tree2.js"></script>
 </body>
 </html>
