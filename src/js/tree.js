@@ -183,19 +183,47 @@ const main = async () => {
 			const oldFill = rectDiv.style.fill;
 			const oldStroke = rectDiv.style.stroke;
 
+			// add tooltip
+			// creat tag popup content
+			console.log(rawData)
+			let countLoop = 0;
+			const containerDetail = document.createElement("div");
+			const detail = document.createElement("span");
+			const text = document.createTextNode("add detail here!!!");
+			// add class to tag
+			containerDetail.classList.add("tooltip");
+			detail.classList.add("tooltiptext");
+			// add tool tag to rect tag
+			detail.appendChild(text); // add text content
+			containerDetail.appendChild(detail); // add tooltip text in container detail
+			rectDiv.appendChild(containerDetail); // add tooltip in rect tag
+			// hover variable
+			const showContents = document.getElementsByClassName(".tooltip.tooltiptext")
+			console.log(showContents);
+
+			// add hover highlight
 			rectDiv.addEventListener("mouseenter", () => {
 				rectDiv.style.fill = "#ffee00";
 				rectDiv.style.stroke = "#ffee00";
+				showContents.style.visibility = "visible";
+				showContents.style.opacity = "1";
+
 			});
 
 			rectDiv.addEventListener("mouseleave", () => {
 				rectDiv.style.fill = oldFill;
 				rectDiv.style.stroke = oldStroke;
+				showContents.style.visibility = "hidden";
+				showContents.style.opacity = "0";
 			});
 		}
 	}
 
 	findRectDiv();
+
+	function addTooltip() {
+		
+	}
 };
 
 main()
