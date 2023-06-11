@@ -100,16 +100,11 @@ function generateTreeView(rawData) {
  * @returns {Array} - An array containing the parent nodes and their ancestors.
  */
 function nodeTraverse(abbr) {
-	// Function to retrieve the parent nodes of a given abbreviation
-	const getNodeParent = (abbr) => {
-		return courseDict[abbr]?.parent.map(e => idToAbbr(e));
-	};
 
 	// Get the parent nodes of the current abbreviation
-	const parent = getNodeParent(abbr);
-	if (!parent) {
-		return [];
-	}
+	const parent = courseDict[abbr]?.parent.map(e => idToAbbr(e))
+
+	if (!parent) return [];
 
 	// Recursively traverse the parent nodes to get their ancestors
 	const ancestor = parent.map(e => nodeTraverse(e));
@@ -121,35 +116,33 @@ function nodeTraverse(abbr) {
 
 
 /**
- * Attaches event handlers to a node element.
+ * Attaches event handlers to a given node element based on the provided abbreviation.
  *
- * @param {string} abbr - The abbreviation associated with the node element.
- * @param {HTMLElement} nodeDiv - The node element to attach event handlers to.
+ * @param {string} abbr - The abbreviation of the node.
+ * @param {HTMLElement} nodeDiv - The node element to attach the event handlers to.
+ * @returns {void} - This function does not return a value.
  */
 function attachEventHandlers(abbr, nodeDiv) {
 	// Retrieve the subject data associated with the abbreviation
 	const subjectData = courseDict[abbr];
 
 	// Get the child and parent codes from the subject data
-	const childCodes = subjectData.children.map(e => idToAbbr(e));
-	const parentCodes = subjectData.parent.map(e => idToAbbr(e));
+	const childCodes = subjectData.children.map(idToAbbr);
+	const parentCodes = nodeTraverse(abbr);
+
+	// Combine the abbreviation, child codes, and parent codes into a single array
+	const nodes = [abbr, ...childCodes, ...parentCodes];
 
 	// Event handler for mouse enter event
 	const handleMouseEnter = () => {
-		// Highlight the current node and its children and parents
-		highlight(abbr);
-		childCodes.forEach(code => highlight(code));
-		parentCodes.forEach(code => highlight(code));
-
-		console.log(nodeTraverse(abbr));
+		// Highlight the nodes on mouse enter
+		nodes.forEach(e => highlight(e));
 	};
 
 	// Event handler for mouse leave event
 	const handleMouseLeave = () => {
-		// Revert the highlight of the current node and its children and parents
-		highlight(abbr, false);
-		childCodes.forEach(code => highlight(code, false));
-		parentCodes.forEach(code => highlight(code, false));
+		// Revert the highlight of the nodes on mouse leave
+		nodes.forEach(e => highlight(e, false));
 	};
 
 	// Event handler for click event
@@ -168,6 +161,8 @@ function attachEventHandlers(abbr, nodeDiv) {
 	nodeDiv.addEventListener("mouseleave", handleMouseLeave);
 	nodeDiv.addEventListener("click", handleClick);
 }
+
+
 
 /**
  * Highlights or reverts the highlight of a rectangle element.
