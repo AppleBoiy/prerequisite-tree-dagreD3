@@ -42,6 +42,7 @@ async function spreadsheetToJson(url) {
 	return result;
 }
 
+
 /**
  * Generates a tree view of prerequisite tree from a JSON-like object.
  * @param {Object} rawData - Dictionary of course details.
@@ -112,54 +113,6 @@ function nodeTraverse(abbr) {
 
 	// Return the parent nodes and their ancestors as a flattened array
 	return [...parent, ...flattenedAncestor];
-}
-
-
-/**
- * Attaches event handlers to a given node element based on the provided abbreviation.
- *
- * @param {string} abbr - The abbreviation of the node.
- * @param {HTMLElement} nodeDiv - The node element to attach the event handlers to.
- * @returns {void} - This function does not return a value.
- */
-function attachEventHandlers(abbr, nodeDiv) {
-	// Retrieve the subject data associated with the abbreviation
-	const subjectData = courseDict[abbr];
-
-	// Get the child and parent codes from the subject data
-	const childCodes = subjectData.children.map(idToAbbr);
-	const parentCodes = nodeTraverse(abbr);
-
-	// Combine the abbreviation, child codes, and parent codes into a single array
-	const nodes = [abbr, ...childCodes, ...parentCodes];
-
-	// Event handler for mouse enter event
-	const handleMouseEnter = () => {
-		// Highlight the nodes on mouse enter
-		nodes.forEach(e => highlight(e));
-	};
-
-	// Event handler for mouse leave event
-	const handleMouseLeave = () => {
-		// Revert the highlight of the nodes on mouse leave
-		nodes.forEach(e => highlight(e, false));
-	};
-
-	// Event handler for click event
-	const handleClick = () => {
-		// Retrieve the course details associated with the abbreviation
-		const course = courseDict[abbr];
-		if (course) {
-			// Log the clicked course and its details to the console
-			console.log(`Course ${abbr} clicked!`);
-			console.log("Course details:", course);
-		}
-	};
-
-	// Attach event listeners to the node element
-	nodeDiv.addEventListener("mouseenter", handleMouseEnter);
-	nodeDiv.addEventListener("mouseleave", handleMouseLeave);
-	nodeDiv.addEventListener("click", handleClick);
 }
 
 
@@ -253,36 +206,64 @@ function main() {
 
 	})
 		.catch(error => console.log(error));
+
+	const close = document.getElementById("close");
+	close.addEventListener("click", (e) => {
+		e.preventDefault();
+		if (popup.style.display !== "none") {
+			popup.style.display = "none";
+		}
+	})
 }
 
-function addPopup() {
-  const popup = document.getElementById("popup");
-  const close = document.getElementById("close");
-  close.addEventListener("click", (e) => {
-    e.preventDefault();
-    if (popup.style.display !== "none") {
-      popup.style.display = "none";
-    }
-  })
-  // console.log(rawData);
-  console.log(course);
-  // console.log(rectDict);
-  const temp = document.getElementsByClassName("node");
-  // const title = document.getElementsByClassName("courseName");
-  // const content = document.getElementsByClassName("courseContent");
-  Array.from(temp).forEach((node, index) => {
-    // console.log(node)
-    node.addEventListener("click", (e) => {
-      e.preventDefault();
-      popup.style.display = "flex";
-      popup.children[0].children[0].innerHTML = course[`${node.id}`]["full name (ENG)"]
-      // console.log(popup.children[0].children)
-      popup.children[0].children[1].innerHTML = `Prerequisite: ${course[`${node.id}`]["parent"].join(", ") || "-"}<br>
-                          Credit: ${course[`${node.id}`]["credit"]}<br>
-                          Details: ....`
+/**
+ * Attaches event handlers to a given node element based on the provided abbreviation.
+ *
+ * @param {string} abbr - The abbreviation of the node.
+ * @param {HTMLElement} nodeDiv - The node element to attach the event handlers to.
+ * @returns {void} - This function does not return a value.
+ */
+function attachEventHandlers(abbr, nodeDiv) {
+	const popup = document.getElementById("popup");
 
-    })
-  })
+	// Retrieve the subject data associated with the abbreviation
+	const subjectData = courseDict[abbr];
+
+	// Get the child and parent codes from the subject data
+	const childCodes = subjectData.children.map(idToAbbr);
+	const parentCodes = nodeTraverse(abbr);
+
+	// Combine the abbreviation, child codes, and parent codes into a single array
+	const nodes = [abbr, ...childCodes, ...parentCodes];
+
+	// Event handler for mouse enter event
+	const handleMouseEnter = () => {
+		// Highlight the nodes on mouse enter
+		nodes.forEach(e => highlight(e));
+	};
+
+	// Event handler for mouse leave event
+	const handleMouseLeave = () => {
+		// Revert the highlight of the nodes on mouse leave
+		nodes.forEach(e => highlight(e, false));
+	};
+
+	const handleMouseClick = (e) => {
+		e.preventDefault();
+		popup.style.display = "flex";
+		const [ courseName, courseContent ] = popup.children[0].children;
+
+		courseName.innerHTML = courseDict[abbr]["full name (ENG)"]
+		courseContent.innerHTML = `
+			Prerequisite: ${courseDict[abbr]["parent"] || "-"}<br>
+			Credit: ${courseDict[abbr]["credit"]}<br>
+      Details: ....`
+	}
+
+	// Attach event listeners to the node element
+	nodeDiv.addEventListener("mouseenter", handleMouseEnter);
+	nodeDiv.addEventListener("mouseleave", handleMouseLeave);
+	nodeDiv.addEventListener("click", handleMouseClick);
 }
 
 
