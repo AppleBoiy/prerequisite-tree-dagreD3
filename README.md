@@ -40,7 +40,7 @@ The tool fetches a Google Spreadsheet containing course data and converts it int
    
 ### Usage
 1. Open the `index.html` file in a web browser.
-2. Provide the URL of the spreadsheet in the spreadsheetUrl variable inside the main function in the script.js file.
+2. Provide the URL of the spreadsheet in the spreadsheetUrl variable inside the `main` function in the `script.js` file.
 Save the changes.
 3. Run a local server to serve the files. You can use the following command with Python:
     ```shell
