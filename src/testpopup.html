@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        /* popup style */
+    .tooltip {
+        position: relative;
+        display: inline-block;
+        border-bottom: 1px dotted black;
+    }
+    
+    .tooltip .tooltiptext {
+        visibility: hidden;
+        width: 120px;
+        color: black;
+        text-align: center;
+        border-radius: 6px;
+        padding: 5px 0;
+        position: absolute;
+        z-index: 1;
+        border:3px solid black;
+        bottom: 100%;
+        left: 50%;
+        margin-left: -60px;
+        background-color:white;
+        opacity: 0;
+        transition: opacity 1s;
+    }
+    
+    .tooltip:hover .tooltiptext {
+        visibility: visible;
+        opacity: 1;
+    }
+    </style>
+</head>
+<body>
+    <div>hover here</div>
+    <script>
+        const containerDetail = document.createElement("div");
+        const detail = document.createElement("span");
+        const text = document.createTextNode("add detail here!!!");
+
+        // add class to tag
+        containerDetail.classList.add("tooltip");
+        detail.classList.add("tooltiptext");
+        // add tool tag to rect tag
+        detail.appendChild(text); // add text content
+        containerDetail.appendChild(detail); // add tooltip text in container detail
+    </script>
+</body>
+</html>

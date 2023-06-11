@@ -211,7 +211,6 @@ function idToAbbr(id) {
 	return `${abbrDict[id.slice(0, 3)]}${id.slice(3)}`;
 }
 
-
 function main() {
 	const spreadSheetUrl = "https://docs.google.com/spreadsheets/d/1t8dvUUdvOxdiKQv5nagGaHyiw3P-C2o0Qg6C_1Tlq58/edit#gid=0";
 
@@ -255,5 +254,37 @@ function main() {
 	})
 		.catch(error => console.log(error));
 }
+
+function addPopup() {
+  const popup = document.getElementById("popup");
+  const close = document.getElementById("close");
+  close.addEventListener("click", (e) => {
+    e.preventDefault();
+    if (popup.style.display !== "none") {
+      popup.style.display = "none";
+    }
+  })
+  // console.log(rawData);
+  console.log(course);
+  // console.log(rectDict);
+  const temp = document.getElementsByClassName("node");
+  // const title = document.getElementsByClassName("courseName");
+  // const content = document.getElementsByClassName("courseContent");
+  Array.from(temp).forEach((node, index) => {
+    // console.log(node)
+    node.addEventListener("click", (e) => {
+      e.preventDefault();
+      popup.style.display = "flex";
+      popup.children[0].children[0].innerHTML = course[`${node.id}`]["full name (ENG)"]
+      // console.log(popup.children[0].children)
+      popup.children[0].children[1].innerHTML = `Prerequisite: ${course[`${node.id}`]["parent"].join(", ") || "-"}<br>
+                          Credit: ${course[`${node.id}`]["credit"]}<br>
+                          Details: ....`
+
+    })
+  })
+}
+
+
 
 main();
