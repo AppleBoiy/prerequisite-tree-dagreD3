@@ -2,6 +2,7 @@
 const rectDict = {};
 const courseDict = {};
 
+
 const main = () => {
 	const spreadSheetUrl = "https://docs.google.com/spreadsheets/d/1t8dvUUdvOxdiKQv5nagGaHyiw3P-C2o0Qg6C_1Tlq58/edit?usp=sharing";
 
