@@ -59,16 +59,20 @@ function generateTreeView(rawData) {
 
 	// Create nodes and edges in the main tree
 	for (const subject of rawData) {
-		mainTree.setNode(subject.code, {
+		// Create node in the main tree
+		const nodeData = {
 			label: subject.abbr,
 			width: 50,
 			height: 30,
 			id: subject.abbr,
 			class: `y${subject.year}`
-		});
+		};
+		mainTree.setNode(subject.code, nodeData);
 
+		// Create edges for subject's children
 		subject.children.forEach(child => {
-			mainTree.setEdge(subject.code, child, { class: `${subject.code}-${child}` });
+			const edgeData = { class: `${subject.code}-${child}` };
+			mainTree.setEdge(subject.code, child, edgeData);
 		});
 	}
 
@@ -86,6 +90,35 @@ function generateTreeView(rawData) {
 
 	svgGroup.attr("transform", `translate(${60}, ${60})`);
 }
+
+
+/**
+ * Traverses a node hierarchy based on an abbreviation.
+ * Returns an array of parent nodes and their ancestors.
+ *
+ * @param {string} abbr - The abbreviation of the node to traverse.
+ * @returns {Array} - An array containing the parent nodes and their ancestors.
+ */
+function nodeTraverse(abbr) {
+	// Function to retrieve the parent nodes of a given abbreviation
+	const getNodeParent = (abbr) => {
+		return courseDict[abbr]?.parent.map(e => idToAbbr(e));
+	};
+
+	// Get the parent nodes of the current abbreviation
+	const parent = getNodeParent(abbr);
+	if (!parent) {
+		return [];
+	}
+
+	// Recursively traverse the parent nodes to get their ancestors
+	const ancestor = parent.map(e => nodeTraverse(e));
+	const flattenedAncestor = ancestor.flat();
+
+	// Return the parent nodes and their ancestors as a flattened array
+	return [...parent, ...flattenedAncestor];
+}
+
 
 /**
  * Attaches event handlers to a node element.
@@ -107,6 +140,8 @@ function attachEventHandlers(abbr, nodeDiv) {
 		highlight(abbr);
 		childCodes.forEach(code => highlight(code));
 		parentCodes.forEach(code => highlight(code));
+
+		console.log(nodeTraverse(abbr));
 	};
 
 	// Event handler for mouse leave event
@@ -213,6 +248,7 @@ function main() {
 				newStroke: "#ff0000"
 			});
 		});
+
 
 		// Attach event handlers to the rectangles
 		for (const [abbr, rectData] of Object.entries(rectDict)) {
