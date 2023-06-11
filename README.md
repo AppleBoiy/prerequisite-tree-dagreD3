@@ -46,8 +46,6 @@ Contributing
 
 Contributions are welcome! If you have any suggestions, improvements, or bug fixes, please open an issue or submit a pull request.
 
-### License
+## License
 
 This project is licensed under the [Apache License](LICENSE).
-
-javascript
