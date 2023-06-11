@@ -42,6 +42,7 @@ async function spreadsheetToJson(url) {
 	return result;
 }
 
+
 /**
  * Generates a tree view of prerequisite tree from a JSON-like object.
  * @param {Object} rawData - Dictionary of course details.
@@ -115,54 +116,6 @@ function nodeTraverse(abbr) {
 }
 
 
-/**
- * Attaches event handlers to a given node element based on the provided abbreviation.
- *
- * @param {string} abbr - The abbreviation of the node.
- * @param {HTMLElement} nodeDiv - The node element to attach the event handlers to.
- * @returns {void} - This function does not return a value.
- */
-function attachEventHandlers(abbr, nodeDiv) {
-	// Retrieve the subject data associated with the abbreviation
-	const subjectData = courseDict[abbr];
-
-	// Get the child and parent codes from the subject data
-	const childCodes = subjectData.children.map(idToAbbr);
-	const parentCodes = nodeTraverse(abbr);
-
-	// Combine the abbreviation, child codes, and parent codes into a single array
-	const nodes = [abbr, ...childCodes, ...parentCodes];
-
-	// Event handler for mouse enter event
-	const handleMouseEnter = () => {
-		// Highlight the nodes on mouse enter
-		nodes.forEach(e => highlight(e));
-	};
-
-	// Event handler for mouse leave event
-	const handleMouseLeave = () => {
-		// Revert the highlight of the nodes on mouse leave
-		nodes.forEach(e => highlight(e, false));
-	};
-
-	// Event handler for click event
-	const handleClick = () => {
-		// Retrieve the course details associated with the abbreviation
-		const course = courseDict[abbr];
-		if (course) {
-			// Log the clicked course and its details to the console
-			console.log(`Course ${abbr} clicked!`);
-			console.log("Course details:", course);
-		}
-	};
-
-	// Attach event listeners to the node element
-	nodeDiv.addEventListener("mouseenter", handleMouseEnter);
-	nodeDiv.addEventListener("mouseleave", handleMouseLeave);
-	nodeDiv.addEventListener("click", handleClick);
-}
-
-
 
 /**
  * Highlights or reverts the highlight of a rectangle element.
@@ -211,7 +164,6 @@ function idToAbbr(id) {
 	return `${abbrDict[id.slice(0, 3)]}${id.slice(3)}`;
 }
 
-
 function main() {
 	const spreadSheetUrl = "https://docs.google.com/spreadsheets/d/1t8dvUUdvOxdiKQv5nagGaHyiw3P-C2o0Qg6C_1Tlq58/edit#gid=0";
 
@@ -254,6 +206,66 @@ function main() {
 
 	})
 		.catch(error => console.log(error));
+
+	const close = document.getElementById("close");
+	close.addEventListener("click", (e) => {
+		e.preventDefault();
+		if (popup.style.display !== "none") {
+			popup.style.display = "none";
+		}
+	})
 }
+
+/**
+ * Attaches event handlers to a given node element based on the provided abbreviation.
+ *
+ * @param {string} abbr - The abbreviation of the node.
+ * @param {HTMLElement} nodeDiv - The node element to attach the event handlers to.
+ * @returns {void} - This function does not return a value.
+ */
+function attachEventHandlers(abbr, nodeDiv) {
+	const popup = document.getElementById("popup");
+
+	// Retrieve the subject data associated with the abbreviation
+	const subjectData = courseDict[abbr];
+
+	// Get the child and parent codes from the subject data
+	const childCodes = subjectData.children.map(idToAbbr);
+	const parentCodes = nodeTraverse(abbr);
+
+	// Combine the abbreviation, child codes, and parent codes into a single array
+	const nodes = [abbr, ...childCodes, ...parentCodes];
+
+	// Event handler for mouse enter event
+	const handleMouseEnter = () => {
+		// Highlight the nodes on mouse enter
+		nodes.forEach(e => highlight(e));
+	};
+
+	// Event handler for mouse leave event
+	const handleMouseLeave = () => {
+		// Revert the highlight of the nodes on mouse leave
+		nodes.forEach(e => highlight(e, false));
+	};
+
+	const handleMouseClick = (e) => {
+		e.preventDefault();
+		popup.style.display = "flex";
+		const [ courseName, courseContent ] = popup.children[0].children;
+
+		courseName.innerHTML = courseDict[abbr]["full name (ENG)"]
+		courseContent.innerHTML = `
+			Prerequisite: ${courseDict[abbr]["parent"] || "-"}<br>
+			Credit: ${courseDict[abbr]["credit"]}<br>
+      Details: ....`
+	}
+
+	// Attach event listeners to the node element
+	nodeDiv.addEventListener("mouseenter", handleMouseEnter);
+	nodeDiv.addEventListener("mouseleave", handleMouseLeave);
+	nodeDiv.addEventListener("click", handleMouseClick);
+}
+
+
 
 main();
