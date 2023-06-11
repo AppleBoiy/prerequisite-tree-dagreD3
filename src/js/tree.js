@@ -192,8 +192,8 @@ function main() {
 				nodeDiv: div,
 				oldFill: rect.style.fill,
 				oldStroke: rect.style.stroke,
-				newFill: "#ff0000",
-				newStroke: "#ff0000"
+				newFill: "#F24C3D",
+				newStroke: "#2C3333"
 			});
 		});
 

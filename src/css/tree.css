@@ -1,11 +1,11 @@
 :root {
-    --bg_darkmode: #ffe389;
-    --year1: #ffc5c5;
-    --year2: #ffdaa2;
-    --year3: #d8ffa2;
-    --year4: #a2c6ff;
+    --bg_darkmode: #E8F3D6;
+    --year1: #FAAB78;
+    --year2: #F8C4B4;
+    --year3: #E5EBB2;
+    --year4: #BCE29E;
     --bgHoverNode: #ff9752;
-    --borderHoverNode: #333;
+    --borderHoverNode: #2C3333;
 }
 
 .tree {
@@ -27,8 +27,8 @@
     font-size: 14px;
 }
 .graph .node rect {
-    stroke: #ccc;
-    fill: #fff;
+    stroke: #2C3333;
+    fill: #2C3333;
     stroke-width: 2px;
 
 }
@@ -36,34 +36,21 @@
     cursor: pointer;
 }
 .node.y1 rect {
-    stroke: black;
     fill: var(--year1);
 }
-.node.y1:hover rect {
-    stroke: blue;
-    fill: brown;
-}
+
 .node.y2 rect {
     fill: var(--year2);
 }
-.node.y2:hover rect {
-    stroke: blue;
-    fill: brown;
-}
+
 .node.y3 rect {
     fill: var(--year3);
 }
-.node.y3:hover rect {
-    stroke: blue;
-    fill: brown;
-}
+
 .node.y4 rect {
     fill: var(--year4);
 }
-.node.y4:hover rect {
-    stroke: blue;
-    fill: brown;
-}
+
 
 .graph .node.disabled rect {
     stroke-dasharray: 5,5;
@@ -72,8 +59,8 @@
     fill: #333;
 }
 .graph .edgePath path {
-    stroke: #ff2c2c;
-    fill: #aaa;
+    stroke: #2C3333;
+    fill: #2C3333;
     stroke-width: 2px;
 }
 .graph .edgePath.CS111 path {
@@ -91,6 +78,7 @@
 
 
 .subtree {
+    background-color: #E8F3D6;
     width: 30%;
     height: 100vh;
     display: flex;
