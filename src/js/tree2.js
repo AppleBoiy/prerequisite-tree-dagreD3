@@ -1,6 +1,3 @@
-// Constants
-const spreadSheetUrl = "https://docs.google.com/spreadsheets/d/1t8dvUUdvOxdiKQv5nagGaHyiw3P-C2o0Qg6C_1Tlq58/edit#gid=0"
-
 // Create a dictionary to store the rectangle and course data
 const rectDict = {};
 const courseDict = {};
@@ -48,9 +45,8 @@ async function spreadsheetToJson(url) {
 /**
  * Generates a tree view of prerequisite tree from a JSON-like object.
  * @param {Object} rawData - Dictionary of course details.
- * @returns {Promise<void>}
  */
-async function generateTreeView(rawData) {
+function generateTreeView(rawData) {
 	const graphlib = dagreD3.graphlib;
 	const render = dagreD3.render();
 
@@ -91,100 +87,140 @@ async function generateTreeView(rawData) {
 	svgGroup.attr("transform", `translate(${60}, ${60})`);
 }
 
-async function main(url) {
-	// Convert the spreadsheet to JSON
-	const rawData = await spreadsheetToJson(url);
-
-	// Generate the prerequisite tree view
-	await generateTreeView(rawData);
-
-	// Populate the dictionary with rectangle and course data
-	for (const subject of rawData) {
-		const abbr = subject.abbr;
-		rectDict[abbr] = {};
-		courseDict[abbr] = subject;
-	}
-
-	const nodeDivs = document.getElementsByClassName("node");
-	Array.from(nodeDivs).forEach(div => {
-		const [ rect , text ] = div.childNodes;
-		const { fill, stroke } = rect.style;
-		const rectData = rectDict[div.id];
-
-		rectData.rectDiv = rect;
-		rectData.textDiv = text;
-		rectData.nodeDiv = div;
-		rectData.oldFill = fill;
-		rectData.oldStroke = stroke;
-		rectData.newFill = "#ff0000";
-		rectData.newStroke = "#ff0000";
-	});
-
-	// Attach event handlers to the rectangles
-	Object.entries(rectDict).forEach(([abbr, rectData]) => {
-		const { nodeDiv } = rectData;
-		attachEventHandlers(abbr, nodeDiv);
-	});
-
-
-}
-
+/**
+ * Attaches event handlers to a node element.
+ *
+ * @param {string} abbr - The abbreviation associated with the node element.
+ * @param {HTMLElement} nodeDiv - The node element to attach event handlers to.
+ */
 function attachEventHandlers(abbr, nodeDiv) {
+	// Retrieve the subject data associated with the abbreviation
 	const subjectData = courseDict[abbr];
-	const childCodes = subjectData.children.map( e => idToAbbr(e));
-	const parentCodes = subjectData.parent.map( e => idToAbbr(e));
 
+	// Get the child and parent codes from the subject data
+	const childCodes = subjectData.children.map(e => idToAbbr(e));
+	const parentCodes = subjectData.parent.map(e => idToAbbr(e));
+
+	// Event handler for mouse enter event
 	const handleMouseEnter = () => {
+		// Highlight the current node and its children and parents
 		highlight(abbr);
-		childCodes.forEach(code => highlight(code) );
-		parentCodes.forEach(code => {
-			highlight(code);
-
-		});
+		childCodes.forEach(code => highlight(code));
+		parentCodes.forEach(code => highlight(code));
 	};
 
+	// Event handler for mouse leave event
 	const handleMouseLeave = () => {
+		// Revert the highlight of the current node and its children and parents
 		highlight(abbr, false);
 		childCodes.forEach(code => highlight(code, false));
 		parentCodes.forEach(code => highlight(code, false));
 	};
 
+	// Event handler for click event
 	const handleClick = () => {
+		// Retrieve the course details associated with the abbreviation
 		const course = courseDict[abbr];
 		if (course) {
+			// Log the clicked course and its details to the console
 			console.log(`Course ${abbr} clicked!`);
 			console.log("Course details:", course);
 		}
 	};
 
+	// Attach event listeners to the node element
 	nodeDiv.addEventListener("mouseenter", handleMouseEnter);
 	nodeDiv.addEventListener("mouseleave", handleMouseLeave);
 	nodeDiv.addEventListener("click", handleClick);
 }
 
+/**
+ * Highlights or reverts the highlight of a rectangle element.
+ *
+ * @param {string} abbr - The abbreviation associated with the rectangle to be highlighted or reverted.
+ * @param {boolean} isEnter - Indicates whether the mouse event is a mouse enter or mouse leave. Default is true (mouse enter).
+ */
 function highlight(abbr, isEnter = true) {
-	const rectData = rectDict[abbr]
+	// Retrieve the rectangle data associated with the abbreviation
+	const rectData = rectDict[abbr];
+
+	// Extract the necessary properties from the rectangle data
 	const { newFill, newStroke, oldFill, oldStroke } = rectData;
+
+	// Access the rectangle element in the DOM
 	const rect = rectData.rectDiv;
 
+	// Check if the highlight action is for mouse enter or mouse leave
 	if (isEnter) {
+		// Set the new fill and stroke color to highlight the rectangle
 		rect.style.fill = newFill;
 		rect.style.stroke = newStroke;
 	} else {
+		// Set the old fill and stroke color to revert the highlight
 		rect.style.fill = oldFill;
 		rect.style.stroke = oldStroke;
 	}
 }
 
+
+/**
+ * Converts an ID to its corresponding abbreviation.
+ *
+ * @param {string} id - The ID to be converted.
+ * @returns {string} The corresponding abbreviation.
+ */
 function idToAbbr(id) {
+	// Dictionary mapping IDs to abbreviations
 	const abbrDict = {
 		"204": "CS",
 		"206": "Math",
 		"208": "Stat"
 	};
-	return `${abbrDict[id.slice(0, 3)]}${id.slice(3)}`
+
+	// Extract the relevant part of the ID and combine it with the abbreviation
+	return `${abbrDict[id.slice(0, 3)]}${id.slice(3)}`;
 }
 
-main(spreadSheetUrl)
-	.then(() => console.log("Run main..."))
-	.catch(error => console.log(error));
+
+function main() {
+	const spreadSheetUrl = "https://docs.google.com/spreadsheets/d/1t8dvUUdvOxdiKQv5nagGaHyiw3P-C2o0Qg6C_1Tlq58/edit#gid=0";
+
+	// Convert the spreadsheet to JSON
+	spreadsheetToJson(spreadSheetUrl).then(rawData => {
+		// Generate the prerequisite tree view
+		generateTreeView(rawData);
+
+		// Populate the dictionary with rectangle and course data
+		for (const subject of rawData) {
+			const abbr = subject.abbr;
+			rectDict[abbr] = {};
+			courseDict[abbr] = subject;
+		}
+
+		// Set up the necessary properties for each rectangle element
+		const nodeDivs = document.getElementsByClassName("node");
+		Array.from(nodeDivs).forEach(div => {
+			const [rect, text] = div.childNodes;
+			const rectData = rectDict[div.id];
+
+			Object.assign(rectData, {
+				rectDiv: rect,
+				textDiv: text,
+				nodeDiv: div,
+				oldFill: rect.style.fill,
+				oldStroke: rect.style.stroke,
+				newFill: "#ff0000",
+				newStroke: "#ff0000"
+			});
+		});
+
+		// Attach event handlers to the rectangles
+		for (const [abbr, rectData] of Object.entries(rectDict)) {
+			const { nodeDiv } = rectData;
+			attachEventHandlers(abbr, nodeDiv);
+		}
+
+	});
+}
+
+main();
