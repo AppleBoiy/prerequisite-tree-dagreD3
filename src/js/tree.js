@@ -2,6 +2,51 @@
 const rectDict = {};
 const courseDict = {};
 
+const main = () => {
+	const spreadSheetUrl = "https://docs.google.com/spreadsheets/d/1t8dvUUdvOxdiKQv5nagGaHyiw3P-C2o0Qg6C_1Tlq58/edit?usp=sharing";
+
+	// Convert the spreadsheet to JSON
+	spreadsheetToJson(spreadSheetUrl)
+		.then(rawData => {
+			// Generate the prerequisite tree view
+			generateTreeView(rawData);
+
+			// Populate the dictionary with rectangle and course data
+			for (const subject of rawData) {
+				const abbr = subject.abbr;
+				rectDict[abbr] = {};
+				courseDict[abbr] = subject;
+			}
+
+			// Set up the necessary properties for each rectangle element
+			const nodeDivs = document.getElementsByClassName("node");
+			Array.from(nodeDivs).forEach(div => {
+				const [rect, text] = div.childNodes;
+				const rectData = rectDict[div.id];
+
+				Object.assign(rectData, {
+					rectDiv: rect,
+					textDiv: text,
+					nodeDiv: div,
+					oldFill: rect.style.fill,
+					oldStroke: rect.style.stroke,
+					newFill: "#ff0000",
+					newStroke: "#ff0000"
+				});
+			});
+
+
+			// Attach event handlers to the rectangles
+			for (const [abbr, rectData] of Object.entries(rectDict)) {
+				const { nodeDiv } = rectData;
+				attachEventHandlers(abbr, nodeDiv);
+			}
+
+		})
+		.catch(error => console.log(error));
+}
+
+
 /**
  * Converts a spreadsheet at the given URL to JSON format.
  * @param {string} url - Link to the spreadsheet.
@@ -14,17 +59,19 @@ async function spreadsheetToJson(url) {
 
 	// Read the workbook and worksheet from the data
 	const workbook = XLSX.read(data, { type: "array" });
-	const worksheet = workbook.Sheets[workbook.SheetNames[0]];
+	const [ workSheet] = workbook.SheetNames;
+	const worksheet = workbook.Sheets[workSheet];
 
 	// Define the range of rows and columns
 	const range = XLSX.utils.decode_range(worksheet["!ref"]);
 	range.s.r = 1;
-	range.e.r = 21;
 	range.s.c = 1;
-	range.e.c = 9;
+
 
 	// Convert the worksheet to JSON
-	const jsonData = XLSX.utils.sheet_to_json(worksheet, { header: 1, range });
+	const rawjsonData = XLSX.utils.sheet_to_json(worksheet, { header: 1, range});
+	const infoCount = rawjsonData[0].length;
+	const jsonData = rawjsonData.filter(data => data.length === infoCount)
 	const result = jsonData.slice(1).map(row => {
 		const obj = {};
 		jsonData[0].forEach((headerCell, index) => {
@@ -41,6 +88,7 @@ async function spreadsheetToJson(url) {
 	});
 	return result;
 }
+
 
 
 /**
@@ -116,7 +164,6 @@ function nodeTraverse(abbr) {
 }
 
 
-
 /**
  * Highlights or reverts the highlight of a rectangle element.
  *
@@ -164,57 +211,6 @@ function idToAbbr(id) {
 	return `${abbrDict[id.slice(0, 3)]}${id.slice(3)}`;
 }
 
-function main() {
-	const spreadSheetUrl = "https://docs.google.com/spreadsheets/d/1t8dvUUdvOxdiKQv5nagGaHyiw3P-C2o0Qg6C_1Tlq58/edit#gid=0";
-
-	// Convert the spreadsheet to JSON
-	spreadsheetToJson(spreadSheetUrl)
-		.then(rawData => {
-		// Generate the prerequisite tree view
-		generateTreeView(rawData);
-
-		// Populate the dictionary with rectangle and course data
-		for (const subject of rawData) {
-			const abbr = subject.abbr;
-			rectDict[abbr] = {};
-			courseDict[abbr] = subject;
-		}
-
-		// Set up the necessary properties for each rectangle element
-		const nodeDivs = document.getElementsByClassName("node");
-		Array.from(nodeDivs).forEach(div => {
-			const [rect, text] = div.childNodes;
-			const rectData = rectDict[div.id];
-
-			Object.assign(rectData, {
-				rectDiv: rect,
-				textDiv: text,
-				nodeDiv: div,
-				oldFill: rect.style.fill,
-				oldStroke: rect.style.stroke,
-				newFill: "#ff0000",
-				newStroke: "#ff0000"
-			});
-		});
-
-
-		// Attach event handlers to the rectangles
-		for (const [abbr, rectData] of Object.entries(rectDict)) {
-			const { nodeDiv } = rectData;
-			attachEventHandlers(abbr, nodeDiv);
-		}
-
-	})
-		.catch(error => console.log(error));
-
-	const close = document.getElementById("close");
-	close.addEventListener("click", (e) => {
-		e.preventDefault();
-		if (popup.style.display !== "none") {
-			popup.style.display = "none";
-		}
-	})
-}
 
 /**
  * Attaches event handlers to a given node element based on the provided abbreviation.
@@ -225,6 +221,13 @@ function main() {
  */
 function attachEventHandlers(abbr, nodeDiv) {
 	const popup = document.getElementById("popup");
+	const close = document.getElementById("close");
+	close.addEventListener("click", (e) => {
+		e.preventDefault();
+		if (popup.style.display !== "none") {
+			popup.style.display = "none";
+		}
+	})
 
 	// Retrieve the subject data associated with the abbreviation
 	const subjectData = courseDict[abbr];
@@ -265,7 +268,5 @@ function attachEventHandlers(abbr, nodeDiv) {
 	nodeDiv.addEventListener("mouseleave", handleMouseLeave);
 	nodeDiv.addEventListener("click", handleMouseClick);
 }
-
-
 
 main();
