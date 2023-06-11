@@ -1,11 +1,57 @@
 // Create a dictionary to store the rectangle and course data
-const rectDict = {};
-const courseDict = {};
+const rectangleData = {};
+const courseData = {};
+
+const main = () => {
+	const spreadsheetUrl = "https://docs.google.com/spreadsheets/d/1t8dvUUdvOxdiKQv5nagGaHyiw3P-C2o0Qg6C_1Tlq58/edit?usp=sharing";
+
+	// Convert the spreadsheet to JSON
+	spreadsheetToJson(spreadsheetUrl)
+		.then(async rawData => {
+			// Generate the prerequisite tree view
+			await generateTreeView(rawData);
+
+			// Populate the dictionary with rectangle and course data
+			for (const subject of rawData) {
+				const abbreviation = subject.abbr;
+				rectangleData[abbreviation] = {};
+				courseData[abbreviation] = subject;
+			}
+
+			// Set up the necessary properties for each rectangle element
+			const nodeDivs = document.getElementsByClassName("node");
+			Array.from(nodeDivs).forEach(div => {
+				const [rect, text] = div.childNodes;
+				const rectData = rectangleData[div.id];
+
+				Object.assign(rectData, {
+					rectangleDiv: rect,
+					textDiv: text,
+					nodeDiv: div,
+					originalFill: rect.style.fill,
+					originalStroke: rect.style.stroke,
+					highlightFill: "#fff",
+					highlightStroke: "#fff"
+				});
+			});
+
+			// Attach event handlers to the rectangles
+			for (const [abbreviation, rectData] of Object.entries(rectangleData)) {
+				const { nodeDiv } = rectData;
+				attachEventHandlers(abbreviation, nodeDiv);
+			}
+		})
+		.catch(error => console.log(error));
+};
 
 /**
- * Converts a spreadsheet at the given URL to JSON format.
- * @param {string} url - Link to the spreadsheet.
- * @returns {Promise<Object>} - JSON data representing the spreadsheet.
+ * Fetches a spreadsheet from the provided URL and converts it to JSON format.
+ * Each row in the spreadsheet becomes an object in the resulting array.
+ * The headers of the spreadsheet become the keys of the objects.
+ *
+ * @param {string} url - The URL of the spreadsheet to fetch and convert.
+ * @returns {Promise<Array<Object>|null>} - A Promise that resolves to an array of objects representing the spreadsheet data in JSON format.
+ *                                          Returns null if an error occurs during the fetch or conversion process.
  */
 async function spreadsheetToJson(url) {
 	// Fetch the spreadsheet data
@@ -14,40 +60,51 @@ async function spreadsheetToJson(url) {
 
 	// Read the workbook and worksheet from the data
 	const workbook = XLSX.read(data, { type: "array" });
-	const worksheet = workbook.Sheets[workbook.SheetNames[0]];
+	const [workSheet] = workbook.SheetNames;
+	const worksheet = workbook.Sheets[workSheet];
 
 	// Define the range of rows and columns
 	const range = XLSX.utils.decode_range(worksheet["!ref"]);
 	range.s.r = 1;
-	range.e.r = 21;
 	range.s.c = 1;
-	range.e.c = 9;
 
 	// Convert the worksheet to JSON
-	const jsonData = XLSX.utils.sheet_to_json(worksheet, { header: 1, range });
-	const result = jsonData.slice(1).map(row => {
-		const obj = {};
-		jsonData[0].forEach((headerCell, index) => {
-			obj[headerCell] = row[index];
-		});
-		return obj;
+	const rawJsonData = XLSX.utils.sheet_to_json(worksheet, { header: 1, range });
+	const infoCount = rawJsonData[0].length;
+
+	const jsonData = rawJsonData.filter(data => {
+		return data.length === infoCount && !data.includes(undefined);
 	});
+
+	// Destructure the jsonData array into headers and rows
+	const [headers, ...rows] = jsonData;
+
+	// Map over each row and create an object for each row
+	const result = rows.map(row =>
+		// Use reduce to build the object by assigning values to the corresponding header keys
+		headers.reduce((obj, headerCell, index) => {
+			obj[headerCell] = row[index]; // Assign the value from the row to the corresponding header key
+			return obj;
+		}, {})
+	);
+
+	const parseValue = (value) => {
+		return value === "-" ? [] : value.toString().split(", ");
+	};
 
 	result.forEach(element => {
-		element.parent = element.parent.toString() === "None" ?
-			[] : element.parent.toString().split(", ");
-		element.children = element.children.toString() === "None" ?
-			[] : element.children.toString().split(", ");
+		element.parent = parseValue(element.parent);
+		element.children = parseValue(element.children);
 	});
+
 	return result;
 }
-
 
 /**
  * Generates a tree view of prerequisite tree from a JSON-like object.
  * @param {Object} rawData - Dictionary of course details.
  */
-function generateTreeView(rawData) {
+async function generateTreeView(rawData) {
 	const graphlib = dagreD3.graphlib;
 	const render = dagreD3.render();
 
@@ -92,59 +149,54 @@ function generateTreeView(rawData) {
 	svgGroup.attr("transform", `translate(${60}, ${60})`);
 }
 
-
 /**
  * Traverses a node hierarchy based on an abbreviation.
  * Returns an array of parent nodes and their ancestors.
  *
- * @param {string} abbr - The abbreviation of the node to traverse.
+ * @param {string} abbreviation - The abbreviation of the node to traverse.
  * @returns {Array} - An array containing the parent nodes and their ancestors.
  */
-function nodeTraverse(abbr) {
-
+function getNodeAncestors(abbreviation) {
 	// Get the parent nodes of the current abbreviation
-	const parent = courseDict[abbr]?.parent.map(e => idToAbbr(e))
+	const parents = courseData[abbreviation]?.parent.map(e => idToAbbreviation(e));
 
-	if (!parent) return [];
+	if (!parents) return [];
 
 	// Recursively traverse the parent nodes to get their ancestors
-	const ancestor = parent.map(e => nodeTraverse(e));
-	const flattenedAncestor = ancestor.flat();
+	const ancestors = parents.map(e => getNodeAncestors(e));
+	const flattenedAncestors = ancestors.flat();
 
 	// Return the parent nodes and their ancestors as a flattened array
-	return [...parent, ...flattenedAncestor];
+	return [...parents, ...flattenedAncestors];
 }
-
-
 
 /**
  * Highlights or reverts the highlight of a rectangle element.
  *
- * @param {string} abbr - The abbreviation associated with the rectangle to be highlighted or reverted.
+ * @param {string} abbreviation - The abbreviation associated with the rectangle to be highlighted or reverted.
  * @param {boolean} isEnter - Indicates whether the mouse event is a mouse enter or mouse leave. Default is true (mouse enter).
  */
-function highlight(abbr, isEnter = true) {
+function highlightRectangle(abbreviation, isEnter = true) {
 	// Retrieve the rectangle data associated with the abbreviation
-	const rectData = rectDict[abbr];
+	const rectData = rectangleData[abbreviation];
 
 	// Extract the necessary properties from the rectangle data
-	const { newFill, newStroke, oldFill, oldStroke } = rectData;
+	const { highlightFill, highlightStroke, originalFill, originalStroke } = rectData;
 
 	// Access the rectangle element in the DOM
-	const rect = rectData.rectDiv;
+	const rectangle = rectData.rectangleDiv;
 
 	// Check if the highlight action is for mouse enter or mouse leave
 	if (isEnter) {
 		// Set the new fill and stroke color to highlight the rectangle
-		rect.style.fill = newFill;
-		rect.style.stroke = newStroke;
+		rectangle.style.fill = highlightFill;
+		rectangle.style.stroke = highlightStroke;
 	} else {
-		// Set the old fill and stroke color to revert the highlight
-		rect.style.fill = oldFill;
-		rect.style.stroke = oldStroke;
+		// Set the original fill and stroke color to revert the highlight
+		rectangle.style.fill = originalFill;
+		rectangle.style.stroke = originalStroke;
 	}
 }
-
 
 /**
  * Converts an ID to its corresponding abbreviation.
@@ -152,120 +204,73 @@ function highlight(abbr, isEnter = true) {
  * @param {string} id - The ID to be converted.
  * @returns {string} The corresponding abbreviation.
  */
-function idToAbbr(id) {
+function idToAbbreviation(id) {
 	// Dictionary mapping IDs to abbreviations
-	const abbrDict = {
+	const abbreviationDict = {
 		"204": "CS",
 		"206": "Math",
 		"208": "Stat"
 	};
 
 	// Extract the relevant part of the ID and combine it with the abbreviation
-	return `${abbrDict[id.slice(0, 3)]}${id.slice(3)}`;
-}
-
-function main() {
-	const spreadSheetUrl = "https://docs.google.com/spreadsheets/d/1t8dvUUdvOxdiKQv5nagGaHyiw3P-C2o0Qg6C_1Tlq58/edit#gid=0";
-
-	// Convert the spreadsheet to JSON
-	spreadsheetToJson(spreadSheetUrl)
-		.then(rawData => {
-		// Generate the prerequisite tree view
-		generateTreeView(rawData);
-
-		// Populate the dictionary with rectangle and course data
-		for (const subject of rawData) {
-			const abbr = subject.abbr;
-			rectDict[abbr] = {};
-			courseDict[abbr] = subject;
-		}
-
-		// Set up the necessary properties for each rectangle element
-		const nodeDivs = document.getElementsByClassName("node");
-		Array.from(nodeDivs).forEach(div => {
-			const [rect, text] = div.childNodes;
-			const rectData = rectDict[div.id];
-
-			Object.assign(rectData, {
-				rectDiv: rect,
-				textDiv: text,
-				nodeDiv: div,
-				oldFill: rect.style.fill,
-				oldStroke: rect.style.stroke,
-				newFill: "#ff0000",
-				newStroke: "#ff0000"
-			});
-		});
-
-
-		// Attach event handlers to the rectangles
-		for (const [abbr, rectData] of Object.entries(rectDict)) {
-			const { nodeDiv } = rectData;
-			attachEventHandlers(abbr, nodeDiv);
-		}
-
-	})
-		.catch(error => console.log(error));
-
-	const close = document.getElementById("close");
-	close.addEventListener("click", (e) => {
-		e.preventDefault();
-		if (popup.style.display !== "none") {
-			popup.style.display = "none";
-		}
-	})
+	return `${abbreviationDict[id.slice(0, 3)]}${id.slice(3)}`;
 }
 
 /**
  * Attaches event handlers to a given node element based on the provided abbreviation.
  *
- * @param {string} abbr - The abbreviation of the node.
- * @param {HTMLElement} nodeDiv - The node element to attach the event handlers to.
+ * @param {string} abbreviation - The abbreviation of the node.
+ * @param {HTMLElement} nodeElement - The node element to attach the event handlers to.
  * @returns {void} - This function does not return a value.
  */
-function attachEventHandlers(abbr, nodeDiv) {
+function attachEventHandlers(abbreviation, nodeElement) {
 	const popup = document.getElementById("popup");
+	const close = document.getElementById("close");
+	close.addEventListener("click", (event) => {
+		event.preventDefault();
+		if (popup.style.display !== "none") {
+			popup.style.display = "none";
+		}
+	});
 
 	// Retrieve the subject data associated with the abbreviation
-	const subjectData = courseDict[abbr];
+	const subjectData = courseData[abbreviation];
 
 	// Get the child and parent codes from the subject data
-	const childCodes = subjectData.children.map(idToAbbr);
-	const parentCodes = nodeTraverse(abbr);
+	const childCodes = subjectData.children.map(idToAbbreviation);
+	const parentCodes = getNodeAncestors(abbreviation);
 
 	// Combine the abbreviation, child codes, and parent codes into a single array
-	const nodes = [abbr, ...childCodes, ...parentCodes];
+	const nodes = [abbreviation, ...childCodes, ...parentCodes];
 
 	// Event handler for mouse enter event
 	const handleMouseEnter = () => {
 		// Highlight the nodes on mouse enter
-		nodes.forEach(e => highlight(e));
+		nodes.forEach(e => highlightRectangle(e));
 	};
 
 	// Event handler for mouse leave event
 	const handleMouseLeave = () => {
 		// Revert the highlight of the nodes on mouse leave
-		nodes.forEach(e => highlight(e, false));
+		nodes.forEach(e => highlightRectangle(e, false));
 	};
 
-	const handleMouseClick = (e) => {
-		e.preventDefault();
+	const handleMouseClick = (event) => {
+		event.preventDefault();
 		popup.style.display = "flex";
-		const [ courseName, courseContent ] = popup.children[0].children;
+		const [courseName, courseContent] = popup.children[0].children;
 
-		courseName.innerHTML = courseDict[abbr]["full name (ENG)"]
+		courseName.innerHTML = courseData[abbreviation]["full name (ENG)"];
 		courseContent.innerHTML = `
-			Prerequisite: ${courseDict[abbr]["parent"] || "-"}<br>
-			Credit: ${courseDict[abbr]["credit"]}<br>
-      Details: ....`
-	}
+      Prerequisite: ${courseData[abbreviation]["parent"] || "-"}<br>
+      Credit: ${courseData[abbreviation]["credit"]}<br>
+      Details: ....`;
+	};
 
 	// Attach event listeners to the node element
-	nodeDiv.addEventListener("mouseenter", handleMouseEnter);
-	nodeDiv.addEventListener("mouseleave", handleMouseLeave);
-	nodeDiv.addEventListener("click", handleMouseClick);
+	nodeElement.addEventListener("mouseenter", handleMouseEnter);
+	nodeElement.addEventListener("mouseleave", handleMouseLeave);
+	nodeElement.addEventListener("click", handleMouseClick);
 }
-
-
 
 main();

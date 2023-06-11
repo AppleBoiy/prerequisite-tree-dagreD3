@@ -1,10 +1,10 @@
 body {
-    background-color: #e7ecf0;
+    background-color: #F9E0BB;
 }
 
 nav {
-    background-color: #ffffff;
-    border-bottom: 1px solid #adb1b4;
+    background-color: #8E806A;
+    border-bottom: 1px solid ;
     margin-bottom: 0px;
 }
 
@@ -17,18 +17,24 @@ img.tw-user-medium {
     height: 50px;
 }
 
+.navbar-light .container .navbar-nav .nav-link{
+    color:#2C3333;
+}
+
 
 #nav-search {
+    border-color: #2C3333;
     border-radius: 20px;
-    background-color: #e7ecf0
+    background-color: #e7ecf0;
 }
 
 
 #nav-tweet-btn {
     border-radius: 20px;
-    background-color: #67b1f9;
-    color: #ffffff;
+    background-color: #aae1ff;
+    color: #2C3333;
 }
+
 
 .container {
     display: flex;
