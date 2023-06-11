@@ -6,10 +6,12 @@
     --year4: #BCE29E;
     --bgHoverNode: #ff9752;
     --borderHoverNode: #2C3333;
+    --highlight-fill: #ccc;
+    --highlight-stroke: #ccc;
 }
 
 .tree {
-    width: 70%;
+    width: 100%;
     height: 100vh;
     display: flex;
     justify-content: center;
@@ -79,7 +81,7 @@
 
 .subtree {
     background-color: #E8F3D6;
-    width: 30%;
+    width: 0;
     height: 100vh;
     display: flex;
     justify-content: center;
@@ -129,4 +131,10 @@
 }
 .courseName {
     border-bottom: #252525;
+}
+
+
+.graph .node.rect.highlight-rect rect {
+    fill: var(--highlight-fill);
+    stroke: var(--highlight-stroke);
 }
