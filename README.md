@@ -2,6 +2,17 @@
 
 This is a prerequisite tree generator that converts a spreadsheet containing course data into a graphical representation of the course prerequisites. It utilizes the `dagreD3` library to generate the tree view.
 
+## Features
+
+- Converts a Google Spreadsheet to JSON format
+- Generates an interactive prerequisite tree view
+- Highlights and provides details of course prerequisites on mouse hover
+- Supports customization of node colors and styles
+
+## How It Works
+
+The tool fetches a Google Spreadsheet containing course data and converts it into a JSON format. It then uses this data to generate a tree view representation of the course prerequisites. The tree view is rendered using the dagre-d3 library and allows users to explore the prerequisite relationships between different courses.
+
 ## Getting Started
 
 ### Prerequisites
