@@ -216,7 +216,8 @@ function main() {
 	const spreadSheetUrl = "https://docs.google.com/spreadsheets/d/1t8dvUUdvOxdiKQv5nagGaHyiw3P-C2o0Qg6C_1Tlq58/edit#gid=0";
 
 	// Convert the spreadsheet to JSON
-	spreadsheetToJson(spreadSheetUrl).then(rawData => {
+	spreadsheetToJson(spreadSheetUrl)
+		.then(rawData => {
 		// Generate the prerequisite tree view
 		generateTreeView(rawData);
 
@@ -251,7 +252,8 @@ function main() {
 			attachEventHandlers(abbr, nodeDiv);
 		}
 
-	});
+	})
+		.catch(error => console.log(error));
 }
 
 main();
