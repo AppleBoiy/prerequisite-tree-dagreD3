@@ -28,7 +28,7 @@ This is a prerequisite tree generator that converts a spreadsheet containing cou
     ```
    
 ### Usage
-1. Open the index.html file in a web browser.
+1. Open the `index.html` file in a web browser.
 2. Provide the URL of the spreadsheet in the spreadsheetUrl variable inside the main function in the script.js file.
 Save the changes.
 3. Run a local server to serve the files. You can use the following command with Python:
