@@ -31,8 +31,8 @@ const main = () => {
 					nodeDiv: div,
 					originalFill: rect.style.fill,
 					originalStroke: rect.style.stroke,
-					highlightFill: "#f00",
-					highlightStroke: "#f00",
+					highlightFill: "#03fc88",
+					highlightStroke: "#03fc88",
 					fadedFill: "#fff",
 					fadedStroke: "#fff"
 				});
