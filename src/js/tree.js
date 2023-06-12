@@ -89,7 +89,7 @@ async function spreadsheetToJson(url) {
 	);
 
 	const parseValue = (value) => {
-		return value === "-" ? [] : value.toString().split(", ");
+		return value === "-" ? [] : value.split(", ");
 	};
 
 	result.forEach(element => {
