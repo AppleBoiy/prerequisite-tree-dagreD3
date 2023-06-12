@@ -1,6 +1,7 @@
 // Create a dictionary to store the rectangle and course data
 const rectangleData = {};
 const courseData = {};
+const courseList = [];
 
 const main = () => {
 	const spreadsheetUrl = "https://docs.google.com/spreadsheets/d/1t8dvUUdvOxdiKQv5nagGaHyiw3P-C2o0Qg6C_1Tlq58/edit?usp=sharing";
@@ -30,8 +31,10 @@ const main = () => {
 					nodeDiv: div,
 					originalFill: rect.style.fill,
 					originalStroke: rect.style.stroke,
-					highlightFill: "#fff",
-					highlightStroke: "#fff"
+					highlightFill: "#f00",
+					highlightStroke: "#f00",
+					fadedFill: "#fff",
+					fadedStroke: "#fff"
 				});
 			});
 
@@ -40,6 +43,7 @@ const main = () => {
 				const { nodeDiv } = rectData;
 				attachEventHandlers(abbreviation, nodeDiv);
 			}
+
 		})
 		.catch(error => console.log(error));
 };
@@ -53,7 +57,7 @@ const main = () => {
  * @returns {Promise<Array<Object>|null>} - A Promise that resolves to an array of objects representing the spreadsheet data in JSON format.
  *                                          Returns null if an error occurs during the fetch or conversion process.
  */
-async function spreadsheetToJson(url) {
+async function spreadsheetToJson(url)  {
 	// Fetch the spreadsheet data
 	const response = await fetch(url);
 	const data = await response.arrayBuffer();
@@ -132,6 +136,8 @@ async function generateTreeView(rawData) {
 			const edgeData = { class: `${subject.code}-${child}` };
 			mainTree.setEdge(subject.code, child, edgeData);
 		});
+
+		courseList.push(subject.abbr);
 	}
 
 	// Set rounded corners for the nodes
@@ -147,6 +153,11 @@ async function generateTreeView(rawData) {
 	svg.attr("height", mainTree.graph().height + 120);
 
 	svgGroup.attr("transform", `translate(${60}, ${60})`);
+
+	for (const data of mainTree.edges() ) {
+		const {v, w} = data;
+		// console.log(v, w)
+	}
 }
 
 /**
@@ -174,27 +185,35 @@ function getNodeAncestors(abbreviation) {
  * Highlights or reverts the highlight of a rectangle element.
  *
  * @param {string} abbreviation - The abbreviation associated with the rectangle to be highlighted or reverted.
- * @param {boolean} isEnter - Indicates whether the mouse event is a mouse enter or mouse leave. Default is true (mouse enter).
+ * @param mode
  */
-function highlightRectangle(abbreviation, isEnter = true) {
+function highlightRectangle(abbreviation, mode = "") {
 	// Retrieve the rectangle data associated with the abbreviation
 	const rectData = rectangleData[abbreviation];
 
 	// Extract the necessary properties from the rectangle data
-	const { highlightFill, highlightStroke, originalFill, originalStroke } = rectData;
+	const { highlightFill, highlightStroke, originalFill, originalStroke, fadedFill, fadedStroke } = rectData;
 
 	// Access the rectangle element in the DOM
 	const rectangle = rectData.rectangleDiv;
 
-	// Check if the highlight action is for mouse enter or mouse leave
-	if (isEnter) {
-		// Set the new fill and stroke color to highlight the rectangle
-		rectangle.style.fill = highlightFill;
-		rectangle.style.stroke = highlightStroke;
-	} else {
-		// Set the original fill and stroke color to revert the highlight
-		rectangle.style.fill = originalFill;
-		rectangle.style.stroke = originalStroke;
+	switch (mode) {
+		case "enter":
+			// Set the new fill and stroke color to highlight the rectangle
+			rectangle.style.fill = highlightFill;
+			rectangle.style.stroke = highlightStroke;
+			break;
+
+		case "leave":
+			// Set the original fill and stroke color to revert the highlight
+			rectangle.style.fill = originalFill;
+			rectangle.style.stroke = originalStroke;
+			break;
+
+		default:
+			rectangle.style.fill = fadedFill;
+			rectangle.style.stroke = fadedStroke;
+
 	}
 }
 
@@ -243,16 +262,21 @@ function attachEventHandlers(abbreviation, nodeElement) {
 	// Combine the abbreviation, child codes, and parent codes into a single array
 	const nodes = [abbreviation, ...childCodes, ...parentCodes];
 
+	const excludes = courseList.filter( e => !nodes.includes(e) );
+
 	// Event handler for mouse enter event
 	const handleMouseEnter = () => {
 		// Highlight the nodes on mouse enter
-		nodes.forEach(e => highlightRectangle(e));
+		nodes.forEach(e => highlightRectangle(e, "enter"));
+		excludes.forEach( e => highlightRectangle(e, "fade"))
+
 	};
 
 	// Event handler for mouse leave event
 	const handleMouseLeave = () => {
 		// Revert the highlight of the nodes on mouse leave
-		nodes.forEach(e => highlightRectangle(e, false));
+		nodes.forEach(e => highlightRectangle(e, "leave"));
+		excludes.forEach( e => highlightRectangle(e, "leave"))
 	};
 
 	const handleMouseClick = (event) => {
