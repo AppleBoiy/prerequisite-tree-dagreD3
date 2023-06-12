@@ -1,5 +1,3 @@
-# .github/labeler.yml
-
 # Configuration for the GitHub Issue and Pull Request Labeler action
 # This action automatically adds labels to newly created issues and pull requests based on specified criteria.
 
