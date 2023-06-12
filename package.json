@@ -2,22 +2,19 @@
   "name": "prerequisite-tree",
   "description": "prerequsite tree",
   "version": "1.0.0",
-  "homepage": "https://github.com/AppleBoiy/prerequisite-tree",
-  "author": "CS65-staff ()",
+  "homepage": "https://cmu.to/cs-prereq-notion",
+  "author": "CS65-staff",
   "repository": "AppleBoiy/prerequisite-tree",
   "bugs": {
     "url": "https://github.com/AppleBoiy/prerequisite-tree/issues"
   },
-  "license": "Apache-2.0",
+  "license": "MIT License",
   "files": [
     "LICENSE",
     "README.md"
   ],
   "engines": {
-    "node": ">=4"
-  },
-  "scripts": {
-    "test": "mocha"
+    "node": ">=12"
   },
   "keywords": [
     "prerequisite",
