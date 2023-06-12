@@ -44,7 +44,6 @@ The tool fetches a Google Spreadsheet containing course data and converts it int
     cd prerequisite-tree
     ```
 
-
 3. install the dependencies
     ```shell
     npm install
@@ -82,7 +81,7 @@ Special thanks to [dagreD3], [D3.js], and [SheetJS] for providing the libraries 
 
 ## License
 
-This project is licensed under the [Apache License](LICENSE).
+This project is licensed under the [MIT License](LICENSE).
 
 
 [dagreD3]: https://github.com/dagrejs/dagre-d3
