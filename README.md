@@ -22,7 +22,7 @@ The tool fetches a Google Spreadsheet containing course data and converts it int
 
 ### Prerequisites
 
-- Node.js (version 12 or higher)
+- [Node.js] (version 12 or higher)
 - Modern web browser with SVG support
 
 
@@ -30,7 +30,7 @@ The tool fetches a Google Spreadsheet containing course data and converts it int
 
 1. Clone the repository:
    ```shell
-   git clone https://github.com/your-username/prerequisite-tree.git
+   git clone https://github.com/AppleBoiy/prerequisite-tree.git
     ```
    
 2. Navigate to the project directory
@@ -48,7 +48,7 @@ The tool fetches a Google Spreadsheet containing course data and converts it int
 ### Usage
 
 1. Open the `index.html` file in a web browser.
-2. Provide the URL of the spreadsheet in the spreadsheetUrl variable inside the `main` function in the `script.js` file.
+2. Provide the URL of the spreadsheet in the spreadsheetUrl variable inside the `main` function in the `tree.js` file.
 Save the changes.
 3. Run a local server to serve the files. You can use the following command with Python:
     ```shell
@@ -60,8 +60,8 @@ Save the changes.
 
 ### Customization
 
-* You can modify the styles in the `style.css` file to customize the appearance of the prerequisite tree.
-* Additional configuration options and functionality can be implemented by modifying the `script.js` file.
+* You can modify the styles in the `tree.css` file to customize the appearance of the prerequisite tree.
+* Additional configuration options and functionality can be implemented by modifying the `tree.js` file.
 
 
 ### Contributing
@@ -82,3 +82,4 @@ This project is licensed under the [Apache License](LICENSE).
 [dagreD3]: https://github.com/dagrejs/dagre-d3
 [D3.js]: https://d3js.org
 [SheetJS]: https://sheetjs.com
+[Node.js]: https://nodejs.org/en
