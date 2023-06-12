@@ -21,6 +21,7 @@ const main = () => {
 
 			// Set up the necessary properties for each rectangle element
 			const nodeDivs = document.getElementsByClassName("node");
+			console.log(rectangleData);
 			Array.from(nodeDivs).forEach(div => {
 				const [rect, text] = div.childNodes;
 				const rectData = rectangleData[div.id];
@@ -31,10 +32,10 @@ const main = () => {
 					nodeDiv: div,
 					originalFill: rect.style.fill,
 					originalStroke: rect.style.stroke,
-					highlightFill: "#f00",
-					highlightStroke: "#f00",
-					fadedFill: "#fff",
-					fadedStroke: "#fff"
+					highlightFill: "#F24C3D",
+					highlightStroke: "#2C3333",
+					// fadedFill: "#9BA4B5",
+					// fadedStroke: "#2c3333"
 				});
 			});
 
@@ -202,17 +203,20 @@ function highlightRectangle(abbreviation, mode = "") {
 			// Set the new fill and stroke color to highlight the rectangle
 			rectangle.style.fill = highlightFill;
 			rectangle.style.stroke = highlightStroke;
+			
 			break;
 
 		case "leave":
 			// Set the original fill and stroke color to revert the highlight
 			rectangle.style.fill = originalFill;
 			rectangle.style.stroke = originalStroke;
+			rectangle.style.opacity = 1;
 			break;
 
 		default:
-			rectangle.style.fill = fadedFill;
-			rectangle.style.stroke = fadedStroke;
+			// rectangle.style.fill = fadedFill;
+			// rectangle.style.stroke = fadedStroke;
+			rectangle.style.opacity = 0.2;
 
 	}
 }
