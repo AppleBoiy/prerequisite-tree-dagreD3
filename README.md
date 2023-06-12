@@ -22,7 +22,7 @@ You can access our wiki by visiting [wiki](https://cmu.to/cs-prereq-notion). It 
 The tool fetches a Google Spreadsheet containing course data and converts it into a JSON format. It then uses this data to generate a tree view representation of the course prerequisites. The tree view is rendered using the [dagreD3] library, which itself utilizes . The data conversion is facilitated by [SheetJS], allowing users to explore the prerequisite relationships between different courses.
 
 
-
+<a name="guidelines"></a>
 ## Getting Started
 
 
