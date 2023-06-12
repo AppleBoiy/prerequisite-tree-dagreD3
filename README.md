@@ -10,6 +10,12 @@ This is a prerequisite tree generator that converts a spreadsheet containing cou
 - Highlights and provides details of course prerequisites on mouse hover
 - Supports customization of node colors and styles
 
+## Wiki
+
+You can access our wiki by visiting [wiki](https://cmu.to/cs-prereq-notion). It contains valuable information
+
+>We encourage you to explore our wiki to learn more about our project and get the most out of it. If you have any questions or suggestions, feel free to contribute to the wiki or reach out to our team.
+
 
 ## How It Works
 
