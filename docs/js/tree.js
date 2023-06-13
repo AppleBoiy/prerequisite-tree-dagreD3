@@ -183,11 +183,14 @@ function highlightRectangle(abbreviation, mode = "") {
         case "leave":
             rectangle.style.fill = originalFill;
             rectangle.style.stroke = originalStroke;
+            rectangle.style.opacity = "1";
             break;
 
         default:
-            rectangle.style.fill = fadedFill;
-            rectangle.style.stroke = fadedStroke;
+            // rectangle.style.fill = fadedFill;
+            // rectangle.style.stroke = fadedStroke;
+            rectangle.style.opacity = "0.5";
+
     }
 }
 
