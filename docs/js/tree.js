@@ -41,6 +41,49 @@ const main = () => {
 
         })
         .catch(error => console.log(error));
+	const spreadsheetUrl = "https://docs.google.com/spreadsheets/d/1t8dvUUdvOxdiKQv5nagGaHyiw3P-C2o0Qg6C_1Tlq58/edit?usp=sharing";
+
+	// Convert the spreadsheet to JSON
+	spreadsheetToJson(spreadsheetUrl)
+		.then(async rawData => {
+			// Generate the prerequisite tree view
+			await generateTreeView(rawData);
+
+			// Populate the dictionary with rectangle and course data
+			for (const subject of rawData) {
+				const abbreviation = subject.abbr;
+				rectangleData[abbreviation] = {};
+				courseData[abbreviation] = subject;
+			}
+
+			// Set up the necessary properties for each rectangle element
+			const nodeDivs = document.getElementsByClassName("node");
+			console.log(rectangleData);
+			Array.from(nodeDivs).forEach(div => {
+				const [rect, text] = div.childNodes;
+				const rectData = rectangleData[div.id];
+
+				Object.assign(rectData, {
+					rectangleDiv: rect,
+					textDiv: text,
+					nodeDiv: div,
+					originalFill: rect.style.fill,
+					originalStroke: rect.style.stroke,
+					highlightFill: "#F24C3D",
+					highlightStroke: "#2C3333",
+					fadedFill: "#fff",
+					fadedStroke: "#fff"
+				});
+			});
+
+			// Attach event handlers to the rectangles
+			for (const [abbreviation, rectData] of Object.entries(rectangleData)) {
+				const { nodeDiv } = rectData;
+				attachEventHandlers(abbreviation, nodeDiv);
+			}
+
+		})
+		.catch(error => console.log(error));
 };
 
 /**
@@ -187,8 +230,6 @@ function highlightRectangle(abbreviation, mode = "") {
             break;
 
         default:
-            // rectangle.style.fill = fadedFill;
-            // rectangle.style.stroke = fadedStroke;
             rectangle.style.opacity = "0.5";
 
     }
