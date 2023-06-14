@@ -1,0 +1,54 @@
+# Configuration for the GitHub Issue and Pull Request Labeler action
+# This action automatically adds labels to newly created issues and pull requests based on specified criteria.
+
+# Specify the labels and the criteria for each label
+labels:
+  - name: bug
+    color: E74C3C
+    regex: ^bug|error|fix
+  - name: enhancement
+    color: 1ABC9C
+    regex: ^enhancement|feature
+  - name: documentation
+    color: F1C40F
+    regex: ^doc|documentation
+  - name: help wanted
+    color: 3498DB
+    regex: ^help|support
+  - name: good first issue
+    color: 2ECC71
+    regex: ^good\sfirst\sissue
+
+# Specify the rules for assigning labels to issues or pull requests
+rules:
+  - issues:
+      title:
+        - bug
+        - error
+        - fix
+        - issue
+    assign:
+      - bug
+  - pull_request:
+      title:
+        - enhancement
+        - feature
+    assign:
+      - enhancement
+  - pull_request:
+      title:
+        - doc
+        - documentation
+    assign:
+      - documentation
+  - issues:
+      title:
+        - help
+        - support
+    assign:
+      - help wanted
+  - issues:
+      title:
+        - good first issue
+    assign:
+      - good first issue

@@ -32,10 +32,17 @@ const main = () => {
 					nodeDiv: div,
 					originalFill: rect.style.fill,
 					originalStroke: rect.style.stroke,
+<<<<<<< HEAD:src/js/tree.js
 					highlightFill: "#F24C3D",
 					highlightStroke: "#2C3333",
 					// fadedFill: "#9BA4B5",
 					// fadedStroke: "#2c3333"
+=======
+					highlightFill: "#03fc88",
+					highlightStroke: "#03fc88",
+					fadedFill: "#fff",
+					fadedStroke: "#fff"
+>>>>>>> unittest:docs/js/tree.js
 				});
 			});
 
