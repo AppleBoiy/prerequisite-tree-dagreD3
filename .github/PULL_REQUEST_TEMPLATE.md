@@ -2,10 +2,6 @@
 
 Please provide a brief description of the purpose and changes made in this pull request.
 
-## Related Issue
-
-If this pull request is related to an existing issue, please reference it here.
-
 ## Checklist
 
 - [ ] I have tested my changes locally and they are working as expected.
