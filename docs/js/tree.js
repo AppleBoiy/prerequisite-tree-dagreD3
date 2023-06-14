@@ -3,6 +3,50 @@ const courseData = {};
 const courseList = [];
 
 const main = () => {
+
+	const spreadsheetUrl = "https://docs.google.com/spreadsheets/d/1t8dvUUdvOxdiKQv5nagGaHyiw3P-C2o0Qg6C_1Tlq58/edit?usp=sharing";
+
+	// Convert the spreadsheet to JSON
+	spreadsheetToJson(spreadsheetUrl)
+		.then(async rawData => {
+			// Generate the prerequisite tree view
+			await generateTreeView(rawData);
+
+			// Populate the dictionary with rectangle and course data
+			for (const subject of rawData) {
+				const abbreviation = subject.abbr;
+				rectangleData[abbreviation] = {};
+				courseData[abbreviation] = subject;
+			}
+
+			// Set up the necessary properties for each rectangle element
+			const nodeDivs = document.getElementsByClassName("node");
+			console.log(rectangleData);
+			Array.from(nodeDivs).forEach(div => {
+				const [rect, text] = div.childNodes;
+				const rectData = rectangleData[div.id];
+
+				Object.assign(rectData, {
+					rectangleDiv: rect,
+					textDiv: text,
+					nodeDiv: div,
+					originalFill: rect.style.fill,
+					originalStroke: rect.style.stroke,
+					highlightFill: "#F24C3D",
+					highlightStroke: "#2C3333",
+					fadedFill: "#fff",
+					fadedStroke: "#fff"
+				});
+			});
+
+			// Attach event handlers to the rectangles
+			for (const [abbreviation, rectData] of Object.entries(rectangleData)) {
+				const { nodeDiv } = rectData;
+				attachEventHandlers(abbreviation, nodeDiv);
+			}
+
+		})
+		.catch(error => console.log(error));
     const spreadsheetUrl = "https://docs.google.com/spreadsheets/d/1t8dvUUdvOxdiKQv5nagGaHyiw3P-C2o0Qg6C_1Tlq58/edit?usp=sharing";
 
     spreadsheetToJson(spreadsheetUrl)
@@ -41,6 +85,7 @@ const main = () => {
 
         })
         .catch(error => console.log(error));
+
 };
 
 /**
@@ -170,25 +215,35 @@ function getNodeAncestors(abbreviation) {
  * @param mode
  */
 function highlightRectangle(abbreviation, mode = "") {
-    const rectData = rectangleData[abbreviation];
-    const {highlightFill, highlightStroke, originalFill, originalStroke, fadedFill, fadedStroke} = rectData;
-    const rectangle = rectData.rectangleDiv;
 
-    switch (mode) {
-        case "enter":
-            rectangle.style.fill = highlightFill;
-            rectangle.style.stroke = highlightStroke;
-            break;
+	// Retrieve the rectangle data associated with the abbreviation
+	const rectData = rectangleData[abbreviation];
 
-        case "leave":
-            rectangle.style.fill = originalFill;
-            rectangle.style.stroke = originalStroke;
-            break;
+	// Extract the necessary properties from the rectangle data
+	const { highlightFill, highlightStroke, originalFill, originalStroke, fadedFill, fadedStroke } = rectData;
 
-        default:
-            rectangle.style.fill = fadedFill;
-            rectangle.style.stroke = fadedStroke;
-    }
+	// Access the rectangle element in the DOM
+	const rectangle = rectData.rectangleDiv;
+
+	switch (mode) {
+		case "enter":
+			// Set the new fill and stroke color to highlight the rectangle
+			rectangle.style.fill = highlightFill;
+			rectangle.style.stroke = highlightStroke;
+			
+			break;
+
+		case "leave":
+			// Set the original fill and stroke color to revert the highlight
+			rectangle.style.fill = originalFill;
+			rectangle.style.stroke = originalStroke;
+			rectangle.style.opacity = 1;
+			break;
+
+		default:
+			rectangle.style.opacity = 0.2;
+
+	}
 }
 
 /**
