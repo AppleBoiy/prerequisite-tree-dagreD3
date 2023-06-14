@@ -27,9 +27,7 @@ const main = () => {
                     originalFill: rect.style.fill,
                     originalStroke: rect.style.stroke,
                     highlightFill: "#03fc88",
-                    highlightStroke: "#03fc88",
-                    fadedFill: "#fff",
-                    fadedStroke: "#fff"
+                    highlightStroke: "#03fc88"
                 });
             });
 
@@ -171,7 +169,7 @@ function getNodeAncestors(abbreviation) {
  */
 function highlightRectangle(abbreviation, mode = "") {
     const rectData = rectangleData[abbreviation];
-    const {highlightFill, highlightStroke, originalFill, originalStroke, fadedFill, fadedStroke} = rectData;
+    const {highlightFill, highlightStroke, originalFill, originalStroke} = rectData;
     const rectangle = rectData.rectangleDiv;
 
     switch (mode) {
