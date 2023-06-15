@@ -114,7 +114,7 @@ prepare the spreadsheet:
 2. Create a table to represent the course data. The table should have the following columns:
 
    | code    | abbr    | parent | children | conditions                | year | term | full name (ENG)                  | credit |
-      |---------|---------|--------|----------|---------------------------|------|------|----------------------------------|--------|
+   |---------|---------|--------|----------|---------------------------|------|------|----------------------------------|--------|
    | 204101  | CS101   |        | 204201   |                           | 2022 | 1    | Introduction to Computer Science | 3      |
    | 204201  | CS201   | 204101 | 204301   |                           | 2022 | 2    | Data Structures and Algorithms   | 4      |
    | 204301  | CS301   | 204201 |          | Consent of the department | 2023 | 1    | Software Engineering             | 3      |
