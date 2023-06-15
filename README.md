@@ -127,7 +127,7 @@ Please make sure to have Node.js and Python installed on your system, and ensure
 To use the Prerequisite Tree tool, you need to prepare a spreadsheet containing the course data. Follow these steps to
 prepare the spreadsheet:
 
-1. Create a new spreadsheet using a program like [Microsoft Excel] or [Google Sheets].
+1. Create a new spreadsheet using a program like [Google Sheets].
 2. Create a table to represent the course data. The table should have the following columns:
 
    | code    | abbr    | parent | children | conditions                | year | term | full name (ENG)                  | credit |
