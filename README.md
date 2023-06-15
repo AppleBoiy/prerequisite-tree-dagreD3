@@ -111,7 +111,7 @@ prepare the spreadsheet:
 2. Create a table to represent the course data. The table should have the following columns:
 
    | code    | abbr | parent  | children | conditions   | year | term | full name (ENG)                  | credit |
-                  |---------|------|---------|----------|--------------|------|------|----------------------------------|--------|
+   |---------|------|---------|----------|--------------|------|------|----------------------------------|--------|
    | CS101   | CS   |         | CS201    |              | 2022 | 1    | Introduction to Computer Science | 3      |
    | CS201   | CS   | CS101   | CS301    |              | 2022 | 2    | Data Structures and Algorithms   | 4      |
    | CS301   | CS   | CS201   |          | CS101        | 2023 | 1    | Software Engineering             | 3      |
