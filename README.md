@@ -26,13 +26,13 @@ of the course prerequisites. It utilizes the [dagreD3] library, [D3.js], and [Sh
 ## Overview
 
 The Prerequisite Tree tool allows users to visualize and explore the prerequisite relationships between different
-courses. It fetches course data from a Google Spreadsheet, converts it into a JSON format, and generates a tree view
+courses. It fetches course data from a [Google Sheets], converts it into a JSON format, and generates a tree view
 using the [dagreD3] library. Users can hover over nodes to view prerequisite details and navigate the tree to understand
 the course dependencies.
 
 ## Features
 
-- Converts a Google Spreadsheet to JSON format
+- Converts a [Google Sheets] to JSON format
 - Generates an interactive prerequisite tree view
 - Highlights and provides details of course prerequisites on mouse hover
 - Supports customization of node colors and styles
@@ -46,7 +46,7 @@ You can access our wiki by visiting [wiki](https://cmu.to/cs-prereq-notion). It 
 
 ## How It Works
 
-The tool fetches a Google Spreadsheet containing course data and converts it into a JSON format. It then uses this data
+The tool fetches a [Google Sheets] containing course data and converts it into a JSON format. It then uses this data
 to generate a tree view representation of the course prerequisites. The tree view is rendered using the [dagreD3]
 library, which itself utilizes . The data conversion is facilitated by [SheetJS], allowing users to explore the
 prerequisite relationships between different courses.
@@ -110,11 +110,11 @@ prerequisite relationships between different courses.
 To use the Prerequisite Tree tool, you need to prepare a spreadsheet containing the course data. Follow these steps to
 prepare the spreadsheet:
 
-1. Create a new spreadsheet using a program like Microsoft Excel or Google Sheets.
+1. Create a new spreadsheet using a program like [Microsoft Excel] or [Google Sheets].
 2. Create a table to represent the course data. The table should have the following columns:
 
    | code    | abbr    | parent | children | conditions                | year | term | full name (ENG)                  | credit |
-      |---------|---------|--------|----------|---------------------------|------|------|----------------------------------|--------|
+                  |---------|---------|--------|----------|---------------------------|------|------|----------------------------------|--------|
    | 204101  | CS101   |        | 204201   |                           | 2022 | 1    | Introduction to Computer Science | 3      |
    | 204201  | CS201   | 204101 | 204301   |                           | 2022 | 2    | Data Structures and Algorithms   | 4      |
    | 204301  | CS301   | 204201 |          | Consent of the department | 2023 | 1    | Software Engineering             | 3      |
@@ -166,6 +166,10 @@ This project is licensed under the [MIT License](LICENSE).
 [SheetJS]: https://sheetjs.com
 
 [Node.js]: https://nodejs.org/en
+
+[Google Sheets]: https://docs.google.com/spreadsheets
+
+[Microsoft Excel]: https://www.microsoft.com/en-us/microsoft-365/excel
 
 [tree.js]: ./docs/js/tree.js
 
