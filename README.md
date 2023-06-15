@@ -2,10 +2,9 @@
 
 [![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=AppleBoiy_prerequisite-tree&metric=alert_status)](https://sonarcloud.io/summary/new_code?id=AppleBoiy_prerequisite-tree) [![Qodana](https://github.com/AppleBoiy/prerequisite-tree/actions/workflows/code_quality.yml/badge.svg)](https://github.com/AppleBoiy/prerequisite-tree/actions/workflows/code_quality.yml)
 
-![screen shot]
+<img src="./docs/img/tree_view_screenshot.png" width="1000">
 
-This is a prerequisite tree generator that converts a spreadsheet containing course data into a graphical representation
-of the course prerequisites. It utilizes the [dagreD3] library, [D3.js], and [SheetJS] to generate the tree view.
+The Prerequisite Tree tool allows users to visualize and explore the prerequisite relationships between different courses. It fetches course data from a google spreadsheet, converts it into a JSON format, and generates a tree view using the [dagreD3] library.
 
 ## Table of Contents
 
@@ -44,6 +43,10 @@ You can access our wiki by visiting [wiki](https://cmu.to/cs-prereq-notion). It 
 > We encourage you to explore our wiki to learn more about our project and get the most out of it. If you have any
 > questions or suggestions, feel free to contribute to the wiki or reach out to our team.
 
+## Prerequisite Tree
+
+The prerequisite tree is a graphical representation of the course prerequisites. It displays the dependency relationships between different courses and allows users to understand the required prerequisites for each course. The tree view is rendered using the [dagreD3] library and provides an interactive and intuitive visualization of the course structure.
+
 ## How It Works
 
 The tool fetches a [Google Sheets] containing course data and converts it into a JSON format. It then uses this data
@@ -57,8 +60,22 @@ prerequisite relationships between different courses.
 
 ### Prerequisites
 
-- [Node.js] (version 12 or higher)
-- Modern web browser with SVG support
+Before you can use the Prerequisite Tree tool, ensure that you have the following prerequisites:
+
+- [Node.js](https://nodejs.org/en) (version 12 or higher)
+- [Python](https://www.python.org) (version 3 or higher)
+- A modern web browser with SVG support
+
+In addition, you will need to have the `http.server` module installed in Python. You can install it by following these steps:
+
+1. Open your command-line interface.
+2. Run the following command to install `http.server`:
+   ```shell
+   pip install http.server
+   ```
+
+Please make sure to have Node.js and Python installed on your system, and ensure that your web browser supports SVG rendering.
+
 
 ### Installation
 
@@ -174,5 +191,3 @@ This project is licensed under the [MIT License](LICENSE).
 [tree.js]: ./docs/js/tree.js
 
 [tree.css]: ./docs/css/tree.css
-
-[screen shot]: ./docs/img/tree_view_screenshot.png
