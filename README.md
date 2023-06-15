@@ -81,7 +81,7 @@ prerequisite relationships between different courses.
 
 1. Open the `index.html` file in a web browser.
 2. Provide the URL of the spreadsheet in the spreadsheetUrl variable inside the [`main`](./docs/js/tree.js) function in
-   the [`tree.js] file.
+   the [tree.js] file.
    ```javascript {.line-numbers}
    // Some code above
 
@@ -111,7 +111,7 @@ prepare the spreadsheet:
 2. Create a table to represent the course data. The table should have the following columns:
 
    | code    | abbr    | parent | children | conditions                | year | term | full name (ENG)                  | credit |
-      |---------|---------|--------|----------|---------------------------|------|------|----------------------------------|--------|
+         |---------|---------|--------|----------|---------------------------|------|------|----------------------------------|--------|
    | 204101  | CS101   |        | 204201   |                           | 2022 | 1    | Introduction to Computer Science | 3      |
    | 204201  | CS201   | 204101 | 204301   |                           | 2022 | 2    | Data Structures and Algorithms   | 4      |
    | 204301  | CS301   | 204201 |          | Consent of the department | 2023 | 1    | Software Engineering             | 3      |
