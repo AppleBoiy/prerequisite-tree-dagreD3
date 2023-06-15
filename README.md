@@ -1,12 +1,34 @@
-
-
-
 # Prerequisite Tree
+
 [![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=AppleBoiy_prerequisite-tree&metric=alert_status)](https://sonarcloud.io/summary/new_code?id=AppleBoiy_prerequisite-tree) [![Qodana](https://github.com/AppleBoiy/prerequisite-tree/actions/workflows/code_quality.yml/badge.svg)](https://github.com/AppleBoiy/prerequisite-tree/actions/workflows/code_quality.yml)
 
+![screen shot]
 
 This is a prerequisite tree generator that converts a spreadsheet containing course data into a graphical representation
 of the course prerequisites. It utilizes the [dagreD3] library, [D3.js], and [SheetJS] to generate the tree view.
+
+## Table of Contents
+
+- [Overview](#overview)
+- [Features](#features)
+- [Wiki](#wiki)
+- [How It Works](#how-it-works)
+- [Getting Started](#getting-started)
+    - [Prerequisites](#prerequisites)
+    - [Installation](#installation)
+    - [Usage](#usage)
+- [Customization](#customization)
+    - [Preparing the Spreadsheet](#preparing-the-spreadsheet)
+- [Contributing](#contributing)
+- [Special Thanks](#special-thanks)
+- [License](#license)
+
+## Overview
+
+The Prerequisite Tree tool allows users to visualize and explore the prerequisite relationships between different
+courses. It fetches course data from a Google Spreadsheet, converts it into a JSON format, and generates a tree view
+using the [dagreD3] library. Users can hover over nodes to view prerequisite details and navigate the tree to understand
+the course dependencies.
 
 ## Features
 
@@ -58,8 +80,18 @@ prerequisite relationships between different courses.
 ### Usage
 
 1. Open the `index.html` file in a web browser.
-2. Provide the URL of the spreadsheet in the spreadsheetUrl variable inside the `main` function in the `tree.js` file.
+2. Provide the URL of the spreadsheet in the spreadsheetUrl variable inside the [`main`](./docs/js/tree.js) function in
+   the [`tree.js] file.
+   ```javascript {.line-numbers}
+   // Some code above
+
+   const main = () => {
+       const spreadsheetUrl = "https://link/to/your/spreadsheets";
+       //Rest of the code goes here
+   }
+   ```
    Save the changes.
+
 3. Run a local server to serve the files. You can use the following command with Python:
     ```shell
    python -m http.server
@@ -68,10 +100,46 @@ prerequisite relationships between different courses.
    configuration).
 5. The prerequisite tree will be displayed based on the data from the spreadsheet.
 
-### Customization
+## Customization
 
-* You can modify the styles in the `tree.css` file to customize the appearance of the prerequisite tree.
-* Additional configuration options and functionality can be implemented by modifying the `tree.js` file.
+### Preparing the Spreadsheet
+
+To use the Prerequisite Tree tool, you need to prepare a spreadsheet containing the course data. Follow these steps to
+prepare the spreadsheet:
+
+1. Create a new spreadsheet using a program like Microsoft Excel or Google Sheets.
+2. Create a table to represent the course data. The table should have the following columns:
+
+   | code    | abbr | parent  | children | conditions   | year | term | full name (ENG)                  | credit |
+                  |---------|------|---------|----------|--------------|------|------|----------------------------------|--------|
+   | CS101   | CS   |         | CS201    |              | 2022 | 1    | Introduction to Computer Science | 3      |
+   | CS201   | CS   | CS101   | CS301    |              | 2022 | 2    | Data Structures and Algorithms   | 4      |
+   | CS301   | CS   | CS201   |          | CS101        | 2023 | 1    | Software Engineering             | 3      |
+   | CS401   | CS   | CS301   |          | CS101, CS201 | 2023 | 2    | Advanced Programming             | 4      |
+   | Math101 | MATH |         |          |              | 2022 | 1    | Introduction to Mathematics      | 3      |
+   | Math201 | MATH | Math101 |          |              | 2022 | 2    | Calculus                         | 4      |
+
+    - `code`: Represents the course code or identifier.
+    - `abbr`: Represents the abbreviation or short form of the course name.
+    - `parent`: Represents the parent course code or identifier if there is any.
+    - `children`: Represents the child course codes or identifiers if there are any. Use a comma-separated list if there
+      are multiple children.
+    - `conditions`: Represents any specific conditions or prerequisites for the course.
+    - `year`: Represents the academic year in which the course is offered.
+    - `term`: Represents the academic term or semester in which the course is offered.
+    - `full name (ENG)`: Represents the full name of the course in English.
+    - `credit`: Represents the credit value assigned to the course.
+
+3. Fill in the table with the relevant course data, including course codes, names, prerequisites, and descriptions (if
+   applicable). Make sure to use the correct course codes for prerequisites to establish the prerequisite relationships
+   accurately.
+4. Save the spreadsheet and make sure it is accessible online.
+
+Once you have prepared the spreadsheet, you can use it with the Prerequisite Tree tool to generate a graphical
+representation of the course prerequisites.
+
+* You can modify the styles in the [tree.css] file to customize the appearance of the prerequisite tree.
+* Additional configuration options and functionality can be implemented by modifying the [tree.js] file.
 
 ### Contributing
 
@@ -95,3 +163,9 @@ This project is licensed under the [MIT License](LICENSE).
 [SheetJS]: https://sheetjs.com
 
 [Node.js]: https://nodejs.org/en
+
+[tree.js]: ./docs/js/tree.js
+
+[tree.css]: ./docs/css/tree.css
+
+[screen shot]: ./docs/img/tree_view_screenshot.png
