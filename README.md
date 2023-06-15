@@ -130,14 +130,14 @@ prepare the spreadsheet:
 1. Create a new spreadsheet using a program like [Google Sheets].
 2. Create a table to represent the course data. The table should have the following columns:
 
-   | code    | abbr    | parent | children | conditions                | year | term | full name (ENG)                  | credit |
-   |---------|---------|--------|----------|---------------------------|------|------|----------------------------------|--------|
-   | 204101  | CS101   |        | 204201   |                           | 2022 | 1    | Introduction to Computer Science | 3      |
-   | 204201  | CS201   | 204101 | 204301   |                           | 2022 | 2    | Data Structures and Algorithms   | 4      |
-   | 204301  | CS301   | 204201 |          | Consent of the department | 2023 | 1    | Software Engineering             | 3      |
-   | 204401  | CS401   | 204301 |          | Third year standing       | 2023 | 2    | Advanced Programming             | 4      |
-   | 206101  | MATH101 |        |          |                           | 2022 | 1    | Introduction to Mathematics      | 3      |
-   | 206201  | MATH201 | 206101 |          |                           | 2022 | 2    | Calculus                         | 4      |
+   | code    | abbr    | parent | children | conditions          | year | term | full name (ENG)                  | credit |
+   |---------|---------|--------|----------|---------------------|------|------|----------------------------------|--------|
+   | 204101  | CS101   |        | 204201   |                     | 1    | 1    | Introduction to Computer Science | 3      |
+   | 204201  | CS201   | 204101 | 204301   |                     | 1    | 2    | Data Structures and Algorithms   | 4      |
+   | 204301  | CS301   | 204201 |          | Consent of the dept | 2    | 1    | Software Engineering             | 3      |
+   | 204401  | CS401   | 204301 |          | Third year standing | 3    | 2    | Advanced Programming             | 4      |
+   | 206101  | MATH101 |        |          |                     | 1    | 1    | Introduction to Mathematics      | 3      |
+   | 206201  | MATH201 | 206101 |          |                     | 2    | 2    | Calculus                         | 4      |
 
     - `code`: Represents the course code or identifier.
     - `abbr`: Represents the abbreviation or short form of the course name.
