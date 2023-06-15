@@ -110,14 +110,14 @@ prepare the spreadsheet:
 1. Create a new spreadsheet using a program like Microsoft Excel or Google Sheets.
 2. Create a table to represent the course data. The table should have the following columns:
 
-   | code    | abbr | parent  | children | conditions   | year | term | full name (ENG)                  | credit |
-   |---------|------|---------|----------|--------------|------|------|----------------------------------|--------|
-   | CS101   | CS   |         | CS201    |              | 2022 | 1    | Introduction to Computer Science | 3      |
-   | CS201   | CS   | CS101   | CS301    |              | 2022 | 2    | Data Structures and Algorithms   | 4      |
-   | CS301   | CS   | CS201   |          | CS101        | 2023 | 1    | Software Engineering             | 3      |
-   | CS401   | CS   | CS301   |          | CS101, CS201 | 2023 | 2    | Advanced Programming             | 4      |
-   | Math101 | MATH |         |          |              | 2022 | 1    | Introduction to Mathematics      | 3      |
-   | Math201 | MATH | Math101 |          |              | 2022 | 2    | Calculus                         | 4      |
+   | code    | abbr | parent  | children | conditions                | year | term | full name (ENG)                  | credit |
+      |---------|------|---------|----------|---------------------------|------|------|----------------------------------|--------|
+   | CS101   | CS   |         | CS201    |                           | 2022 | 1    | Introduction to Computer Science | 3      |
+   | CS201   | CS   | CS101   | CS301    |                           | 2022 | 2    | Data Structures and Algorithms   | 4      |
+   | CS301   | CS   | CS201   |          | Consent of the department | 2023 | 1    | Software Engineering             | 3      |
+   | CS401   | CS   | CS301   |          | Third year standing       | 2023 | 2    | Advanced Programming             | 4      |
+   | Math101 | MATH |         |          |                           | 2022 | 1    | Introduction to Mathematics      | 3      |
+   | Math201 | MATH | Math101 |          |                           | 2022 | 2    | Calculus                         | 4      |
 
     - `code`: Represents the course code or identifier.
     - `abbr`: Represents the abbreviation or short form of the course name.
