@@ -2,7 +2,7 @@
 
 [![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=AppleBoiy_prerequisite-tree&metric=alert_status)](https://sonarcloud.io/summary/new_code?id=AppleBoiy_prerequisite-tree) [![Qodana](https://github.com/AppleBoiy/prerequisite-tree/actions/workflows/code_quality.yml/badge.svg)](https://github.com/AppleBoiy/prerequisite-tree/actions/workflows/code_quality.yml)
 
-<img src="./docs/img/tree_view_screenshot.png" width="1000">
+<img src="./docs/img/tree_view_screenshot.png" width="1000" alt="">
 
 > The Prerequisite Tree tool allows users to visualize and explore the prerequisite relationships between different courses. It fetches course data from a google spreadsheet, converts it into a JSON format, and generates a tree view using the [dagreD3] library.
 
@@ -60,8 +60,8 @@ prerequisite relationships between different courses.
 
 Before you can use the Prerequisite Tree tool, ensure that you have the following prerequisites:
 
-- [Node.js](https://nodejs.org/en) (version 12 or higher)
-- [Python](https://www.python.org) (version 3 or higher)
+- [Node.js] (version 12 or higher)
+- [Python] (version 3 or higher)
 - A modern web browser with SVG support
 
 In addition, you will need to have the `http.server` module installed in Python. You can install it by following these steps:
@@ -95,15 +95,16 @@ Please make sure to have Node.js and Python installed on your system, and ensure
 
 ### Usage
 
-1. Open the `index.html` file in a web browser.
+1. Open the [index.html](docs/index.html) file in a web browser.
 2. Provide the URL of the spreadsheet in
    the [spreadsheetUrl](docs/js/tree.js#L6) variable inside
    the [tree.js] file.
-   ```javascript {.line-numbers}
+   ```javascript
    // Some code above
 
    const main = () => {
        const spreadsheetUrl = "https://link/to/your/spreadsheets";
+   
        //Rest of the code goes here
    }
    
@@ -176,17 +177,13 @@ This project is licensed under the [MIT License](LICENSE).
 
 
 [dagreD3]: https://github.com/dagrejs/dagre-d3
-
 [D3.js]: https://d3js.org
-
 [SheetJS]: https://sheetjs.com
 
 [Node.js]: https://nodejs.org/en
+[Python]: https://www.python.org
 
 [Google Sheets]: https://docs.google.com/spreadsheets
 
-[Microsoft Excel]: https://www.microsoft.com/en-us/microsoft-365/excel
-
-[tree.js]: ./docs/js/tree.js
-
-[tree.css]: ./docs/css/tree.css
+[tree.js]: docs/js/tree.js
+[tree.css]: docs/css/tree.css
