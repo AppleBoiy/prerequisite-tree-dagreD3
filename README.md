@@ -70,6 +70,7 @@ In addition, you will need to have the `http.server` module installed in Python.
 
 1. Open your command-line interface.
 2. Run the following command to install `http.server`:
+
    ```shell
    pip install http.server
    ```
