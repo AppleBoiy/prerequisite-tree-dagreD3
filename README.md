@@ -9,7 +9,7 @@
 ## Table of Contents
 
 - [Overview](#overview)
-- [Update](#update)
+- [Update](https://github.com/AppleBoiy/prerequisite-tree/wiki/Update#latest-update)
 - [Wiki](#wiki)
 - [Getting Started](https://github.com/AppleBoiy/prerequisite-tree/wiki/Getting-Started)
 - [Customization](https://github.com/AppleBoiy/prerequisite-tree/wiki/Customization)
@@ -22,9 +22,6 @@ The Prerequisite Tree tool allows users to visualize and explore the prerequisit
 courses. It fetches course data from a [Google Sheets], converts it into a JSON format, and generates a tree view
 using the [dagreD3] library. Users can hover over nodes to view prerequisite details and navigate the tree to understand
 the course dependencies.
-
-## Update
-For more details, please see the [update announce](https://github.com/AppleBoiy/prerequisite-tree/wiki/Update#latest-update) that implements these improvements.
 
 ## Wiki
 
