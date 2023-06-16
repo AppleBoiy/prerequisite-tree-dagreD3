@@ -24,7 +24,7 @@ using the [dagreD3] library. Users can hover over nodes to view prerequisite det
 the course dependencies.
 
 ## Update
-For more details, please see the [pull request](https://github.com/AppleBoiy/prerequisite-tree/wiki/Update#latest-update) that implements these improvements.
+For more details, please see the [update announce](https://github.com/AppleBoiy/prerequisite-tree/wiki/Update#latest-update) that implements these improvements.
 
 ## Wiki
 
