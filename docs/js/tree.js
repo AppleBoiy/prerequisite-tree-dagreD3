@@ -1,6 +1,7 @@
 const rectangleData = {};
 const courseData = {};
 const courseList = [];
+const edgesList = [];
 
 const main = () => {
     const spreadsheetUrl = "https://docs.google.com/spreadsheets/d/1t8dvUUdvOxdiKQv5nagGaHyiw3P-C2o0Qg6C_1Tlq58/edit?usp=sharing";
@@ -71,16 +72,15 @@ async function spreadsheetToJson(url) {
 
     const [headers, ...rows] = jsonData;
 
-    const result = rows.map(row => {
-        const obj = {};
-        headers.forEach((headerCell, index) => {
+    const result = rows.map(row =>
+        headers.reduce((obj, headerCell, index) => {
             obj[headerCell] = row[index];
-        });
-        return obj;
-    });
+            return obj;
+        }, {})
+    );
 
     const parseValue = (value) => {
-        return value === "-" ? [] : value.toString().split(", ");
+        return value.toString() === "-" ? [] : value.toString().split(", ");
     };
 
     result.forEach(element => {
@@ -138,9 +138,17 @@ async function generateTreeView(rawData) {
 
     svgGroup.attr("transform", `translate(${60}, ${60})`);
 
-    for (const data of mainTree.edges()) {
-        const {v, w} = data;
+    for (const edge of document.querySelectorAll(".edgePath")) {
+        const [, relation] = edge.classList;
+        const [parent, child] = relation.split("-").map(e => convertCourseId(e));
+
+        edgesList.push({
+            parent,
+            child,
+            rect: edge
+        });
     }
+
 }
 
 /**
@@ -151,7 +159,7 @@ async function generateTreeView(rawData) {
  * @returns {Array} - An array containing the parent nodes and their ancestors.
  */
 function getNodeAncestors(abbreviation) {
-    const parents = courseData[abbreviation]?.parent.map(e => idToAbbreviation(e));
+    const parents = courseData[abbreviation]?.parent.map(e => convertCourseId(e));
 
     if (!parents) return [];
 
@@ -185,83 +193,103 @@ function highlightRectangle(abbreviation, mode = "") {
             break;
 
         default:
-            rectangle.style.opacity = "0.5";
+            rectangle.style.opacity = "0.1";
 
     }
 }
 
 /**
- * Converts an ID to its corresponding abbreviation.
+ * Converts an ID or abbreviation to its corresponding.
  *
- * @param {string} id - The ID to be converted.
- * @returns {string} The corresponding abbreviation.
+ * @param {string} identifier - The ID or Abbreviation to be converted.
+ * @returns {string} The corresponding abbreviation or ID.
  */
-function idToAbbreviation(id) {
-    const abbreviationDict = {
+function convertCourseId(identifier) {
+    const courseMapping = {
         "204": "CS",
         "206": "Math",
-        "208": "Stat"
+        "208": "Stat",
+
+        "CS":"204",
+        "Math":"206",
+        "Stat":"208"
     };
 
-    return `${abbreviationDict[id.slice(0, 3)]}${id.slice(3)}`;
+    return `${courseMapping[identifier.slice(0, 3)]}${identifier.slice(3)}`
 }
 
 /**
  * Attaches event handlers to a given node element based on the provided abbreviation.
  *
  * @param {string} abbreviation - The abbreviation of the node.
- * @param {HTMLElement} nodeElement - The node element to attach the event handlers to.
+ * @param {HTMLElement} nodeEl - The node element to attach the event handlers to.
  * @returns {void} - This function does not return a value.
  */
-function attachEventHandlers(abbreviation, nodeElement) {
-    const popup = document.getElementById("popup");
-    const close = document.getElementById("close");
+function attachEventHandlers(abbreviation, nodeEl) {
+    const data = courseData[abbreviation];
 
-    close.addEventListener("click", (event) => {
-        event.preventDefault();
-        if (popup.style.display !== "none") {
-            popup.style.display = "none";
-        }
-    });
+    const popupEl = document.getElementById("popup");
+    const closeEl = document.getElementById("close");
 
-    const subjectData = courseData[abbreviation];
-    if (!subjectData) return;
+    const childCodes = data.children.map(convertCourseId);
+    const nodes = [abbreviation, ...childCodes, ...getNodeAncestors(abbreviation)];
+    const unrelatedNodes = courseList.filter(course => !nodes.includes(course));
 
-    const childCodes = subjectData.children.map(idToAbbreviation);
-    const parentCodes = getNodeAncestors(abbreviation);
-    const nodes = [abbreviation, ...childCodes, ...parentCodes];
-
-    const excludes = courseList.filter(e => !nodes.includes(e));
+    const fadedEdges = [];
 
     const handleMouseEnter = () => {
-        nodes.forEach(e => highlightRectangle(e, "enter"));
-        excludes.forEach(e => highlightRectangle(e, "fade"));
+        nodes.forEach(node => highlightRectangle(node, "enter"));
+        unrelatedNodes.forEach(node => highlightRectangle(node, "fade"));
+
+        edgesList.forEach(({ parent, child, rect }) => {
+            if (!nodes.includes(parent) || !nodes.includes(child)) {
+                rect.style.opacity = "0.1";
+                fadedEdges.push(rect);
+            }
+        });
     };
 
     const handleMouseLeave = () => {
-        nodes.forEach(e => highlightRectangle(e, "leave"));
-        excludes.forEach(e => highlightRectangle(e, "leave"));
+        nodes.forEach(node => highlightRectangle(node, "leave"));
+        unrelatedNodes.forEach(node => highlightRectangle(node, "leave"));
+        fadedEdges.forEach(edge => (edge.style.opacity = "1"));
     };
 
     const handleMouseClick = (event) => {
         event.preventDefault();
-        popup.style.display = "flex";
-        const [courseName, courseContent] = popup.children[0].children;
+        popupEl.style.display = "flex";
+        const [nameEl, contentEl] = popupEl.children[0].children;
 
-        courseName.innerHTML = courseData[abbreviation]["full name (ENG)"];
-        courseContent.innerHTML = `
-      Prerequisite: ${courseData[abbreviation]["parent"] || "-"}<br>
-      Credit: ${courseData[abbreviation]["credit"]}<br>
+        nameEl.innerHTML = data["full name (ENG)"];
+        contentEl.innerHTML = `
+      Prerequisite: ${data["parent"] || "-"}<br>
+      Credit: ${data["credit"]}<br>
       Details: ....`;
+
+        nodeEl.removeEventListener("mouseleave", handleMouseLeave);
+        handleMouseEnter();
     };
 
-    // Add custom styles to the node element
-    nodeElement.style.cursor = "pointer";
-    nodeElement.style.transition = "background-color 3s ease";
 
-    nodeElement.addEventListener("mouseenter", handleMouseEnter);
-    nodeElement.addEventListener("mouseleave", handleMouseLeave);
-    nodeElement.addEventListener("click", handleMouseClick);
+    closeEl.addEventListener("click", (event) => {
+        event.preventDefault();
+        if (popupEl.style.display !== "none") {
+            popupEl.style.display = "none";
+        } else {
+            nodeEl.addEventListener("mouseleave", handleMouseLeave);
+            handleMouseLeave();
+        }
+    });
+
+    // Add custom styles to the node element
+    nodeEl.style.cursor = "pointer";
+    nodeEl.style.transition = "background-color 3s ease";
+
+    nodeEl.addEventListener("mouseenter", handleMouseEnter);
+    nodeEl.addEventListener("mouseleave", handleMouseLeave);
+    nodeEl.addEventListener("click", handleMouseClick);
 }
+
+
 
 main()

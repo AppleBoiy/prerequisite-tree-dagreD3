@@ -2,7 +2,7 @@
 
 [![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=AppleBoiy_prerequisite-tree&metric=alert_status)](https://sonarcloud.io/summary/new_code?id=AppleBoiy_prerequisite-tree) [![Qodana](https://github.com/AppleBoiy/prerequisite-tree/actions/workflows/code_quality.yml/badge.svg)](https://github.com/AppleBoiy/prerequisite-tree/actions/workflows/code_quality.yml)
 
-<img src="./docs/img/tree_view_screenshot.png" width="1000">
+<img src="./docs/img/tree_view_screenshot.png" width="1000" alt="">
 
 > The Prerequisite Tree tool allows users to visualize and explore the prerequisite relationships between different courses. It fetches course data from a google spreadsheet, converts it into a JSON format, and generates a tree view using the [dagreD3] library.
 
@@ -60,18 +60,9 @@ prerequisite relationships between different courses.
 
 Before you can use the Prerequisite Tree tool, ensure that you have the following prerequisites:
 
-- [Node.js](https://nodejs.org/en) (version 12 or higher)
-- [Python](https://www.python.org) (version 3 or higher)
+- [Node.js] (version 12 or higher)
+- [Python] (version 3 or higher)
 - A modern web browser with SVG support
-
-In addition, you will need to have the `http.server` module installed in Python. You can install it by following these steps:
-
-1. Open your command-line interface.
-2. Run the following command to install `http.server`:
-
-   ```shell
-   pip install http.server
-   ```
 
 Please make sure to have Node.js and Python installed on your system, and ensure that your web browser supports SVG rendering.
 
@@ -95,15 +86,16 @@ Please make sure to have Node.js and Python installed on your system, and ensure
 
 ### Usage
 
-1. Open the `index.html` file in a web browser.
+1. Open the [tree.js] file in text editor.
 2. Provide the URL of the spreadsheet in
    the [spreadsheetUrl](docs/js/tree.js#L6) variable inside
    the [tree.js] file.
-   ```javascript {.line-numbers}
+   ```javascript
    // Some code above
 
    const main = () => {
        const spreadsheetUrl = "https://link/to/your/spreadsheets";
+   
        //Rest of the code goes here
    }
    
@@ -129,14 +121,14 @@ prepare the spreadsheet:
 1. Create a new spreadsheet using a program like [Google Sheets].
 2. Create a table to represent the course data. The table should have the following columns:
 
-   | code    | abbr    | parent | children | conditions          | year | term | full name (ENG)                  | credit |
-   |---------|---------|--------|----------|---------------------|------|------|----------------------------------|--------|
-   | 204101  | CS101   |        | 204201   |                     | 1    | 1    | Introduction to Computer Science | 3      |
-   | 204201  | CS201   | 204101 | 204301   |                     | 1    | 2    | Data Structures and Algorithms   | 4      |
-   | 204301  | CS301   | 204201 |          | Consent of the dept | 2    | 1    | Software Engineering             | 3      |
-   | 204401  | CS401   | 204301 |          | Third year standing | 3    | 2    | Advanced Programming             | 4      |
-   | 206101  | MATH101 |        |          |                     | 1    | 1    | Introduction to Mathematics      | 3      |
-   | 206201  | MATH201 | 206101 |          |                     | 2    | 2    | Calculus                         | 4      |
+   | code   | abbr    | parent | children | conditions          | year | term | full name (ENG)                  | credit |
+   |--------|---------|--------|----------|---------------------|------|------|----------------------------------|--------|
+   | 204101 | CS101   | -      | 204201   | -                   | 1    | 1    | Introduction to Computer Science | 3      |
+   | 204201 | CS201   | 204101 | 204301   | -                   | 1    | 2    | Data Structures and Algorithms   | 4      |
+   | 204301 | CS301   | 204201 | -        | Consent of the dept | 2    | 1    | Software Engineering             | 3      |
+   | 204401 | CS401   | 204301 | -        | Third year standing | 3    | 2    | Advanced Programming             | 4      |
+   | 206101 | MATH101 | -      | -        | -                   | 1    | 1    | Introduction to Mathematics      | 3      |
+   | 206201 | MATH201 | 206101 | -        | -                   | 2    | 2    | Calculus                         | 4      |
 
     - `code`: Represents the course code or identifier.
     - `abbr`: Represents the abbreviation or short form of the course name.
@@ -176,17 +168,13 @@ This project is licensed under the [MIT License](LICENSE).
 
 
 [dagreD3]: https://github.com/dagrejs/dagre-d3
-
 [D3.js]: https://d3js.org
-
 [SheetJS]: https://sheetjs.com
 
 [Node.js]: https://nodejs.org/en
+[Python]: https://www.python.org
 
 [Google Sheets]: https://docs.google.com/spreadsheets
 
-[Microsoft Excel]: https://www.microsoft.com/en-us/microsoft-365/excel
-
-[tree.js]: ./docs/js/tree.js
-
-[tree.css]: ./docs/css/tree.css
+[tree.js]: docs/js/tree.js
+[tree.css]: docs/css/tree.css

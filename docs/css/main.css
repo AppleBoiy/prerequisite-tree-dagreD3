@@ -5,8 +5,8 @@ body {
 
 nav {
     background-color: #8E806A;
-    border-bottom: 1px solid ;
-    margin-bottom: 0px;
+    border-bottom: 1px solid;
+    margin-bottom: 0;
 }
 
 img.tw-user-small {
@@ -18,8 +18,8 @@ img.tw-user-medium {
     height: 50px;
 }
 
-.navbar-light .container .navbar-nav .nav-link{
-    color:#2C3333;
+.navbar-light .container .navbar-nav .nav-link {
+    color: #2C3333;
 }
 
 
