@@ -64,15 +64,6 @@ Before you can use the Prerequisite Tree tool, ensure that you have the followin
 - [Python] (version 3 or higher)
 - A modern web browser with SVG support
 
-In addition, you will need to have the `http.server` module installed in Python. You can install it by following these steps:
-
-1. Open your command-line interface.
-2. Run the following command to install `http.server`:
-
-   ```shell
-   pip install http.server
-   ```
-
 Please make sure to have Node.js and Python installed on your system, and ensure that your web browser supports SVG rendering.
 
 
@@ -95,7 +86,7 @@ Please make sure to have Node.js and Python installed on your system, and ensure
 
 ### Usage
 
-1. Open the [index.html](docs/index.html) file in a web browser.
+1. Open the [tree.js] file in text editor.
 2. Provide the URL of the spreadsheet in
    the [spreadsheetUrl](docs/js/tree.js#L6) variable inside
    the [tree.js] file.
@@ -130,14 +121,14 @@ prepare the spreadsheet:
 1. Create a new spreadsheet using a program like [Google Sheets].
 2. Create a table to represent the course data. The table should have the following columns:
 
-   | code    | abbr    | parent | children | conditions          | year | term | full name (ENG)                  | credit |
-   |---------|---------|--------|----------|---------------------|------|------|----------------------------------|--------|
-   | 204101  | CS101   |        | 204201   |                     | 1    | 1    | Introduction to Computer Science | 3      |
-   | 204201  | CS201   | 204101 | 204301   |                     | 1    | 2    | Data Structures and Algorithms   | 4      |
-   | 204301  | CS301   | 204201 |          | Consent of the dept | 2    | 1    | Software Engineering             | 3      |
-   | 204401  | CS401   | 204301 |          | Third year standing | 3    | 2    | Advanced Programming             | 4      |
-   | 206101  | MATH101 |        |          |                     | 1    | 1    | Introduction to Mathematics      | 3      |
-   | 206201  | MATH201 | 206101 |          |                     | 2    | 2    | Calculus                         | 4      |
+   | code   | abbr    | parent | children | conditions          | year | term | full name (ENG)                  | credit |
+   |--------|---------|--------|----------|---------------------|------|------|----------------------------------|--------|
+   | 204101 | CS101   | -      | 204201   | -                   | 1    | 1    | Introduction to Computer Science | 3      |
+   | 204201 | CS201   | 204101 | 204301   | -                   | 1    | 2    | Data Structures and Algorithms   | 4      |
+   | 204301 | CS301   | 204201 | -        | Consent of the dept | 2    | 1    | Software Engineering             | 3      |
+   | 204401 | CS401   | 204301 | -        | Third year standing | 3    | 2    | Advanced Programming             | 4      |
+   | 206101 | MATH101 | -      | -        | -                   | 1    | 1    | Introduction to Mathematics      | 3      |
+   | 206201 | MATH201 | 206101 | -        | -                   | 2    | 2    | Calculus                         | 4      |
 
     - `code`: Represents the course code or identifier.
     - `abbr`: Represents the abbreviation or short form of the course name.
