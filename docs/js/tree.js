@@ -1,6 +1,7 @@
 const rectangleData = {};
 const courseData = {};
 const courseList = [];
+const edgesList = [];
 
 const main = () => {
     const spreadsheetUrl = "https://docs.google.com/spreadsheets/d/1t8dvUUdvOxdiKQv5nagGaHyiw3P-C2o0Qg6C_1Tlq58/edit?usp=sharing";
@@ -138,8 +139,16 @@ async function generateTreeView(rawData) {
 
     svgGroup.attr("transform", `translate(${60}, ${60})`);
 
-    for (const data of mainTree.edges()) {
-        const {v, w} = data;
+    const edgesGroup = document.getElementsByClassName("edgePath");
+    for (const edge of edgesGroup) {
+        const [_, relation] = edge.classList;
+        const [parent, child] = relation.split("-").map( e => convertCourseId(e));
+
+        edgesList.push({
+            parent: parent,
+            child: child,
+            rect: edge
+        })
     }
 }
 
@@ -151,7 +160,7 @@ async function generateTreeView(rawData) {
  * @returns {Array} - An array containing the parent nodes and their ancestors.
  */
 function getNodeAncestors(abbreviation) {
-    const parents = courseData[abbreviation]?.parent.map(e => idToAbbreviation(e));
+    const parents = courseData[abbreviation]?.parent.map(e => convertCourseId(e));
 
     if (!parents) return [];
 
@@ -185,25 +194,29 @@ function highlightRectangle(abbreviation, mode = "") {
             break;
 
         default:
-            rectangle.style.opacity = "0.5";
+            rectangle.style.opacity = "0.1";
 
     }
 }
 
 /**
- * Converts an ID to its corresponding abbreviation.
+ * Converts an ID or abbreviation to its corresponding.
  *
- * @param {string} id - The ID to be converted.
- * @returns {string} The corresponding abbreviation.
+ * @param {string} identifier - The ID or Abbreviation to be converted.
+ * @returns {string} The corresponding abbreviation or ID.
  */
-function idToAbbreviation(id) {
-    const abbreviationDict = {
+function convertCourseId(identifier) {
+    const courseMapping = {
         "204": "CS",
         "206": "Math",
-        "208": "Stat"
+        "208": "Stat",
+
+        "CS":"204",
+        "Math":"206",
+        "Stat":"208"
     };
 
-    return `${abbreviationDict[id.slice(0, 3)]}${id.slice(3)}`;
+    return `${courseMapping[identifier.slice(0, 3)]}${identifier.slice(3)}`
 }
 
 /**
@@ -217,30 +230,33 @@ function attachEventHandlers(abbreviation, nodeElement) {
     const popup = document.getElementById("popup");
     const close = document.getElementById("close");
 
-    close.addEventListener("click", (event) => {
-        event.preventDefault();
-        if (popup.style.display !== "none") {
-            popup.style.display = "none";
-        }
-    });
-
     const subjectData = courseData[abbreviation];
     if (!subjectData) return;
 
-    const childCodes = subjectData.children.map(idToAbbreviation);
+    const childCodes = subjectData.children.map(convertCourseId);
     const parentCodes = getNodeAncestors(abbreviation);
     const nodes = [abbreviation, ...childCodes, ...parentCodes];
+    const edges = [];
 
     const excludes = courseList.filter(e => !nodes.includes(e));
 
     const handleMouseEnter = () => {
         nodes.forEach(e => highlightRectangle(e, "enter"));
         excludes.forEach(e => highlightRectangle(e, "fade"));
+
+        edgesList.forEach(edge => {
+            const {parent, child, rect} = edge;
+            if ( !nodes.includes(parent) || !nodes.includes(child) ) {
+                rect.style.opacity = "0.1";
+                edges.push( rect );
+            }
+        })
     };
 
     const handleMouseLeave = () => {
         nodes.forEach(e => highlightRectangle(e, "leave"));
         excludes.forEach(e => highlightRectangle(e, "leave"));
+        edges.forEach( e => e.style.opacity = "1" );
     };
 
     const handleMouseClick = (event) => {
@@ -253,7 +269,21 @@ function attachEventHandlers(abbreviation, nodeElement) {
       Prerequisite: ${courseData[abbreviation]["parent"] || "-"}<br>
       Credit: ${courseData[abbreviation]["credit"]}<br>
       Details: ....`;
+
+        nodeElement.removeEventListener("mouseleave", handleMouseLeave);
+        handleMouseEnter();
     };
+
+
+    close.addEventListener("click", (event) => {
+        event.preventDefault();
+        if (popup.style.display !== "none") {
+            popup.style.display = "none";
+        } else {
+            nodeElement.addEventListener("mouseleave", handleMouseLeave);
+            handleMouseLeave();
+        }
+    });
 
     // Add custom styles to the node element
     nodeElement.style.cursor = "pointer";
@@ -262,6 +292,10 @@ function attachEventHandlers(abbreviation, nodeElement) {
     nodeElement.addEventListener("mouseenter", handleMouseEnter);
     nodeElement.addEventListener("mouseleave", handleMouseLeave);
     nodeElement.addEventListener("click", handleMouseClick);
+}
+
+function fadeEdges(abbreviation) {
+    const relate = []
 }
 
 main()
