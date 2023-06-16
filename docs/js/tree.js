@@ -72,16 +72,15 @@ async function spreadsheetToJson(url) {
 
     const [headers, ...rows] = jsonData;
 
-    const result = rows.map(row => {
-        const obj = {};
-        headers.forEach((headerCell, index) => {
+    const result = rows.map(row =>
+        headers.reduce((obj, headerCell, index) => {
             obj[headerCell] = row[index];
-        });
-        return obj;
-    });
+            return obj;
+        }, {})
+    );
 
     const parseValue = (value) => {
-        return value === "-" ? [] : value.toString().split(", ");
+        return value.toString() === "-" ? [] : value.toString().split(", ");
     };
 
     result.forEach(element => {
@@ -139,17 +138,17 @@ async function generateTreeView(rawData) {
 
     svgGroup.attr("transform", `translate(${60}, ${60})`);
 
-    const edgesGroup = document.getElementsByClassName("edgePath");
-    for (const edge of edgesGroup) {
-        const [_, relation] = edge.classList;
-        const [parent, child] = relation.split("-").map( e => convertCourseId(e));
+    for (const edge of document.querySelectorAll(".edgePath")) {
+        const [, relation] = edge.classList;
+        const [parent, child] = relation.split("-").map(e => convertCourseId(e));
 
         edgesList.push({
-            parent: parent,
-            child: child,
+            parent,
+            child,
             rect: edge
-        })
+        });
     }
+
 }
 
 /**
@@ -223,79 +222,74 @@ function convertCourseId(identifier) {
  * Attaches event handlers to a given node element based on the provided abbreviation.
  *
  * @param {string} abbreviation - The abbreviation of the node.
- * @param {HTMLElement} nodeElement - The node element to attach the event handlers to.
+ * @param {HTMLElement} nodeEl - The node element to attach the event handlers to.
  * @returns {void} - This function does not return a value.
  */
-function attachEventHandlers(abbreviation, nodeElement) {
-    const popup = document.getElementById("popup");
-    const close = document.getElementById("close");
+function attachEventHandlers(abbreviation, nodeEl) {
+    const data = courseData[abbreviation];
 
-    const subjectData = courseData[abbreviation];
-    if (!subjectData) return;
+    const popupEl = document.getElementById("popup");
+    const closeEl = document.getElementById("close");
 
-    const childCodes = subjectData.children.map(convertCourseId);
-    const parentCodes = getNodeAncestors(abbreviation);
-    const nodes = [abbreviation, ...childCodes, ...parentCodes];
-    const edges = [];
+    const childCodes = data.children.map(convertCourseId);
+    const nodes = [abbreviation, ...childCodes, ...getNodeAncestors(abbreviation)];
+    const unrelatedNodes = courseList.filter(course => !nodes.includes(course));
 
-    const excludes = courseList.filter(e => !nodes.includes(e));
+    const fadedEdges = [];
 
     const handleMouseEnter = () => {
-        nodes.forEach(e => highlightRectangle(e, "enter"));
-        excludes.forEach(e => highlightRectangle(e, "fade"));
+        nodes.forEach(node => highlightRectangle(node, "enter"));
+        unrelatedNodes.forEach(node => highlightRectangle(node, "fade"));
 
-        edgesList.forEach(edge => {
-            const {parent, child, rect} = edge;
-            if ( !nodes.includes(parent) || !nodes.includes(child) ) {
+        edgesList.forEach(({ parent, child, rect }) => {
+            if (!nodes.includes(parent) || !nodes.includes(child)) {
                 rect.style.opacity = "0.1";
-                edges.push( rect );
+                fadedEdges.push(rect);
             }
-        })
+        });
     };
 
     const handleMouseLeave = () => {
-        nodes.forEach(e => highlightRectangle(e, "leave"));
-        excludes.forEach(e => highlightRectangle(e, "leave"));
-        edges.forEach( e => e.style.opacity = "1" );
+        nodes.forEach(node => highlightRectangle(node, "leave"));
+        unrelatedNodes.forEach(node => highlightRectangle(node, "leave"));
+        fadedEdges.forEach(edge => (edge.style.opacity = "1"));
     };
 
     const handleMouseClick = (event) => {
         event.preventDefault();
-        popup.style.display = "flex";
-        const [courseName, courseContent] = popup.children[0].children;
+        popupEl.style.display = "flex";
+        const [nameEl, contentEl] = popupEl.children[0].children;
 
-        courseName.innerHTML = courseData[abbreviation]["full name (ENG)"];
-        courseContent.innerHTML = `
-      Prerequisite: ${courseData[abbreviation]["parent"] || "-"}<br>
-      Credit: ${courseData[abbreviation]["credit"]}<br>
+        nameEl.innerHTML = data["full name (ENG)"];
+        contentEl.innerHTML = `
+      Prerequisite: ${data["parent"] || "-"}<br>
+      Credit: ${data["credit"]}<br>
       Details: ....`;
 
-        nodeElement.removeEventListener("mouseleave", handleMouseLeave);
+        nodeEl.removeEventListener("mouseleave", handleMouseLeave);
         handleMouseEnter();
     };
 
 
-    close.addEventListener("click", (event) => {
+    closeEl.addEventListener("click", (event) => {
         event.preventDefault();
-        if (popup.style.display !== "none") {
-            popup.style.display = "none";
+        if (popupEl.style.display !== "none") {
+            popupEl.style.display = "none";
         } else {
-            nodeElement.addEventListener("mouseleave", handleMouseLeave);
+            nodeEl.addEventListener("mouseleave", handleMouseLeave);
             handleMouseLeave();
         }
     });
 
     // Add custom styles to the node element
-    nodeElement.style.cursor = "pointer";
-    nodeElement.style.transition = "background-color 3s ease";
+    nodeEl.style.cursor = "pointer";
+    nodeEl.style.transition = "background-color 3s ease";
 
-    nodeElement.addEventListener("mouseenter", handleMouseEnter);
-    nodeElement.addEventListener("mouseleave", handleMouseLeave);
-    nodeElement.addEventListener("click", handleMouseClick);
+    nodeEl.addEventListener("mouseenter", handleMouseEnter);
+    nodeEl.addEventListener("mouseleave", handleMouseLeave);
+    nodeEl.addEventListener("click", handleMouseClick);
 }
 
-function fadeEdges(abbreviation) {
-    const relate = []
-}
+
 
 main()
