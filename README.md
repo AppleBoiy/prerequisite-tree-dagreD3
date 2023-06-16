@@ -9,7 +9,6 @@
 ## Table of Contents
 
 - [Overview](#overview)
-- [Features](#features)
 - [Update](#update)
 - [Wiki](#wiki)
 - [Getting Started](https://github.com/AppleBoiy/prerequisite-tree/wiki/Getting-Started)
@@ -24,25 +23,8 @@ courses. It fetches course data from a [Google Sheets], converts it into a JSON 
 using the [dagreD3] library. Users can hover over nodes to view prerequisite details and navigate the tree to understand
 the course dependencies.
 
-## Features
-
-- Converts a [Google Sheets] to JSON format
-- Generates an interactive prerequisite tree view
-- Highlights and provides details of course prerequisites on mouse hover
-- Supports customization of node colors and styles
-
 ## Update
-### June 2023
-In response to user feedback and to improve the readability and maintainability of the upgrade script, several enhancements have been made:
-
-Refactored variable names to be shorter and more meaningful, improving code clarity.
-Added fading out of lines that are not related to the node when the mouse is hovering over it or when the node is clicked.
-Extracted the logic inside the edgesList.forEach loop into a separate function for better code organization.
-Introduced new functions to handle node highlighting, edge opacity manipulation, and event handling.
-Updated the documentation in the [README.md](README.md) to reflect the changes made and provide clear instructions on using the upgraded script.
-These changes aim to make the upgrade script more flexible, readable, and easier to maintain.
-
-For more details, please see the [pull request](https://github.com/AppleBoiy/prerequisite-tree/pull/84) that implements these improvements.
+For more details, please see the [pull request](https://github.com/AppleBoiy/prerequisite-tree/wiki/Update#latest-update) that implements these improvements.
 
 ## Wiki
 
