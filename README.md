@@ -10,14 +10,16 @@
 
 - [Overview](#overview)
 - [Features](#features)
+- [Update](#update)
 - [Wiki](#wiki)
+- [Prerequisite Tree](#prerequisite-tree)
 - [How It Works](#how-it-works)
 - [Getting Started](#getting-started)
-    - [Prerequisites](#prerequisites)
-    - [Installation](#installation)
-    - [Usage](#usage)
+   - [Prerequisites](#prerequisites)
+   - [Installation](#installation)
+   - [Usage](#usage)
 - [Customization](#customization)
-    - [Preparing the Spreadsheet](#preparing-the-spreadsheet)
+   - [Preparing the Spreadsheet](#preparing-the-spreadsheet)
 - [Contributing](#contributing)
 - [Special Thanks](#special-thanks)
 - [License](#license)
@@ -35,6 +37,19 @@ the course dependencies.
 - Generates an interactive prerequisite tree view
 - Highlights and provides details of course prerequisites on mouse hover
 - Supports customization of node colors and styles
+
+## Update
+### June 2023
+In response to user feedback and to improve the readability and maintainability of the upgrade script, several enhancements have been made:
+
+Refactored variable names to be shorter and more meaningful, improving code clarity.
+Added fading out of lines that are not related to the node when the mouse is hovering over it or when the node is clicked.
+Extracted the logic inside the edgesList.forEach loop into a separate function for better code organization.
+Introduced new functions to handle node highlighting, edge opacity manipulation, and event handling.
+Updated the documentation in the [README.md](README.md) to reflect the changes made and provide clear instructions on using the upgraded script.
+These changes aim to make the upgrade script more flexible, readable, and easier to maintain.
+
+For more details, please see the [pull request](https://github.com/AppleBoiy/prerequisite-tree/pull/84) that implements these improvements.
 
 ## Wiki
 
@@ -152,15 +167,39 @@ representation of the course prerequisites.
 * You can modify the styles in the [tree.css] file to customize the appearance of the prerequisite tree.
 * Additional configuration options and functionality can be implemented by modifying the [tree.js] file.
 
-### Contributing
+## Contributing
 
-Contributions are welcome! If you have any suggestions, improvements, or bug fixes, please open an issue or submit a
-pull request.
+Thank you for considering contributing to this project! We welcome contributions from all developers.
+
+To contribute, please follow these steps:
+
+1. Fork the repository and create your branch: git checkout -b my-branch.
+2. Make your changes and test them thoroughly.
+3. Commit your changes: git commit -m 'Add some feature'.
+4. Push to your branch: git push origin my-branch.
+5. Open a pull request on the main repository's master branch.
+6. Please ensure that your pull request follows the project's coding conventions and includes relevant documentation or test cases if applicable. Your contribution will be reviewed and merged once it meets the project's guidelines and quality standards.
+
+By contributing to this project, you agree to abide by the [Code of Conduct](.github/CODE_OF_CONDUCT.md) and to release your contributions under the project's [license](LICENSE).
+
+If you have any questions or need further assistance, please don't hesitate to reach out. We appreciate your valuable contributions to this project!
+
+For more information, please refer to the [Contribution Guidelines](.github/CONTRIBUTING.md).
 
 ## Special Thanks
 
 Special thanks to [dagreD3], [D3.js], and [SheetJS] for providing the libraries and tools that make this educational
 tool possible.
+
+A heartfelt thank you to all the contributors who have made this project possible through their valuable contributions. Your time, effort, and expertise are greatly appreciated. Thank you for helping to make this project better with each contribution.
+
+We would like to extend our gratitude to the following contributors:
+
+- [Rachata Thananchai](https://github.com/Meaww2)
+- [JaMas](https://github.com/PrakitJm)
+
+Your contributions have played a significant role in improving the project, and we are grateful for your support.
+
 
 ## License
 
