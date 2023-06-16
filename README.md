@@ -13,7 +13,7 @@
 - [Update](#update)
 - [Wiki](#wiki)
 - [Getting Started](https://github.com/AppleBoiy/prerequisite-tree/wiki/Getting-Started)
-- [Customization]https://github.com/AppleBoiy/prerequisite-tree/wiki/Customization)
+- [Customization](https://github.com/AppleBoiy/prerequisite-tree/wiki/Customization)
 - [Special Thanks](#special-thanks)
 - [License](#license)
 
@@ -66,7 +66,7 @@ Your contributions have played a significant role in improving the project, and 
 
 ## License
 
-This project is licensed under the [MIT License](LICENSE).
+This project is licensed under the [MIT License](LICENSE) for more please see [License](https://github.com/AppleBoiy/prerequisite-tree/wiki/License).
 
 
 [dagreD3]: https://github.com/dagrejs/dagre-d3
