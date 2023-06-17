@@ -27,8 +27,8 @@ const main = () => {
                     nodeDiv: div,
                     originalFill: rect.style.fill,
                     originalStroke: rect.style.stroke,
-                    highlightFill: "#03fc88",
-                    highlightStroke: "#03fc88"
+                    highlightFill: "#eb8f34",
+                    highlightStroke: "#000"
                 });
             });
 
@@ -148,7 +148,6 @@ async function generateTreeView(rawData) {
             rect: edge
         });
     }
-
 }
 
 /**
@@ -261,10 +260,11 @@ function attachEventHandlers(abbreviation, nodeEl) {
         const [nameEl, contentEl] = popupEl.children[0].children;
 
         nameEl.innerHTML = data["full name (ENG)"];
-        contentEl.innerHTML = `
-      Prerequisite: ${data["parent"] || "-"}<br>
-      Credit: ${data["credit"]}<br>
-      Details: ....`;
+        let courseContent = "";
+        for (const [key, value] of Object.entries(courseData[abbreviation])) {
+            courseContent += key + " : " + value + "<br/>"
+        }
+        contentEl.innerHTML = courseContent;
 
         nodeEl.removeEventListener("mouseleave", handleMouseLeave);
         handleMouseEnter();

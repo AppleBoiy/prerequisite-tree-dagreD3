@@ -32,10 +32,12 @@
     stroke: #2C3333;
     fill: #2C3333;
     stroke-width: 2px;
+    transition: all 0.3s ease-in-out;
 
 }
 .node {
     cursor: pointer;
+
 }
 .node.y1 rect {
     fill: var(--year1);
@@ -77,6 +79,7 @@
 .treeContainer{
     background-color: #E8F3D6;    
     display: flex;
+    padding: 20px 0;
 }
 
 
