@@ -1,10 +1,10 @@
 body {
     height: 100vh;
-    background-color: #F9E0BB;
+
 }
 
 nav {
-    background-color: #8E806A;
+    background-color: #f3f3f3;
     border-bottom: 1px solid;
     margin-bottom: 0;
 }
@@ -20,8 +20,8 @@ img.tw-user-medium {
 
 .navbar-light .container .navbar-nav .nav-link {
     color: #2C3333;
-}
 
+}
 
 #nav-search {
     border-color: #2C3333;
@@ -29,12 +29,6 @@ img.tw-user-medium {
     background-color: #e7ecf0;
 }
 
-
-#nav-tweet-btn {
-    border-radius: 20px;
-    background-color: #aae1ff;
-    color: #2C3333;
-}
 
 
 .container {

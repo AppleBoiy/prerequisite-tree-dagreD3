@@ -37,8 +37,9 @@ A heartfelt thank you to all the contributors who have made this project possibl
 
 We would like to extend our gratitude to the following contributors:
 
-- [Rachata Thananchai](https://github.com/Meaww2)
+- [Meaww2](https://github.com/Meaww2)
 - [JaMas](https://github.com/PrakitJm)
+- [AppleBoiy](https://github.com/AppleBoiy)
 
 Your contributions have played a significant role in improving the project, and we are grateful for your support.
 
