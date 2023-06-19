@@ -1,11 +1,10 @@
 body {
     height: 100vh;
-    background-color: #F9E0BB;
 
 }
 
 nav {
-    background-color: #8E806A;
+    background-color: #f3f3f3;
     border-bottom: 1px solid;
     margin-bottom: 0;
 }

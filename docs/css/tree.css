@@ -1,5 +1,5 @@
 :root {
-    --bg_darkmode: #E8F3D6;
+    --bg_darkmode: #efefef;
     --year1: #FAAB78;
     --year2: #F8C4B4;
     --year3: #E5EBB2;
@@ -15,11 +15,9 @@
     height: 100%;
     display: flex;
     justify-content: center;
-    background-color: var(--bg_darkmode);
 }
 
 .graph {
-    background-color: var(--bg_darkmode);
     border: none;
 }
 .graph text, .graph .node.root div {
@@ -77,9 +75,9 @@
 }
 
 .treeContainer{
-    background-color: #E8F3D6;    
     display: flex;
     padding: 20px 0;
+    background-color: #e7ecf0;
 }
 
 
@@ -101,7 +99,7 @@
     align-items: center;
     position: fixed;
     z-index: 100;
-    top: 0px;
+    top: 0;
     background-color: #0000005e;
 }
 .window-popup {
