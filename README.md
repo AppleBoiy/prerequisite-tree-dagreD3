@@ -2,6 +2,7 @@
 
 [![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=AppleBoiy_prerequisite-tree&metric=alert_status)](https://sonarcloud.io/summary/new_code?id=AppleBoiy_prerequisite-tree) [![Qodana](https://github.com/AppleBoiy/prerequisite-tree/actions/workflows/code_quality.yml/badge.svg)](https://github.com/AppleBoiy/prerequisite-tree/actions/workflows/code_quality.yml)
 
+
 <img src="./docs/img/tree_view_screenshot.png" width="1000" alt="">
 
 > The Prerequisite Tree tool allows users to visualize and explore the prerequisite relationships between different courses. It fetches course data from a google spreadsheet, converts it into a JSON format, and generates a tree view using the [dagreD3] library.
@@ -9,6 +10,7 @@
 ## Table of Contents
 
 - [Overview](#overview)
+- [Archive Notice](#archive-notice)
 - [Update](https://github.com/AppleBoiy/prerequisite-tree/wiki/Update#latest-update)
 - [Wiki](#wiki)
 - [Getting Started](https://github.com/AppleBoiy/prerequisite-tree/wiki/Getting-Started)
@@ -22,6 +24,14 @@ The Prerequisite Tree tool allows users to visualize and explore the prerequisit
 courses. It fetches course data from a [Google Sheets], converts it into a JSON format, and generates a tree view
 using the [dagreD3] library. Users can hover over nodes to view prerequisite details and navigate the tree to understand
 the course dependencies.
+
+## Archive Notice
+
+**Important:** This project has been archived, and further development and updates will take place in the new repository [AppleBoiy/pretree](https://github.com/AppleBoiy/pretree).
+
+Please visit the new repository for the latest version and updates. Thank you for your support and interest in this project.
+
+For historical reference, you can still access this repository, but it will no longer receive active maintenance.
 
 ## Wiki
 
