@@ -27,7 +27,7 @@ the course dependencies.
 
 ## Archive Notice
 
-**Important:** This project has been archived, and further development and updates will take place in the new repository [AppleBoiy/pre3.io](https://github.com/AppleBoiy/pre3.io).
+**Important:** This project has been archived, and further development and updates will take place in the new repository [AppleBoiy/pre3](https://github.com/AppleBoiy/pre3).
 
 Please visit the new repository for the latest version and updates. Thank you for your support and interest in this project.
 
